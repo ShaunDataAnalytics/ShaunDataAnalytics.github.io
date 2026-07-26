@@ -2,9 +2,9 @@
 
 > **Master of Science in Analytics (Georgia Tech)** | Ex-Data Analytics Engineer at **American Student Assistance** | Specializing in Snowflake Data Warehousing, dbt Modeling, Data Pipeline Observability, & AI Agent Workflows.
 
-[![GitHub Pages](https://img.shields.io/badge/Live_Portfolio-ShaunDataAnalytics.github.io-007ACC?style=for-the-badge&logo=githubpages&logoColor=white)](https://shaundataananalytics.github.io)
-[![Georgia Tech](https://img.shields.io/badge/Education-Georgia_Tech_MS_Analytics-B3A369?style=for-the-badge&logo=georgiatech&logoColor=white)](#-education--background)
-[![Tech Stack](https://img.shields.io/badge/Stack-Snowflake_|_dbt_|_Python_|_Airflow_|_Spark-38BDF8?style=for-the-badge)](#-technical-skills)
+[![GitHub Pages](https://img.shields.io/badge/Live_Portfolio-ShaunDataAnalytics.github.io-007ACC?style=for-the-badge&logo=githubpages&logoColor=white)](https://shaundataanalytics.github.io)
+[![Georgia Tech](https://img.shields.io/badge/Education-Georgia_Tech_MS_Analytics-B3A369?style=for-the-badge&logo=georgiatech&logoColor=white)](#-education)
+[![Tech Stack](https://img.shields.io/badge/Stack-Snowflake_|_dbt_|_Python_|_Airflow_|_Spark-38BDF8?style=for-the-badge)](#-technical-skills-matrix)
 
 ---
 
@@ -30,9 +30,20 @@
 
 ---
 
-## 🛠️ Featured Systems & Visualizers
+## 🔬 Featured Engineering & Analytics Projects
 
-| System / Project | Technology Stack | Highlight |
+| Project / Repository | Key Technologies | Highlights |
+| :--- | :--- | :--- |
+| 📊 **[Housing Price Prediction Engine](https://github.com/ShaunDataAnalytics/Housing-price-Prediction)** | `Python`, `Scikit-Learn`, `Pandas` | Feature engineering, regression modeling, and price forecasting pipeline. |
+| 🍿 **[TMDB Movie Analytics & EDA](https://github.com/ShaunDataAnalytics/TMDB-Dataset)** | `Python`, `EDA`, `Matplotlib`, `Seaborn` | Exploratory data analysis, box office revenue trends, and metric correlations. |
+| 📚 **[Book Recommender System](https://github.com/ShaunDataAnalytics/CapstoneP-Book-Recommender)** | `Python`, `Collaborative Filtering` | Machine learning recommendation engine based on user preference vectors. |
+| 🎓 **[Per Scholas Coursework](https://github.com/ShaunDataAnalytics/per-scholas-coursework)** | `SQL`, `Python`, `venv`, `MySQL` | Consolidated data engineering coursework, ERD schemas, and virtual environments. |
+
+---
+
+## 🛠️ Interactive Focus Tools & Visualizers
+
+| System / Visualizer | Tech Stack | Highlights |
 | :--- | :--- | :--- |
 | **🌐 Browser Intention Gate** | JS, Glassmorphic UI, LocalStorage | Focus protocol gater tracking session intent & time boundaries. |
 | **📊 SQL CTE Execution Visualizer** | HTML5, Mermaid.js, Fira Code | Step-by-step CTE execution engine & recursive hierarchy tree. |
@@ -61,7 +72,7 @@ mindmap
       Karpathy 3-Layer LLM Wiki
       Yoodli Speech Coaching
       Obsidian Vault Automation
-    Frontend & Design
+    Frontend & Web
       Next.js & TypeScript
       Tailwind CSS
       Glassmorphic HTML5/JS
@@ -84,11 +95,11 @@ npm run dev
 npm run build
 ```
 
-Deployed automatically to GitHub Pages via **GitHub Actions** on every push to the `main` branch.
+The site is automatically built and deployed to GitHub Pages via **GitHub Actions** on every push to the `main` branch.
 
 ---
 
 ## 📬 Connect
 
-* **Portfolio**: [https://shaundataananalytics.github.io](https://shaundataananalytics.github.io)
+* **Portfolio**: [https://shaundataanalytics.github.io](https://shaundataanalytics.github.io)
 * **GitHub**: [@ShaunDataAnalytics](https://github.com/ShaunDataAnalytics)
