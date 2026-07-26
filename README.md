@@ -1,33 +1,83 @@
-# Shaun Lin — Portfolio
+# 🚀 Shaun Lin — Data Engineer & AI Systems Architect
 
-Data Engineer & Analytics Specialist portfolio built with Next.js, Tailwind CSS, and TypeScript.
+> **Master of Science in Analytics (Georgia Tech)** | Specializing in Snowflake Data Engineering, Large-Scale ETL Pipelines, Cloud Architecture, and AI Agent Workflows.
 
-## Run locally
+[![GitHub Pages](https://img.shields.io/badge/Live_Portfolio-ShaunDataAnalytics.github.io-007ACC?style=for-the-badge&logo=githubpages&logoColor=white)](https://shaundataananalytics.github.io)
+[![Georgia Tech](https://img.shields.io/badge/Education-Georgia_Tech_MS_Analytics-B3A369?style=for-the-badge&logo=georgiatech&logoColor=white)](#-education--background)
+[![Tech Stack](https://img.shields.io/badge/Stack-Snowflake_|_Python_|_Spark_|_Airflow-38BDF8?style=for-the-badge)](#-technical-skills)
 
-```bash
-npm install
-npm run dev
+---
+
+## 💡 Core Philosophy & Engineering Expertise
+
+* **Cloud Data Warehousing & Integration**: End-to-end Snowflake data share environments, zero-copy clones, access control policies, dbt data modeling, and custom SQL views/stored procedures.
+* **Data Pipeline Orchestration & Observability**: Building resilient batch and CDC streaming pipelines with Apache Airflow, Apache Spark, DuckDB, S3, and SFTP feeds with automated monitoring/alerting.
+* **AI Agent & Knowledge Systems**: Pioneering Karpathy 3-Layer LLM Wiki architectures, Claude Code CLI workflows, Yoodli active recall coaching, and Obsidian second brain automation.
+* **Interactive Tooling & Glassmorphic UI**: Building interactive HTML5/JS visualizers, DataviewJS dashboards, and focus intention protocols.
+
+---
+
+## 🛠️ Featured Systems & Visualizers
+
+| System / Visualizer | Focus & Architecture | Live Preview |
+| :--- | :--- | :--- |
+| **🌐 Browser Intention Gate** | Focus protocol gater tracking session intent & time boundaries. | Interactive Obsidian Control Panel |
+| **📊 SQL CTE Execution Visualizer** | Step-by-step CTE data pipelines & recursive hierarchy expansion tree. | Interactive HTML Engine |
+| **🐍 Python Skill Tree & RPG Hub** | 4-tier RPG leveling system for memory models, scope, & data structures. | Web Audio + LocalStorage Dashboard |
+| **📰 Live RSS Content Curator** | Real-time RSS aggregator with 1-click Markdown web clipping. | Glassmorphic RSS Engine |
+
+---
+
+## 🎓 Education & Background
+
+* **Master of Science in Analytics** — *Georgia Institute of Technology* (Georgia Tech)
+  * Specialization: Advanced Data Engineering, High-Performance Computing, and Machine Learning Systems.
+
+---
+
+## 💻 Technical Skills Matrix
+
+```mermaid
+mindmap
+  root((Shaun Lin))
+    Data Engineering
+      Snowflake Data Sharing
+      Apache Airflow & Spark
+      DuckDB & Postgres CDC
+      dbt Data Models
+    AI & Agent Systems
+      Claude Code CLI
+      Karpathy LLM Wiki
+      Yoodli Speech Coaching
+      Obsidian Automation
+    Frontend & Web
+      Next.js & TypeScript
+      Tailwind CSS
+      Glassmorphic HTML5/JS
+      Mermaid.js Diagrams
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+---
 
-## Build for production
+## 🚀 Local Development & Deployment
 
 ```bash
+# Clone repository
+git clone https://github.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io.git
+
+# Install dependencies & run local dev server
+npm install
+npm run dev
+
+# Build production static bundle
 npm run build
 ```
 
-Static files are output to the `out/` directory.
+The site is automatically built and deployed to GitHub Pages via **GitHub Actions** on every push to the `main` branch.
 
-## Deploy to GitHub Pages
+---
 
-1. Push this project to your [ShaunDataAnalytics.github.io](https://github.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io) repository.
-2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
-3. On each push to `main`, the workflow will build and deploy to your site.
+## 📬 Connect
 
-## Customize
-
-- **Social links**: Edit `src/components/Hero.tsx` (GitHub, LinkedIn, Email).
-- **Projects**: Edit `src/data.ts` to add or update projects.
-- **Project images**: Replace `public/images/placeholder.svg` or add real images and update `imageUrl` in `data.ts`.
-- **GitHub stars**: Star counts are fetched at build time. For higher rate limits, set `GITHUB_TOKEN` in your environment (e.g. in GitHub Actions secrets).
+* **Portfolio**: [https://shaundataananalytics.github.io](https://shaundataananalytics.github.io)
+* **GitHub**: [@ShaunDataAnalytics](https://github.com/ShaunDataAnalytics)
