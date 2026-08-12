@@ -34,7 +34,8 @@
 
 | Project / Repository | Key Technologies | Highlights |
 | :--- | :--- | :--- |
-| 📊 **[Housing Price Prediction Engine](https://github.com/ShaunDataAnalytics/Housing-price-Prediction)** | `Python`, `Scikit-Learn`, `Pandas` | Feature engineering, regression modeling, and price forecasting pipeline. |
-| 🍿 **[TMDB Movie Analytics & EDA](https://github.com/ShaunDataAnalytics/TMDB-Dataset)** | `Python`, `EDA`, `Matplotlib`, `Seaborn` | Exploratory data analysis, box office revenue trends, and metric correlations. |
-| 📚 **[Book Recommender System](https://github.com/ShaunDataAnalytics/CapstoneP-Book-Recommender)** | `Python`, `Collaborative Filtering` | Machine learning recommendation engine based on user preference vectors. |
-| 🎓 **[Per Scholas Coursework](https://github.com/ShaunDataAnalytics/per-scholas-coursework)** | `SQL`, `Python`, `venv`, `MySQL` | Consolidated data engineering coursework, ERD schemas, and virtual environments. |
+| 📚 **[Book Recommender System](https://github.com/ShaunDataAnalytics/collaborative-book-recommender-engine)** | `Python`, `Collaborative Filtering` | Machine learning recommendation engine based on 1.1M user rating vectors. |
+| 📊 **[Customer Segmentation & 3D Clustering](https://github.com/ShaunDataAnalytics/data-science-portfolio-labs)** | `Python`, `Scikit-Learn`, `PCA` | Unsupervised ML dashboard with K-Means clustering and interactive 3D PCA. |
+| 🏠 **[Real Estate Valuation Model](https://github.com/ShaunDataAnalytics/real-estate-valuation-ml)** | `Python`, `XGBoost`, `Pandas` | Feature engineering, regression modeling, and property price forecasting pipeline. |
+| 🍿 **[TMDB Movie Analytics & EDA](https://github.com/ShaunDataAnalytics/TMDB-Dataset)** | `Python`, `EDA`, `Matplotlib`, `Seaborn` | Exploratory data analysis, box office revenue trends, and ROI metrics. |
+| 🤖 **[Focus Pomodoro Chrome Extension](https://github.com/ShaunDataAnalytics/focus-pomodoro-chrome-extension)** | `JavaScript`, `Chrome API` | Micro-sprint productivity browser extension for deep work execution. |
