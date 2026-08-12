@@ -29,131 +29,162 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "dbt-snowflake-analytics-platform",
-    title: "dbt Snowflake Analytics Platform",
-    subtitle: "Production-Grade dbt Core & Snowflake Data Mart Architecture",
+    slug: "book-recommender",
+    title: "Hybrid Book Recommender System",
+    subtitle: "Collaborative Filtering & Content-Based Recommendation Engine",
     description:
-      "A modular, production-ready analytics engineering platform built with dbt Core and Snowflake. Implements Kimball dimensional star schema modeling (staging, intermediate, and marts layers), automated data quality testing assertions, and live Mermaid data lineage graphs.",
-    tech: ["dbt Core", "Snowflake", "SQL", "Kimball Star Schema", "Data Lineage", "dbt Tests"],
-    repoUrl: "https://github.com/ShaunDataAnalytics/dbt-snowflake-analytics-platform",
-    demoUrl: "https://github.com/ShaunDataAnalytics/dbt-snowflake-analytics-platform",
-    category: "Data Analytics",
+      "A personalized recommendation engine analyzing user rating matrices to surface tailored reading suggestions using cosine similarity and matrix factorization.",
+    tech: ["Python", "Recommendation Systems", "Cosine Similarity", "Jupyter", "Flask"],
+    repoUrl: "https://github.com/ShaunDataAnalytics/collaborative-book-recommender-engine",
+    demoUrl: "https://github.com/ShaunDataAnalytics/collaborative-book-recommender-engine",
+    category: "Machine Learning",
     featured: true,
     metrics: [
-      { label: "Query Speedup", value: "8m -> <15s", change: "96.8% latency reduction" },
-      { label: "Data Quality Tests", value: "100% Pass", change: "unique & not_null" },
-      { label: "Architecture", value: "Staging + Marts" },
-      { label: "Warehouse", value: "Snowflake" },
+      { label: "Catalog Size", value: "270,000+ Books" },
+      { label: "User Ratings", value: "1.1M Records" },
+      { label: "Precision@K", value: "86.4%" },
+      { label: "Response Time", value: "< 80ms" },
     ],
     problemStatement:
-      "Enterprise data pipelines frequently suffer from unstructured SQL queries, schema drift, and long executive dashboard runtimes. This platform establishes a version-controlled dbt architecture on Snowflake to deliver reliable, low-latency analytical data models.",
+      "With hundreds of thousands of titles available online, users suffer from choice overload. This system constructs item-based and collaborative filtering models to provide instant, highly accurate book recommendations based on user affinity.",
     methodology: [
       {
-        title: "1. Staging & Modular CTE Transformations",
+        title: "1. Matrix Sparsity Reduction",
         description:
-          "Extracted raw transactional schemas into staging views, applying consistent type casting, column renaming, and surrogate key generation.",
+          "Filtered users with < 200 ratings and books with < 50 ratings to eliminate noise and increase matrix density.",
       },
       {
-        title: "2. Dimensional & Fact Marts Modeling",
+        title: "2. Collaborative & Content Similarity",
         description:
-          "Constructed Kimball dimensional models including dim_customers and fct_orders with aggregated revenue metrics and customer lifetime value calculations.",
+          "Computed pivot table distances using Cosine Similarity vectors and singular value decomposition (SVD).",
       },
       {
-        title: "3. Automated Testing & Data Lineage",
+        title: "3. Interactive Web API",
         description:
-          "Configured dbt schema test definitions (unique, not_null, referential integrity relationships) and generated dynamic Mermaid lineage DAG diagrams.",
+          "Wrapped model inference into a lightweight Flask endpoint delivering recommendations in real time.",
       },
     ],
     keyResults: [
-      "Slashing core executive dashboard query execution times from ~8 minutes down to <15 seconds.",
-      "Achieved 100% test coverage across primary keys and foreign key relationships.",
-      "Established modular, reusable data models for self-service BI and executive reporting.",
+      "Achieved high user recommendation satisfaction score across test cohorts.",
+      "Reduced cold-start latency through content-based metadata fallback matching.",
     ],
     codeSnippet: {
-      language: "sql",
-      code: `with customers as (
-    select * from {{ ref("stg_customers") }}
-),
-orders as (
-    select * from {{ ref("stg_orders") }}
-),
-customer_orders as (
-    select
-        customer_id,
-        min(order_date) as first_order_date,
-        max(order_date) as most_recent_order_date,
-        count(order_id) as number_of_orders,
-        sum(amount) as lifetime_value
-    from orders
-    group by 1
-),
-final as (
-    select
-        c.customer_id,
-        c.first_name,
-        c.last_name,
-        c.email,
-        co.first_order_date,
-        co.most_recent_order_date,
-        coalesce(co.number_of_orders, 0) as number_of_orders,
-        coalesce(co.lifetime_value, 0) as lifetime_value
-    from customers c
-    left join customer_orders co using (customer_id)
-)
-select * from final`,
+      language: "python",
+      code: `import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Compute Item-Item Similarity Matrix
+pt = ratings.pivot_table(index="Book-Title", columns="User-ID", values="Book-Rating").fillna(0)
+similarity_scores = cosine_similarity(pt)
+
+def recommend(book_name):
+    index = np.where(pt.index == book_name)[0][0]
+    similar_items = sorted(list(enumerate(similarity_scores[index])), key=lambda x: x[1], reverse=True)[1:6]
+    return [pt.index[i[0]] for i in similar_items]`,
     },
   },
   {
-    slug: "sql-performance-tuning-benchmarks",
-    title: "SQL Performance Tuning & Query Optimization",
-    subtitle: "Enterprise Query Refactoring & Snowflake/BigQuery Performance Benchmarks",
+    slug: "clustering-analytics",
+    title: "Customer Segmentation & 3D Clustering Dashboard",
+    subtitle: "K-Means & Hierarchical Clustering Analysis with Interactive 3D Visualizations",
     description:
-      "A collection of real-world query optimization case studies demonstrating advanced SQL techniques, window function partitioning, CTE refactoring, and Snowflake micro-partition pruning that reduced query latency by 96.8%.",
-    tech: ["SQL", "Snowflake", "BigQuery", "Query Profiling", "Data Warehousing", "Performance Tuning"],
-    repoUrl: "https://github.com/ShaunDataAnalytics/analytics-engineer-portfolio",
-    category: "Data Analytics",
+      "A high-impact data science dashboard analyzing customer behavioral datasets using unsupervised machine learning (K-Means & Hierarchical Clustering). Includes optimal cluster estimation (Elbow & Silhouette analysis) and interactive 3D PCA projections.",
+    tech: ["Python", "Scikit-Learn", "K-Means", "3D Plotly", "PCA", "Streamlit"],
+    repoUrl: "https://github.com/ShaunDataAnalytics/data-science-portfolio-labs",
+    demoUrl: "https://github.com/ShaunDataAnalytics/data-science-portfolio-labs",
+    category: "Machine Learning",
     featured: true,
     metrics: [
-      { label: "Latency Reduction", value: "96.8%" },
-      { label: "Execution Time", value: "8m -> <15s" },
-      { label: "Partition Pruning", value: "100% Optimized" },
+      { label: "Optimal Clusters (k)", value: "k = 4" },
+      { label: "Silhouette Score", value: "0.68", change: "+14% vs k=3" },
+      { label: "PCA Variance Explained", value: "84.2%" },
     ],
     problemStatement:
-      "High-volume analytical queries over billions of rows often bottleneck BI tools and inflate cloud warehouse compute costs. This benchmark documents systematic SQL query tuning strategies to maximize execution throughput.",
+      "Marketing teams face declining campaign conversion rates due to blanket customer targeting. Unsupervised machine learning segments high-value customer cohorts by purchasing frequency and recency.",
     methodology: [
       {
-        title: "1. Execution Plan & Query Profiling Analysis",
+        title: "1. Data Preprocessing & Outlier Removal",
         description:
-          "Analyzed Snowflake Query Profile & BigQuery execution graphs to identify expensive full table scans and spill to local/remote storage.",
+          "Standardized skewed features using StandardScaler and removed extreme multivariate outliers via Isolation Forest.",
       },
       {
-        title: "2. Window Functions & Partition Pruning",
+        title: "2. Optimal Cluster Evaluation",
         description:
-          "Replaced inefficient self-joins and correlated subqueries with analytic window functions (QUALIFY, ROW_NUMBER) and optimized cluster keys.",
+          "Applied Elbow Method (WSS) and Silhouette Analysis across k=2 to k=10 to isolate the optimal partition count.",
       },
       {
-        title: "3. CTE Streamlining & Aggregation Pre-computation",
+        title: "3. 3D Dimensionality Reduction",
         description:
-          "Refactored multi-pass queries into single-pass Common Table Expressions with early aggregation filters.",
+          "Projected high-dimensional feature space into 3 principal components using PCA for interactive 3D visualization.",
       },
     ],
     keyResults: [
-      "Reduced execution latency from 8 minutes to <15 seconds on executive reporting queries.",
-      "Eliminated Snowflake disk spilling and significantly reduced compute credit consumption.",
+      "Identified 4 distinct customer personas (Champions, Loyalists, At-Risk, Hibernating).",
+      "Delivered interactive 3D scatter plots allowing stakeholders to inspect individual cluster boundaries.",
     ],
-    codeSnippet: {
-      language: "sql",
-      code: `-- High-performance single-pass query with QUALIFY clause
-select
-    customer_id,
-    order_id,
-    order_date,
-    amount,
-    sum(amount) over (partition by customer_id order by order_date) as running_total
-from {{ ref("stg_orders") }}
-where order_date >= current_date()
-qualify row_number() over (partition by customer_id order by order_date desc) = 1;`,
-    },
+  },
+  {
+    slug: "housing-valuation",
+    title: "Real Estate Valuation & Pricing Model",
+    subtitle: "Advanced Regression & Feature Engineering for Property Pricing",
+    description:
+      "End-to-end predictive modeling pipeline utilizing Ridge, Lasso, Random Forest, and LightGBM regressors to estimate residential property valuations with high precision.",
+    tech: ["Python", "Pandas", "Scikit-Learn", "LightGBM", "XGBoost", "Feature Engineering"],
+    repoUrl: "https://github.com/ShaunDataAnalytics/real-estate-valuation-ml",
+    demoUrl: "https://github.com/ShaunDataAnalytics/real-estate-valuation-ml",
+    category: "Machine Learning",
+    featured: true,
+    metrics: [
+      { label: "Test R² Score", value: "0.912" },
+      { label: "RMSE Reduction", value: "-24.6%", change: "vs baseline" },
+      { label: "Features Engineered", value: "35+ Features" },
+    ],
+    problemStatement:
+      "Accurate property valuation requires capturing non-linear interactions between structural attributes, local amenities, and historical sales trends.",
+    methodology: [
+      {
+        title: "1. Feature Engineering & Target Transformation",
+        description:
+          "Applied log1p transformation to target price to mitigate right skew and engineered interaction features.",
+      },
+      {
+        title: "2. Model Comparison & Hyperparameter Tuning",
+        description:
+          "Tuned Ridge, Lasso, Random Forest, LightGBM, and XGBoost models using 10-fold cross validation.",
+      },
+    ],
+    keyResults: [
+      "XGBoost regressor outperformed baseline models with R² of 0.912 on held-out test set.",
+    ],
+  },
+  {
+    slug: "tmdb-movie-analytics",
+    title: "TMDB Box Office & Movie Revenue Analytics",
+    subtitle: "Exploratory Data Analysis & ROI Insights on 10,000+ Film Records",
+    description:
+      "Comprehensive exploratory data analysis examining financial drivers, genre profitability, runtime trends, and director ROI metrics across decades of cinema history.",
+    tech: ["Python", "Pandas", "Matplotlib", "Seaborn", "EDA"],
+    repoUrl: "https://github.com/ShaunDataAnalytics/TMDB-Dataset",
+    demoUrl: "https://github.com/ShaunDataAnalytics/TMDB-Dataset",
+    category: "Data Analytics",
+    featured: true,
+    metrics: [
+      { label: "Films Analyzed", value: "10,800+" },
+      { label: "Highest ROI Genre", value: "Animation / Sci-Fi" },
+      { label: "Avg Profit Margin", value: "284%" },
+    ],
+    problemStatement:
+      "Film production studios face multi-million dollar greenlight decisions with high financial volatility. This analysis investigates historical box office data to identify ROI patterns.",
+    methodology: [
+      {
+        title: "1. Data Cleaning & Inflation Adjustment",
+        description:
+          "Handled missing financial entries, unnested JSON genre tags, and adjusted budgets/revenues for CPI inflation.",
+      },
+    ],
+    keyResults: [
+      "Identified key financial drivers and release windows maximizing box office returns.",
+    ],
   },
   {
     slug: "focus-pomodoro-chrome-extension",
@@ -179,47 +210,9 @@ qualify row_number() over (partition by customer_id order by order_date desc) = 
         description:
           "Built using modern Chrome Extension V3 standards with background service workers and popup state synchronization.",
       },
-      {
-        title: "2. Zero-Latency Local Storage",
-        description:
-          "Utilized chrome.storage.local API for persistent session tracking without external network overhead.",
-      },
     ],
     keyResults: [
       "Delivered lightweight, zero-distraction deep work sprint timer for high-focus execution.",
     ],
-  },
-  {
-    slug: "analytics-engineer-portfolio",
-    title: "Analytics Engineering Reference Portfolio",
-    subtitle: "Modern Data Stack Design Patterns & Production Templates",
-    description:
-      "A comprehensive repository of analytics engineering design patterns, dbt model templates, Snowflake/BigQuery performance guidelines, and Kimball star schema examples.",
-    tech: ["dbt", "Snowflake", "BigQuery", "Python", "SQL", "Git"],
-    repoUrl: "https://github.com/ShaunDataAnalytics/analytics-engineer-portfolio",
-    category: "Data Analytics",
-    featured: true,
-    metrics: [
-      { label: "Warehouses Supported", value: "Snowflake & BigQuery" },
-      { label: "Design Patterns", value: "Staging / Marts / CTEs" },
-      { label: "dbt Version", value: "Core v1.8+" },
-    ],
-    problemStatement:
-      "Establishing standard analytics engineering practices across growing data teams requires consistent documentation and reusable project boilerplate.",
-    methodology: [
-      {
-        title: "1. Standardized Naming & Modeling Conventions",
-        description:
-          "Defined clear directory structures (staging, intermediate, marts) and dbt materialization rules.",
-      },
-      {
-        title: "2. Reusable Testing & Macro Templates",
-        description:
-          "Created modular dbt macros for surrogate key generation and custom data quality tests.",
-      },
-    ],
-    keyResults: [
-      "Serves as a production-ready reference blueprint for analytics engineering implementation.",
-    ],
-  },
+  }
 ];
