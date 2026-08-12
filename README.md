@@ -1,4 +1,4 @@
-# 🚀 Shaun Lin — Senior Data Analytics Engineer & AI Systems Specialist
+# 🚀 Shaun Lin — Data Analytics Engineer & AI Systems Specialist
 
 > **Master of Science in Analytics (Georgia Tech)** | Ex-Data Analytics Engineer at **American Student Assistance** | Specializing in Snowflake Data Warehousing, dbt Modeling, Data Pipeline Observability, & AI Agent Workflows.
 
