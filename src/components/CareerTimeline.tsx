@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Briefcase, GraduationCap, Award, Calendar, CheckCircle2 } from "lucide-react";
+import { Briefcase, GraduationCap, Calendar, CheckCircle2 } from "lucide-react";
 
 type Milestone = {
   id: string;
@@ -97,6 +97,20 @@ const milestones: Milestone[] = [
     skills: ["Data Remediation", "Excel VBA", "KPI Tracking", "Migration"]
   },
   {
+    id: "early-career",
+    period: "2014 – 2017",
+    role: "Financial & Data Analyst / IT Consultant",
+    company: "Yellowstone Capital • FDM Group • GE Healthcare Contracts",
+    category: "dq",
+    type: "work",
+    bullets: [
+      "Financial data analysis and quantitative risk evaluation at Yellowstone Capital post-graduation.",
+      "Completed intensive IT & business intelligence training at FDM Group in SQL and analytical reporting.",
+      "Executed data analysis and reporting contracts across healthcare and technology domains (GE Healthcare, CCS Global Tech)."
+    ],
+    skills: ["Financial Analytics", "SQL", "Risk Evaluation", "Data Reporting"]
+  },
+  {
     id: "umass",
     period: "May 2014",
     role: "B.B.A. in Finance",
@@ -127,7 +141,7 @@ export default function CareerTimeline() {
           Experience & Impact Timeline
         </h2>
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 max-w-lg mx-auto">
-          5+ years bridging analytics architecture, data quality engineering, and scalable data stacks.
+          Analytics architecture, data quality engineering, and financial data foundations.
         </p>
 
         {/* Filter Buttons */}
