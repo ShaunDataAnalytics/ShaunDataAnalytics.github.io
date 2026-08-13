@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaun Lin — Career Timeline & Engineering Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: oklch(0.12 0.02 260);
+      --bg-panel: oklch(0.16 0.025 260);
+      --bg-card: oklch(0.20 0.03 260);
+      --bg-card-hover: oklch(0.25 0.035 260);
+      --border-color: oklch(0.28 0.03 260 / 0.7);
+      --border-hover: oklch(0.48 0.10 240);
+      --text-main: oklch(0.96 0.01 260);
+      --text-muted: oklch(0.72 0.03 260);
+      --text-dark: oklch(0.50 0.03 260);
+      
+      --cyan: oklch(0.78 0.15 200);
+      --cyan-glow: oklch(0.78 0.15 200 / 0.15);
+      --emerald: oklch(0.78 0.16 150);
+      --amber: oklch(0.82 0.16 80);
+      --rose: oklch(0.75 0.18 20);
+      --violet: oklch(0.75 0.18 290);
+      
+      --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Fira Code', monospace;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="light"] {
+      --bg-main: oklch(0.97 0.01 240);
+      --bg-panel: oklch(1.0 0 0);
+      --bg-card: oklch(0.94 0.015 240);
+      --bg-card-hover: oklch(0.90 0.02 240);
+      --border-color: oklch(0.86 0.02 240);
+      --border-hover: oklch(0.65 0.08 240);
+      --text-main: oklch(0.18 0.03 260);
+      --text-muted: oklch(0.45 0.03 260);
+      --text-dark: oklch(0.65 0.02 260);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      padding: 32px 24px;
+      line-height: 1.5;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    header {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .profile-info h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .profile-info h2 {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .btn {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      border-color: var(--cyan);
+      background: var(--bg-card);
+    }
+
+    /* Filters */
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--cyan-glow);
+      color: var(--cyan);
+      border-color: var(--cyan);
+    }
+
+    /* Timeline Container */
+    .timeline {
+      position: relative;
+      padding: 20px 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-color);
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 40px;
+      width: 50%;
+      padding: 0 30px;
+    }
+
+    .timeline-item.left { left: 0; text-align: right; }
+    .timeline-item.right { left: 50%; text-align: left; }
+
+    .timeline-dot {
+      position: absolute;
+      top: 20px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--cyan);
+      border: 4px solid var(--bg-main);
+      box-shadow: 0 0 0 3px var(--cyan-glow);
+      z-index: 10;
+    }
+
+    .timeline-item.left .timeline-dot { right: -8px; }
+    .timeline-item.right .timeline-dot { left: -8px; }
+
+    .card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 22px;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .date-badge {
+      display: inline-block;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--amber);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .role-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .company-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--cyan);
+      margin-bottom: 12px;
+    }
+
+    .bullet-list {
+      list-style: none;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .bullet-list li {
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .timeline-item.left .bullet-list li { padding-right: 14px; }
+    .timeline-item.right .bullet-list li { padding-left: 14px; }
+
+    .bullet-list li::before {
+      content: '•';
+      position: absolute;
+      color: var(--cyan);
+      font-weight: bold;
+    }
+
+    .timeline-item.left .bullet-list li::before { right: 0; }
+    .timeline-item.right .bullet-list li::before { left: 0; }
+
+    .skills-used {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .timeline-item.left .skills-used { justify-content: flex-end; }
+
+    .skill-pill {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .timeline::before { left: 20px; }
+      .timeline-item { width: 100%; left: 0 !important; text-align: left !important; padding-left: 50px; padding-right: 0; }
+      .timeline-dot { left: 12px !important; }
+      .timeline-item.left .skills-used { justify-content: flex-start; }
+      .timeline-item.left .bullet-list li { padding-right: 0; padding-left: 14px; }
+      .timeline-item.left .bullet-list li::before { right: auto; left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="profile-info">
+      <h1>Shaun Lin</h1>
+      <h2>Data Analytics & Engineering Professional (5+ Years Experience)</h2>
+      <div class="tags-list">
+        <span class="tag">SQL</span>
+        <span class="tag">Python</span>
+        <span class="tag">Snowflake</span>
+        <span class="tag">BigQuery</span>
+        <span class="tag">dbt</span>
+        <span class="tag">Airflow</span>
+        <span class="tag">Tableau</span>
+        <span class="tag">Cursor AI</span>
+      </div>
+    </div>
+    <button class="btn" onclick="toggleTheme()">🌗 Toggle Theme</button>
+  </header>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterTimeline('all')">All Milestones</button>
+    <button class="filter-btn" onclick="filterTimeline('de')">Data Engineering</button>
+    <button class="filter-btn" onclick="filterTimeline('dq')">Data Quality & Analytics</button>
+    <button class="filter-btn" onclick="filterTimeline('edu')">Education & Degrees</button>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline">
+
+    <!-- 1. NAAAP Boston -->
+    <div class="timeline-item right" data-cat="de">
+      <div class="timeline-dot"></div>
+      <div class="card">
+        <span class="date-badge">Jan 2025 – Present</span>
+        <div class="role-title">Associate Director of Data Insights</div>
+        <div class="company-name">NAAAP Boston (Volunteer)</div>
+        <ul class="bullet-list">
+          <li>Built and led NAAAP Boston's data engineering team, driving data strategy and technical execution.</li>
+          <li>Owned design and deployment of 1st end-to-end data stack leveraging Airflow, BigQuery, and dbt (enabled 10x data volume processing).</li>
+          <li>Established Kanban workflow and DE code reviews/version control, creating a predictable project roadmap.</li>
+        </ul>
+        <div class="skills-used">
+          <span class="skill-pill">Airflow</span>
+          <span class="skill-pill">BigQuery</span>
+          <span class="skill-pill">dbt</span>
+          <span class="skill-pill">Leadership</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Georgia Tech -->
+    <div class="timeline-item left" data-cat="edu">
+      <div class="timeline-dot" style="background: var(--violet);"></div>
+      <div class="card">
+        <span class="date-badge" style="color: var(--violet);">May 2025</span>
+        <div class="role-title">Master of Science in Analytics</div>
+        <div class="company-name">Georgia Institute of Technology</div>
+        <ul class="bullet-list">
+          <li>Advanced analytical modeling, machine learning, statistical computing, and data architecture.</li>
+        </ul>
+        <div class="skills-used">
+          <span class="skill-pill">MS Analytics</span>
+          <span class="skill-pill">Machine Learning</span>
+          <span class="skill-pill">Statistics</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. ASA -->
+    <div class="timeline-item right" data-cat="de">
+      <div class="timeline-dot"></div>
+      <div class="card">
+        <span class="date-badge">Jun 2022 – Jun 2024</span>
+        <div class="role-title">Data Analytics Engineer</div>
+        <div class="company-name">American Student Assistance</div>
+        <ul class="bullet-list">
+          <li>Optimized 10+ dbt models and Snowflake DB structures, reducing model build time by 20% and accelerating retrieval by 30%.</li>
+          <li>Integrated 10+ disparate data sources through automated pipelines, establishing a unified Snowflake source of truth.</li>
+          <li>Engineered underlying data models and written performance-tuned SQL for executive Tableau dashboards.</li>
+        </ul>
+        <div class="skills-used">
+          <span class="skill-pill">Snowflake</span>
+          <span class="skill-pill">dbt</span>
+          <span class="skill-pill">SQL Optimization</span>
+          <span class="skill-pill">Tableau</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Kafene -->
+    <div class="timeline-item left" data-cat="dq">
+      <div class="timeline-dot" style="background: var(--emerald);"></div>
+      <div class="card">
+        <span class="date-badge" style="color: var(--emerald);">Feb 2022 – Apr 2022</span>
+        <div class="role-title">Data Quality Engineer</div>
+        <div class="company-name">Kafene</div>
+        <ul class="bullet-list">
+          <li>Built Python & SQL anomaly detection scripts, partnering with stakeholders to implement remediation.</li>
+          <li>Expanded data quality test coverage by writing and committing revised SQL scripts to GitHub repository.</li>
+          <li>Created comprehensive Data Dictionary and detailed relational database diagrams (ERDs).</li>
+        </ul>
+        <div class="skills-used">
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">SQL</span>
+          <span class="skill-pill">Data Quality</span>
+          <span class="skill-pill">ERD Modeling</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Springboard -->
+    <div class="timeline-item right" data-cat="edu">
+      <div class="timeline-dot" style="background: var(--violet);"></div>
+      <div class="card">
+        <span class="date-badge" style="color: var(--violet);">Aug 2020</span>
+        <div class="role-title">Data Science Bootcamp Certification</div>
+        <div class="company-name">Springboard</div>
+        <ul class="bullet-list">
+          <li>Intensive data science, Python, pandas, machine learning algorithms, and hands-on capstone projects.</li>
+        </ul>
+        <div class="skills-used">
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">Data Science</span>
+          <span class="skill-pill">Pandas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Biogen -->
+    <div class="timeline-item left" data-cat="dq">
+      <div class="timeline-dot" style="background: var(--emerald);"></div>
+      <div class="card">
+        <span class="date-badge" style="color: var(--emerald);">Dec 2017 – Dec 2019</span>
+        <div class="role-title">Data Analyst</div>
+        <div class="company-name">Biogen</div>
+        <ul class="bullet-list">
+          <li>Remediated data quality issues across 10+ departments to ensure business compliance and accuracy.</li>
+          <li>Reduced manual effort by 50% by engineering automated data migration solutions using Excel VBA.</li>
+          <li>Established and monitored key performance indicators for data migration projects.</li>
+        </ul>
+        <div class="skills-used">
+          <span class="skill-pill">Data Remediation</span>
+          <span class="skill-pill">Excel VBA</span>
+          <span class="skill-pill">KPI Monitoring</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. UMass Amherst -->
+    <div class="timeline-item right" data-cat="edu">
+      <div class="timeline-dot" style="background: var(--violet);"></div>
+      <div class="card">
+        <span class="date-badge" style="color: var(--violet);">May 2014</span>
+        <div class="role-title">B.B.A. in Finance</div>
+        <div class="company-name">University of Massachusetts Amherst</div>
+        <ul class="bullet-list">
+          <li>Bachelor of Business Administration in Finance. Financial modeling, business economics, and quantitative analysis.</li>
+        </ul>
+        <div class="skills-used">
+          <span class="skill-pill">Finance</span>
+          <span class="skill-pill">Economics</span>
+          <span class="skill-pill">Quantitative Analysis</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function filterTimeline(cat) {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('onclick').includes(cat));
+    });
+
+    document.querySelectorAll('.timeline-item').forEach(item => {
+      if (cat === 'all' || item.getAttribute('data-cat') === cat) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  function toggleTheme() {
+    const isLight = document.body.getAttribute('data-theme') === 'light';
+    document.body.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  }
+</script>
+</body>
+</html>

@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectCard";
 import TechStackGrid from "@/components/TechStackGrid";
+import CareerTimeline from "@/components/CareerTimeline";
 import { projects } from "@/data";
 
 async function fetchStars(repoUrl: string): Promise<number | null> {
@@ -37,6 +38,7 @@ export default async function Home() {
       <main className="mx-auto max-w-6xl px-6 pb-24">
         <Hero />
         <TechStackGrid />
+        <CareerTimeline />
 
         <section id="projects" className="py-16 scroll-mt-24">
           <div className="mb-12 text-center">
