@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilingual Neural Audiobook & Socratic Reader — AI Showcase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              500: "#06b6d4",
+              600: "#0891b2"
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .waveform-bar {
+      transition: height 0.15s ease;
+      animation: pulseBar 1.2s ease-in-out infinite;
+    }
+    @keyframes pulseBar {
+      0%, 100% { height: 6px; }
+      50% { height: 24px; }
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
+
+  <!-- TOP BAR -->
+  <header class="sticky top-0 z-50 border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md px-4 sm:px-8 py-3">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <a href="/" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-semibold text-zinc-300 hover:text-white hover:border-zinc-700 transition-all shadow-sm">
+          <span>←</span> <span>Portfolio</span>
+        </a>
+        <div class="h-4 w-px bg-zinc-800"></div>
+        <div class="flex items-center gap-2">
+          <span class="text-lg">🎙️</span>
+          <div>
+            <h1 class="text-sm sm:text-base font-bold text-white tracking-tight leading-none">Bilingual Neural Audio Suite</h1>
+            <p class="text-[11px] text-zinc-400 mt-0.5 hidden sm:block">AI Socratic Knowledge Player · Zero-Loss Commute Retention</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+          Live Demo
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-8 py-8 flex-1 w-full">
+    
+    <!-- PROBLEM & VALUE PROP BANNER -->
+    <div class="mb-8 rounded-2xl border border-zinc-800/80 bg-gradient-to-r from-zinc-900/90 via-zinc-900/60 to-zinc-950 p-5 sm:p-6 shadow-xl relative overflow-hidden">
+      <div class="absolute right-0 top-0 translate-x-8 -translate-y-8 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-rose-500/10 text-rose-400 border border-rose-500/20">Pain Point Solved</span>
+            <span class="text-xs text-zinc-400 font-medium">Screen Fatigue + Low Passive Retention (10% ➔ 80%)</span>
+          </div>
+          <h2 class="text-lg sm:text-xl font-extrabold text-white">How This AI System Solves Reading Friction</h2>
+          <p class="text-xs sm:text-sm text-zinc-400 mt-1 max-w-2xl leading-relaxed">
+            Staring at dense 400-page English or Chinese books during busy workweeks triggers cognitive overload. 
+            This AI workflow extracts full-text hierarchies, synthesizes <strong>human-fidelity neural voices (Edge-TTS)</strong>, 
+            and injects <strong>Socratic active-recall sparring questions</strong> into every chapter.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2 shrink-0 text-xs">
+          <div class="px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-center">
+            <div class="font-bold text-cyan-400">Zero Server Cost</div>
+            <div class="text-[10px] text-zinc-400">Client WebAudio API</div>
+          </div>
+          <div class="px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-center">
+            <div class="font-bold text-emerald-400">Dual Language</div>
+            <div class="text-[10px] text-zinc-400">EN & ZH-CN Models</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LANGUAGE & BOOK SELECTOR TABS -->
+    <div class="flex items-center gap-2 mb-6 border-b border-zinc-800 pb-3">
+      <button id="tab-en" onclick="switchBook('en')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-cyan-500 text-black shadow-lg shadow-cyan-500/20">
+        <span>🇺🇸</span>
+        <span>Four Thousand Weeks</span>
+        <span class="text-[11px] opacity-75 font-mono">(Oliver Burkeman)</span>
+      </button>
+      <button id="tab-zh" onclick="switchBook('zh')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800">
+        <span>🇨🇳</span>
+        <span>终身学习 & AI Native 进化</span>
+        <span class="text-[11px] opacity-75 font-mono">(中文神经有声书)</span>
+      </button>
+    </div>
+
+    <!-- PLAYER GRID: NOW PLAYING + PLAYLIST -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- LEFT COLUMN: MASTER PLAYER & SOCRATIC DRAWER (7 COLS) -->
+      <div class="lg:col-span-7 space-y-6">
+
+        <!-- GLASS PLAYER CARD -->
+        <div class="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-6 shadow-2xl backdrop-blur-xl relative">
+          
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-2xl shadow-lg shadow-cyan-500/20 shrink-0">
+                📖
+              </div>
+              <div>
+                <span id="current-lang-tag" class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">English · en-US-ChristopherNeural</span>
+                <h3 id="current-title" class="text-base sm:text-lg font-bold text-white mt-1 line-clamp-1">Track 00: The Master Finitude Algorithm</h3>
+                <p id="current-book" class="text-xs text-zinc-400">Oliver Burkeman · Four Thousand Weeks</p>
+              </div>
+            </div>
+            
+            <!-- WAVEFORM ANIMATION STATUS -->
+            <div id="waveform" class="flex items-end gap-1 h-6 shrink-0 opacity-40">
+              <div class="waveform-bar w-1 bg-cyan-400 rounded-full" style="animation-delay: 0.1s"></div>
+              <div class="waveform-bar w-1 bg-cyan-400 rounded-full" style="animation-delay: 0.3s"></div>
+              <div class="waveform-bar w-1 bg-cyan-400 rounded-full" style="animation-delay: 0.2s"></div>
+              <div class="waveform-bar w-1 bg-cyan-400 rounded-full" style="animation-delay: 0.4s"></div>
+            </div>
+          </div>
+
+          <!-- TRACK DESCRIPTION -->
+          <p id="current-desc" class="text-xs text-zinc-300 leading-relaxed mb-5 bg-zinc-950/60 p-3.5 rounded-xl border border-zinc-800/60">
+            The single highest-leverage behavioral framework: 3-task Closed List, Creative Neglect, and Strategic Underachievement.
+          </p>
+
+          <!-- SCRUBBER & TIMERS -->
+          <div class="space-y-1.5 mb-5">
+            <input type="range" id="seek-bar" value="0" min="0" max="100" class="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-cyan-400">
+            <div class="flex items-center justify-between text-[11px] font-mono text-zinc-500">
+              <span id="time-current">00:00</span>
+              <span id="time-duration">--:--</span>
+            </div>
+          </div>
+
+          <!-- PLAYBACK CONTROLS -->
+          <div class="flex items-center justify-between gap-2 pt-2 border-t border-zinc-800">
+            <div class="flex items-center gap-1 sm:gap-2">
+              <button onclick="skipTime(-15)" class="p-2 rounded-xl bg-zinc-800/70 hover:bg-zinc-800 text-zinc-300 hover:text-white transition-all text-xs font-mono" title="Rewind 15s">
+                ⏪ 15s
+              </button>
+              <button id="btn-play" onclick="togglePlay()" class="w-12 h-12 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-black flex items-center justify-center font-bold text-lg shadow-lg shadow-cyan-500/25 transition-all">
+                ▶
+              </button>
+              <button onclick="skipTime(15)" class="p-2 rounded-xl bg-zinc-800/70 hover:bg-zinc-800 text-zinc-300 hover:text-white transition-all text-xs font-mono" title="Forward 15s">
+                15s ⏩
+              </button>
+            </div>
+
+            <!-- SPEED SELECTOR -->
+            <div class="flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-800 text-[11px]">
+              <button onclick="setSpeed(1.0, this)" class="speed-pill px-2 py-1 rounded-lg font-mono font-bold bg-cyan-500 text-black transition-all">1.0x</button>
+              <button onclick="setSpeed(1.25, this)" class="speed-pill px-2 py-1 rounded-lg font-mono text-zinc-400 hover:text-white transition-all">1.25x</button>
+              <button onclick="setSpeed(1.5, this)" class="speed-pill px-2 py-1 rounded-lg font-mono text-zinc-400 hover:text-white transition-all">1.5x</button>
+              <button onclick="setSpeed(2.0, this)" class="speed-pill px-2 py-1 rounded-lg font-mono text-zinc-400 hover:text-white transition-all">2.0x</button>
+            </div>
+
+            <!-- DOWNLOAD / SOURCE -->
+            <a id="btn-download" href="#" target="_blank" class="p-2 rounded-xl bg-zinc-800/70 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-all text-xs" title="Download Audio File">
+              ⬇️
+            </a>
+          </div>
+
+          <!-- HIDDEN AUDIO ELEMENT -->
+          <audio id="audio-player" preload="metadata"></audio>
+        </div>
+
+        <!-- SOCRATIC SPARRING DRAWER (ACTIVE RECALL) -->
+        <div class="rounded-2xl border border-indigo-500/30 bg-gradient-to-b from-indigo-950/30 to-zinc-900/60 p-5 shadow-xl backdrop-blur-md">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-indigo-400 font-bold text-sm">🥊 Socratic Recall Sparring</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Feynman Retention Engine</span>
+            </div>
+            <button onclick="toggleAnswer()" class="text-xs text-indigo-400 hover:text-indigo-300 font-semibold underline cursor-pointer">
+              Reveal Invariant
+            </button>
+          </div>
+
+          <div class="bg-zinc-950/70 rounded-xl p-4 border border-zinc-800/80 space-y-3">
+            <div class="text-xs font-semibold text-zinc-200" id="socratic-q">
+              "Why does clearing your email inbox actually create MORE emails? How does the 'Efficiency Trap' apply to analytics engineering backlogs?"
+            </div>
+            <div id="socratic-a" class="hidden text-xs text-zinc-400 pt-2 border-t border-zinc-800/80 leading-relaxed">
+              <strong>Core Invariant:</strong> The supply of potential demands on your time is effectively infinite. When you process demands faster (clearing email, rapid ticket closing), you become a higher-throughput pipeline, attracting <em>more</em> volume from the system. Finitude means accepting that you will never reach the bottom of the pile; prioritize by conscious neglect rather than speed.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: CHAPTER PLAYLIST (5 COLS) -->
+      <div class="lg:col-span-5">
+        <div class="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4 shadow-xl backdrop-blur-md">
+          <div class="flex items-center justify-between px-2 pb-3 mb-2 border-b border-zinc-800">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Chapters & Audio Tracks</h4>
+            <span id="track-count" class="text-xs font-mono text-cyan-400">17 Tracks</span>
+          </div>
+
+          <div id="playlist-container" class="space-y-2 max-h-[520px] overflow-y-auto pr-1 custom-scrollbar">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-zinc-800/80 bg-zinc-950 py-6 text-center text-xs text-zinc-500">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p>Built by Shaun Lin · Data Analytics Engineer & AI Systems Specialist</p>
+      <div class="flex items-center gap-4 text-zinc-400">
+        <a href="/" class="hover:text-cyan-400 transition-colors">Home</a>
+        <a href="/demos/powerbi-studio/" class="hover:text-cyan-400 transition-colors">Power BI Studio</a>
+        <a href="https://github.com/ShaunDataAnalytics" target="_blank" class="hover:text-cyan-400 transition-colors">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    const EN_TRACKS = [
+      {
+        title: "Track 00: The Master Finitude Algorithm",
+        desc: "The single highest-leverage behavioral framework: 3-task Closed List, Creative Neglect, and Strategic Underachievement.",
+        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/05OP_Let_go_of_productivity_Four_Th_a6f11baa.mp3",
+        meta: "10 min · en-US-ChristopherNeural",
+        question: "Why does clearing your email inbox actually create MORE emails? How does the 'Efficiency Trap' apply to analytics engineering backlogs?",
+        answer: "The supply of demands is infinite. High throughput invites higher demand. Finitude requires conscious neglect of low-leverage tickets rather than trying to empty the queue."
+      },
+      {
+        title: "Track 01 - Intro: In the Long Run, We Are All Dead",
+        desc: "Oliver Burkeman's Four Thousand Weeks — In the Long Run, We Are All Dead. Facing human lifespan limits.",
+        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Intro_In_the_Lo_39dafc99.mp3",
+        meta: "12 min · en-US-ChristopherNeural",
+        question: "Why do we treat time as an external container to conquer rather than the medium we inhabit?",
+        answer: "Since the industrial clock revolutionized labor, humans objectified time as a currency to spend, leading to chronic future-focused anxiety instead of embodiment."
+      },
+      {
+        title: "Track 02 - Ch 1: The Limit-Embracing Life",
+        desc: "Why accepting limitations relieves modern existential anxiety and unleashes genuine focus.",
+        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Ch_1_The_Limit__fcd1e85b.mp3",
+        meta: "14 min · en-US-ChristopherNeural",
+        question: "What is the psychological relief of acknowledging that you will never do it all?",
+        answer: "Once you accept defeat on the premise of doing everything, you gain total freedom to choose the few things that truly matter today."
+      },
+      {
+        title: "Track 03 - Ch 2: The Efficiency Trap",
+        desc: "Why getting better at clearing tasks only makes you busier, and why hyper-efficiency backfires.",
+        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Ch_2_The_Effici_47bf64ac.mp3",
+        meta: "15 min · en-US-ChristopherNeural",
+        question: "Why does becoming more efficient fail to buy you leisure time?",
+        answer: "Because efficiency expands the scope of available commitments. Parkinson's Law and induced demand ensure that available capacity is instantly saturated."
+      },
+      {
+        title: "Track 04 - Ch 3: Facing Finitude",
+        desc: "Confronting mortality as the ultimate ground of meaningful choice and prioritization.",
+        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Ch_3_Facing_Fin_5f1f5924.mp3",
+        meta: "13 min · en-US-ChristopherNeural",
+        question: "How does the certainty of an ending give value to an experience?",
+        answer: "Scarcity creates economic and experiential value. An infinite lifespan renders any single choice trivial; finitude makes every commitment precious."
+      },
+      {
+        title: "Track 05 - Ch 4: Becoming a Better Procrastinator",
+        desc: "Strategic procrastination: choosing what to fail at in advance to succeed at the critical 20%.",
+        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Ch_4_Becoming_a_578eb52f.mp3",
+        meta: "16 min · en-US-ChristopherNeural",
+        question: "What is the difference between toxic procrastination and intentional creative procrastination?",
+        answer: "Toxic procrastination avoids priority tasks out of fear; intentional procrastination consciously neglects non-essential tasks to protect deep focus."
+      },
+      {
+        title: "Track 06 - Ch 5: The Watermelon Problem",
+        desc: "Attention economics and why digital distraction is an assault on our finite consciousness.",
+        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Ch_5_The_Waterm_71d6ab6f.mp3",
+        meta: "14 min · en-US-ChristopherNeural",
+        question: "What is the true cost of an algorithmic feed notification?",
+        answer: "You are not just losing 30 seconds; you are surrendering the attentional sovereignty that defines what your reality consists of."
+      }
+    ];
+
+    const ZH_TRACKS = [
+      {
+        title: "第一讲 · 身体与精力管理：唯有耐力不会老去",
+        desc: "终身学习第一章：斯坦福睡眠科学、牢狱健身法、一日五餐与吃能量而非吃营养的70/30法则。",
+        url: "audio/Lifelong_Learning_Ch1_Energy.mp3",
+        meta: "18 min · 神经网络合成 (zh-CN)",
+        question: "为什么说认知竞争的底层是生物化学？如何建立不依赖意志力的精力管理系统？",
+        answer: "认知和情绪是身体状态的下游副产品。通过70/30能量摄入模型、控制血糖波峰和昼夜节律重置，以系统习惯替代脆弱的意志力消耗。"
+      },
+      {
+        title: "深度思考 · AI Native 时代的 Unlearn 与进化",
+        desc: "到底什么才算真正的 AI Native 人才？如何摆脱工业时代的劳动异化，重塑个人飞轮。",
+        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/AI_Native_Talent_Unlearn.mp3",
+        meta: "15 min · zh-CN-YunxiNeural",
+        question: "在大模型时代，传统的'熟练工技能'为何会迅速贬值？什么是高杠杆的 Centaur 人机协作？",
+        answer: "AI抹平了语法和初级代码的编写成本。核心溢价转移到'提问能力、架构品味、第一性原理判断与交付闭环'。人负责品味与决策，AI负责规模化执行。"
+      }
+    ];
+
+    let currentBook = 'en';
+    let currentTracks = EN_TRACKS;
+    let activeIndex = 0;
+
+    const audio = document.getElementById('audio-player');
+    const playBtn = document.getElementById('btn-play');
+    const seekBar = document.getElementById('seek-bar');
+    const timeCurrent = document.getElementById('time-current');
+    const timeDuration = document.getElementById('time-duration');
+    const titleEl = document.getElementById('current-title');
+    const bookEl = document.getElementById('current-book');
+    const descEl = document.getElementById('current-desc');
+    const langTag = document.getElementById('current-lang-tag');
+    const dlBtn = document.getElementById('btn-download');
+    const socraticQ = document.getElementById('socratic-q');
+    const socraticA = document.getElementById('socratic-a');
+    const waveform = document.getElementById('waveform');
+    const trackCount = document.getElementById('track-count');
+
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return "00:00";
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function renderPlaylist() {
+      const container = document.getElementById('playlist-container');
+      container.innerHTML = '';
+      trackCount.innerText = `${currentTracks.length} Tracks`;
+
+      currentTracks.forEach((track, idx) => {
+        const item = document.createElement('div');
+        const isActive = idx === activeIndex;
+        item.className = `p-3 rounded-xl border transition-all cursor-pointer flex items-start justify-between gap-3 ${
+          isActive 
+            ? 'bg-cyan-500/10 border-cyan-500/40 text-white' 
+            : 'bg-zinc-950/60 border-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 hover:border-zinc-700'
+        }`;
+        item.onclick = () => loadTrack(idx, true);
+
+        item.innerHTML = `
+          <div class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold mt-0.5 ${
+              isActive ? 'bg-cyan-400 text-black' : 'bg-zinc-800 text-zinc-400'
+            }">
+              ${idx + 1}
+            </span>
+            <div>
+              <p class="text-xs font-bold leading-snug ${isActive ? 'text-cyan-300' : 'text-zinc-200'}">${track.title}</p>
+              <p class="text-[10px] text-zinc-500 line-clamp-1 mt-0.5">${track.desc}</p>
+            </div>
+          </div>
+          <span class="text-[10px] font-mono text-zinc-500 shrink-0 mt-0.5">${track.meta.split('·')[0]}</span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function loadTrack(idx, autoPlay = false) {
+      activeIndex = idx;
+      const track = currentTracks[idx];
+      audio.src = track.url;
+      titleEl.innerText = track.title;
+      descEl.innerText = track.desc;
+      dlBtn.href = track.url;
+      socraticQ.innerText = track.question || "Reflect on how this chapter's invariant changes your daily operating ritual.";
+      socraticA.innerText = track.answer || "Ground this insight in an immediate 15-minute physical prototype.";
+      socraticA.classList.add('hidden');
+
+      if (currentBook === 'en') {
+        bookEl.innerText = 'Oliver Burkeman · Four Thousand Weeks';
+        langTag.innerText = 'English · en-US-ChristopherNeural';
+        langTag.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20';
+      } else {
+        bookEl.innerText = '终身学习 & AI Native 思维体系';
+        langTag.innerText = '中文普通话 · 微软高保真神经语音';
+        langTag.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20';
+      }
+
+      renderPlaylist();
+
+      if (autoPlay) {
+        audio.play().catch(e => console.log('Autoplay prevented:', e));
+      }
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+
+    function skipTime(delta) {
+      audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + delta));
+    }
+
+    function setSpeed(rate, btn) {
+      audio.playbackRate = rate;
+      document.querySelectorAll('.speed-pill').forEach(b => {
+        b.className = 'speed-pill px-2 py-1 rounded-lg font-mono text-zinc-400 hover:text-white transition-all';
+      });
+      btn.className = 'speed-pill px-2 py-1 rounded-lg font-mono font-bold bg-cyan-500 text-black transition-all';
+    }
+
+    function toggleAnswer() {
+      socraticA.classList.toggle('hidden');
+    }
+
+    function switchBook(lang) {
+      currentBook = lang;
+      if (lang === 'en') {
+        currentTracks = EN_TRACKS;
+        document.getElementById('tab-en').className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-cyan-500 text-black shadow-lg shadow-cyan-500/20';
+        document.getElementById('tab-zh').className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800';
+      } else {
+        currentTracks = ZH_TRACKS;
+        document.getElementById('tab-zh').className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-amber-500 text-black shadow-lg shadow-amber-500/20';
+        document.getElementById('tab-en').className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800';
+      }
+      loadTrack(0, false);
+    }
+
+    // Audio event listeners
+    audio.addEventListener('play', () => {
+      playBtn.innerText = '⏸';
+      waveform.classList.remove('opacity-40');
+      waveform.classList.add('opacity-100');
+    });
+
+    audio.addEventListener('pause', () => {
+      playBtn.innerText = '▶';
+      waveform.classList.remove('opacity-100');
+      waveform.classList.add('opacity-40');
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      timeCurrent.innerText = formatTime(audio.currentTime);
+      if (audio.duration) {
+        seekBar.value = (audio.currentTime / audio.duration) * 100;
+      }
+    });
+
+    audio.addEventListener('loadedmetadata', () => {
+      timeDuration.innerText = formatTime(audio.duration);
+    });
+
+    audio.addEventListener('ended', () => {
+      if (activeIndex < currentTracks.length - 1) {
+        loadTrack(activeIndex + 1, true);
+      } else {
+        playBtn.innerText = '▶';
+      }
+    });
+
+    seekBar.addEventListener('input', () => {
+      if (audio.duration) {
+        audio.currentTime = (seekBar.value / 100) * audio.duration;
+      }
+    });
+
+    // Initialize first track
+    loadTrack(0, false);
+  </script>
+</body>
+</html>

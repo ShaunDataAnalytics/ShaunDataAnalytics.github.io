@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Power BI PL-300 Practice Exam 1 — Interactive Simulation Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: "#f0fdf4",
+              500: "#22c55e",
+              600: "#16a34a",
+              700: "#15803d"
+            },
+            pbi: {
+              yellow: "#F2C811",
+              dark: "#111827",
+              card: "#1F2937",
+              border: "#374151"
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+    code, pre, .font-mono {
+      font-family: "JetBrains Mono", monospace;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.35);
+      border-radius: 3px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col antialiased selection:bg-yellow-400 selection:text-black">
+
+  <!-- TOP APP BAR -->
+  <header class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50 px-4 lg:px-8 py-2.5 transition-colors">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3">
+        <a href="/" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-700 bg-gray-800 text-xs font-semibold text-gray-300 hover:text-white hover:border-gray-600 transition-all shadow-sm">
+          <span>←</span> <span>Portfolio</span>
+        </a>
+        <div class="w-9 h-9 rounded-lg bg-yellow-400 text-gray-950 flex items-center justify-center font-extrabold text-xl shadow-lg shadow-yellow-400/20">
+          📊
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-base lg:text-lg tracking-tight text-white">Power BI PL-300 Exam 1</h1>
+            <span class="px-2 py-0.5 text-xs font-semibold rounded bg-yellow-400/10 text-yellow-400 border border-yellow-400/20 hidden sm:inline">60-Q Bank</span>
+          </div>
+          <p class="text-[11px] text-gray-400 hidden md:block">Active Feynman Sparring & Diagnostic Studio</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions, Timer & Controls -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        
+        <!-- Header Next Unanswered Shortcut -->
+        <button id="hdr-btn-unanswered" onclick="goToNextUnanswered()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-yellow-400/10 hover:bg-yellow-400/20 text-yellow-300 border border-yellow-400/30 transition-all">
+          <span>⏩</span> <span class="hidden md:inline">Next Unanswered</span> (<span id="hdr-cnt-unanswered" class="font-bold font-mono">60</span>)
+        </button>
+
+        <!-- Mode Toggle -->
+        <div class="bg-gray-800 p-1 rounded-lg border border-gray-700 flex text-xs font-medium">
+          <button id="btn-mode-study" onclick="setMode('study')" class="px-2.5 py-1 rounded transition-all bg-yellow-400 text-gray-950 font-bold shadow">
+            💡 Study
+          </button>
+          <button id="btn-mode-exam" onclick="setMode('exam')" class="px-2.5 py-1 rounded text-gray-400 hover:text-white transition-all">
+            ⏱️ Exam
+          </button>
+        </div>
+
+        <!-- Timer Display -->
+        <div id="timer-box" class="hidden items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-800 border border-gray-700 font-mono text-xs text-yellow-400 font-bold">
+          <span>⏳</span>
+          <span id="timer-display">90:00</span>
+        </div>
+
+        <!-- Submit Exam Button -->
+        <button id="btn-finish-exam" onclick="submitExam()" class="hidden px-3 py-1 text-xs font-bold rounded-lg bg-emerald-500 hover:bg-emerald-400 text-gray-950 transition-colors shadow">
+          Submit
+        </button>
+
+        <!-- Shortcuts Help Button -->
+        <button onclick="toggleShortcutsModal()" title="Keyboard Shortcuts (?)" class="p-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-gray-700 text-xs font-mono">
+          ⌨️
+        </button>
+
+        <!-- Reset Button -->
+        <button onclick="resetProgress()" title="Reset All Answers" class="p-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-red-300 transition-colors border border-gray-700 text-xs">
+          🔄
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <main class="max-w-7xl w-full mx-auto p-3 sm:p-4 lg:p-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+    <!-- LEFT SIDEBAR: NAVIGATOR & DOMAIN FILTERS (Col 4) -->
+    <div class="lg:col-span-4 flex flex-col gap-4 order-2 lg:order-1">
+      
+      <!-- STATS & PROGRESS CARD -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-3.5 shadow-sm">
+        <div class="flex items-center justify-between text-xs mb-1.5 text-gray-400">
+          <span class="font-medium">Overall Progress</span>
+          <span id="stat-progress-pct" class="font-bold text-yellow-400 font-mono">0%</span>
+        </div>
+        <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden mb-3">
+          <div id="stat-progress-bar" class="bg-yellow-400 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-1.5 text-center">
+          <div class="bg-gray-800/60 p-1.5 rounded-lg border border-gray-800">
+            <div id="stat-answered" class="text-xs font-bold text-white font-mono">0/60</div>
+            <div class="text-[9px] text-gray-400 uppercase tracking-wider">Answered</div>
+          </div>
+          <div class="bg-gray-800/60 p-1.5 rounded-lg border border-gray-800">
+            <div id="stat-unanswered" class="text-xs font-bold text-yellow-400 font-mono">60</div>
+            <div class="text-[9px] text-gray-400 uppercase tracking-wider">Remaining</div>
+          </div>
+          <div class="bg-gray-800/60 p-1.5 rounded-lg border border-gray-800">
+            <div id="stat-accuracy" class="text-xs font-bold text-emerald-400 font-mono">--</div>
+            <div class="text-[9px] text-gray-400 uppercase tracking-wider">Accuracy</div>
+          </div>
+          <div class="bg-gray-800/60 p-1.5 rounded-lg border border-gray-800">
+            <div id="stat-flagged" class="text-xs font-bold text-amber-400 font-mono">0</div>
+            <div class="text-[9px] text-gray-400 uppercase tracking-wider">Flagged</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SMART FILTER TABS -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 shadow-sm">
+        <div class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 px-1 flex items-center justify-between">
+          <span>Filters & Status</span>
+          <span class="text-[10px] text-gray-500 font-normal font-mono">click to focus</span>
+        </div>
+        <div class="flex flex-col gap-1 text-xs">
+          <!-- Primary Status Filters -->
+          <button onclick="setFilter('all')" id="flt-all" class="filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 flex justify-between items-center">
+            <span class="flex items-center gap-1.5">📋 <span>All Questions</span></span>
+            <span class="opacity-70 font-mono font-semibold">60</span>
+          </button>
+          
+          <button onclick="setFilter('unanswered')" id="flt-unanswered" class="filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:bg-gray-800 hover:text-gray-200 flex justify-between items-center">
+            <span class="flex items-center gap-1.5">⏳ <span>Unanswered Only</span></span>
+            <span id="cnt-unanswered" class="opacity-80 font-mono font-semibold text-yellow-400">60</span>
+          </button>
+
+          <button onclick="setFilter('incorrect')" id="flt-incorrect" class="filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:bg-gray-800 hover:text-gray-200 flex justify-between items-center">
+            <span class="flex items-center gap-1.5">❌ <span>Incorrect (Needs Review)</span></span>
+            <span id="cnt-incorrect" class="opacity-80 font-mono font-semibold text-red-400">0</span>
+          </button>
+
+          <button onclick="setFilter('correct')" id="flt-correct" class="filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:bg-gray-800 hover:text-gray-200 flex justify-between items-center">
+            <span class="flex items-center gap-1.5">✅ <span>Correct (Mastered)</span></span>
+            <span id="cnt-correct" class="opacity-80 font-mono font-semibold text-emerald-400">0</span>
+          </button>
+
+          <button onclick="setFilter('flagged')" id="flt-flagged" class="filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all text-amber-400/80 hover:bg-gray-800 hover:text-amber-300 flex justify-between items-center">
+            <span class="flex items-center gap-1.5">🚩 <span>Flagged for Review</span></span>
+            <span id="cnt-flagged" class="opacity-80 font-mono font-semibold text-amber-400">0</span>
+          </button>
+
+          <div class="border-t border-gray-800 my-1"></div>
+
+          <!-- Domain Filters -->
+          <button onclick="setFilter('prepare')" id="flt-prepare" class="filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:bg-gray-800 hover:text-gray-200 flex justify-between items-center">
+            <span class="truncate">📂 1. Prepare Data</span>
+            <span class="opacity-70 font-mono">17</span>
+          </button>
+          <button onclick="setFilter('model')" id="flt-model" class="filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:bg-gray-800 hover:text-gray-200 flex justify-between items-center">
+            <span class="truncate">🧠 2. Model Data</span>
+            <span class="opacity-70 font-mono">17</span>
+          </button>
+          <button onclick="setFilter('visualize')" id="flt-visualize" class="filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:bg-gray-800 hover:text-gray-200 flex justify-between items-center">
+            <span class="truncate">📊 3. Visualize & Analyze</span>
+            <span class="opacity-70 font-mono">13</span>
+          </button>
+          <button onclick="setFilter('deploy')" id="flt-deploy" class="filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:bg-gray-800 hover:text-gray-200 flex justify-between items-center">
+            <span class="truncate">🚀 4. Deploy & Maintain</span>
+            <span class="opacity-70 font-mono">13</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- QUESTION GRID NAVIGATOR -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-3.5 shadow-sm flex-1 flex flex-col">
+        <div class="flex items-center justify-between text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+          <span>Question Grid</span>
+          <span class="text-[10px] lowercase text-gray-500 font-mono">[N]ext / [P]rev</span>
+        </div>
+
+        <!-- Quick Filter / Search within Grid -->
+        <div class="relative mb-2.5">
+          <input type="text" id="grid-search-input" placeholder="Filter by topic or #..." oninput="onGridSearch(this.value)" class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-7 pr-7 py-1 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-yellow-400 font-mono">
+          <span class="absolute left-2 top-1.5 text-gray-500 text-xs">🔍</span>
+          <button id="btn-clear-search" onclick="clearGridSearch()" class="hidden absolute right-2 top-1 text-gray-500 hover:text-gray-300 text-xs">✕</button>
+        </div>
+        
+        <div id="question-grid" class="grid grid-cols-6 sm:grid-cols-10 lg:grid-cols-6 gap-1.5 overflow-y-auto max-h-64 scrollbar-thin pr-1">
+          <!-- Dynamically populated buttons -->
+        </div>
+
+        <div class="mt-3 pt-2.5 border-t border-gray-800 flex flex-wrap items-center justify-between text-[10px] text-gray-400 gap-1.5">
+          <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm bg-gray-800 border border-gray-700"></span> Unread</div>
+          <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm bg-emerald-600"></span> Correct</div>
+          <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm bg-red-600"></span> Incorrect</div>
+          <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm bg-amber-500"></span> Flagged</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: MAIN QUESTION CARD (Col 8) -->
+    <div class="lg:col-span-8 flex flex-col gap-3 order-1 lg:order-2">
+
+      <!-- RESUME NOTIFICATION BANNER (Eliminates starting at Q1 frustration) -->
+      <div id="resume-banner" class="hidden p-3 rounded-xl bg-yellow-400/10 border border-yellow-400/30 flex flex-wrap items-center justify-between gap-2 text-xs text-yellow-200 shadow-sm animate-fadeIn">
+        <div class="flex items-center gap-2">
+          <span class="text-base">📍</span>
+          <span>Resumed at <strong>Question <span id="resume-qnum" class="font-mono text-yellow-300 font-bold">1</span></strong> <span class="text-gray-400">(Saved progress: <span id="resume-answered-cnt" class="font-mono text-gray-300">0</span>/60 answered)</span></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="goToQuestion(0)" class="px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-200 text-[11px] font-medium transition-all">
+            ⏪ Start at Q1
+          </button>
+          <button onclick="goToNextUnanswered()" class="px-2.5 py-1 rounded bg-yellow-400 hover:bg-yellow-300 text-gray-950 text-[11px] font-bold transition-all shadow-sm">
+            ⏩ Next Unanswered
+          </button>
+          <button onclick="dismissResumeBanner()" class="px-1.5 py-0.5 rounded text-gray-400 hover:text-white text-xs" title="Dismiss banner">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 lg:p-7 shadow-xl flex-1 flex flex-col justify-between relative overflow-hidden">
+        
+        <!-- CARD HEADER -->
+        <div>
+          <div class="flex flex-wrap items-center justify-between gap-2.5 pb-3.5 border-b border-gray-800 mb-5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="badge-qnum" class="px-2.5 py-1 rounded-md bg-yellow-400/20 text-yellow-300 font-mono text-xs font-bold border border-yellow-400/30">
+                Q1 / 60
+              </span>
+
+              <!-- Quick Jump Select Dropdown -->
+              <div class="flex items-center gap-1.5">
+                <span class="text-[11px] text-gray-400 uppercase font-semibold hidden sm:inline">Jump:</span>
+                <select id="quick-jump-select" onchange="goToQuestion(parseInt(this.value))" class="bg-gray-950 border border-gray-700 text-xs text-gray-200 rounded-lg px-2 py-1 max-w-[200px] sm:max-w-[280px] md:max-w-[340px] truncate focus:outline-none focus:border-yellow-400 font-medium">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+
+              <span id="badge-domain" class="px-2.5 py-1 rounded-md bg-gray-800 text-gray-300 text-xs font-medium border border-gray-700 hidden xl:inline">
+                Domain 2: Model the Data
+              </span>
+            </div>
+
+            <!-- Card Actions -->
+            <div class="flex items-center gap-1.5">
+              <!-- Clear / Retry Button in Study Mode -->
+              <button id="btn-retry" onclick="clearCurrentAnswer()" title="Clear your choice to retry recall (C)" class="hidden px-2.5 py-1 rounded-lg border border-gray-700 hover:border-gray-500 text-xs font-medium text-gray-400 hover:text-gray-200 flex items-center gap-1 transition-colors">
+                <span>↺</span> <span class="hidden sm:inline">Retry</span>
+              </button>
+
+              <!-- Manual Rationale Toggle -->
+              <button id="btn-toggle-rationale" onclick="toggleRationale()" title="Toggle First-Principles Rationale (R)" class="px-2.5 py-1 rounded-lg border border-gray-700 hover:border-emerald-500/50 text-xs font-medium text-gray-400 hover:text-emerald-400 flex items-center gap-1 transition-colors">
+                <span>💡</span> <span class="hidden sm:inline">Rationale</span>
+              </button>
+
+              <!-- Flag Button -->
+              <button id="btn-flag" onclick="toggleFlag()" title="Flag for Review (F)" class="px-2.5 py-1 rounded-lg border border-gray-700 hover:border-amber-500/50 text-xs font-medium text-gray-400 hover:text-amber-400 flex items-center gap-1.5 transition-colors">
+                <span id="flag-icon">🏳️</span>
+                <span id="flag-text" class="hidden sm:inline">Flag</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- TOPIC & QUESTION PROMPT -->
+          <div class="mb-5">
+            <div id="q-topic" class="text-xs font-bold text-yellow-400/90 uppercase tracking-wider mb-2 font-mono">
+              DirectQuery Limitations & DAX
+            </div>
+            <div id="q-prompt" class="text-base lg:text-lg font-medium text-gray-100 leading-relaxed whitespace-pre-line">
+              <!-- Prompt content -->
+            </div>
+            <div id="q-image-container" class="mt-4 hidden">
+              <img id="q-image" src="" alt="Question Diagram" class="rounded-xl border border-gray-700 max-h-80 object-contain bg-gray-950 p-2 mx-auto shadow-md">
+            </div>
+          </div>
+
+          <!-- OPTIONS CONTAINER -->
+          <div id="options-container" class="flex flex-col gap-2.5 mb-5">
+            <!-- Dynamically populated options -->
+          </div>
+        </div>
+
+        <!-- RATIONALE / STUDY ACCORDION -->
+        <div id="rationale-box" class="hidden mt-4 pt-5 border-t border-gray-800 animate-fadeIn">
+          <div class="bg-gray-950/90 border border-gray-800 rounded-xl p-4 sm:p-5">
+            <div class="flex items-center gap-2 mb-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
+              <span>💡</span> First-Principles Engine Rationale
+            </div>
+            <p id="rationale-text" class="text-sm text-gray-300 leading-relaxed mb-3.5">
+              <!-- Rationale text -->
+            </p>
+
+            <div class="flex items-center gap-2 mb-2 text-amber-400 font-bold text-xs uppercase tracking-wider">
+              <span>⚠️</span> The Exam Trap Deconstructed
+            </div>
+            <p id="trap-text" class="text-sm text-gray-400 leading-relaxed">
+              <!-- Trap text -->
+            </p>
+          </div>
+        </div>
+
+        <!-- NAVIGATION CONTROLS FOOTER -->
+        <div class="pt-5 border-t border-gray-800 flex items-center justify-between gap-2.5 mt-5">
+          <button id="btn-prev" onclick="prevQuestion()" class="px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold flex items-center gap-1.5 transition-all disabled:opacity-30 disabled:pointer-events-none">
+            <span>←</span> Prev <kbd class="hidden sm:inline px-1 py-0.5 rounded bg-gray-900 text-gray-400 text-[10px] font-mono border border-gray-700">P</kbd>
+          </button>
+
+          <!-- PROMINENT NEXT UNANSWERED BUTTON -->
+          <button id="btn-next-unanswered" onclick="goToNextUnanswered()" class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gray-800 hover:bg-yellow-400 hover:text-gray-950 text-yellow-300 border border-yellow-400/30 text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm">
+            <span>⏩</span> Next Unanswered <kbd class="hidden sm:inline px-1 py-0.5 rounded bg-gray-900 text-yellow-400 text-[10px] font-mono border border-yellow-400/40">U</kbd>
+          </button>
+
+          <button id="btn-next" onclick="nextQuestion()" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-gray-950 text-xs font-bold flex items-center gap-1.5 transition-all shadow-md shadow-yellow-400/10">
+            Next <span>→</span> <kbd class="hidden sm:inline px-1 py-0.5 rounded bg-yellow-500 text-gray-950 text-[10px] font-mono font-bold">N</kbd>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- KEYBOARD SHORTCUTS MODAL -->
+  <div id="modal-shortcuts" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-800 mb-4">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2"><span>⌨️</span> Keyboard Shortcuts</h3>
+        <button onclick="toggleShortcutsModal()" class="text-gray-400 hover:text-white text-xs">✕</button>
+      </div>
+      <div class="space-y-2.5 text-xs text-gray-300">
+        <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+          <span>Select Option A, B, C, D</span>
+          <span class="font-mono bg-gray-800 px-2 py-0.5 rounded border border-gray-700 text-yellow-400">1-4 or A-D</span>
+        </div>
+        <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+          <span>Next / Previous Question</span>
+          <span class="font-mono bg-gray-800 px-2 py-0.5 rounded border border-gray-700 text-yellow-400">→ / ← or N / P</span>
+        </div>
+        <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+          <span>Jump to Next Unanswered</span>
+          <span class="font-mono bg-gray-800 px-2 py-0.5 rounded border border-gray-700 text-yellow-400">U</span>
+        </div>
+        <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+          <span>Flag / Unflag Question</span>
+          <span class="font-mono bg-gray-800 px-2 py-0.5 rounded border border-gray-700 text-yellow-400">F</span>
+        </div>
+        <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+          <span>Toggle Rationale</span>
+          <span class="font-mono bg-gray-800 px-2 py-0.5 rounded border border-gray-700 text-yellow-400">R</span>
+        </div>
+        <div class="flex justify-between items-center py-1 border-b border-gray-800/50">
+          <span>Clear Answer / Retry (Study Mode)</span>
+          <span class="font-mono bg-gray-800 px-2 py-0.5 rounded border border-gray-700 text-yellow-400">C</span>
+        </div>
+        <div class="flex justify-between items-center py-1">
+          <span>Toggle Shortcuts Help</span>
+          <span class="font-mono bg-gray-800 px-2 py-0.5 rounded border border-gray-700 text-yellow-400">?</span>
+        </div>
+      </div>
+      <button onclick="toggleShortcutsModal()" class="w-full mt-5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold transition-all">
+        Got it
+      </button>
+    </div>
+  </div>
+
+  <!-- SUBMIT MODAL / SCORE REPORT -->
+  <div id="modal-score" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-2xl w-full p-6 lg:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto scrollbar-thin">
+      <div class="text-center pb-6 border-b border-gray-800">
+        <div id="modal-badge" class="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-3xl mb-3 shadow-lg">
+          🏆
+        </div>
+        <h2 id="modal-title" class="text-2xl font-bold text-white mb-1">PL-300 Practice Exam Completed!</h2>
+        <p id="modal-subtitle" class="text-sm text-gray-400">Diagnostic Scoring & Category Breakdown</p>
+      </div>
+
+      <!-- SCORE HEADLINE -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6 text-center">
+        <div class="bg-gray-800/80 p-3 rounded-xl border border-gray-700">
+          <div id="modal-score-scaled" class="text-2xl font-black text-yellow-400 font-mono">820</div>
+          <div class="text-[10px] uppercase text-gray-400 tracking-wider">Score / 1000</div>
+        </div>
+        <div class="bg-gray-800/80 p-3 rounded-xl border border-gray-700">
+          <div id="modal-score-raw" class="text-2xl font-black text-white font-mono">49/60</div>
+          <div class="text-[10px] uppercase text-gray-400 tracking-wider">Correct Answers</div>
+        </div>
+        <div class="bg-gray-800/80 p-3 rounded-xl border border-gray-700">
+          <div id="modal-result" class="text-2xl font-black text-emerald-400 font-mono">PASS</div>
+          <div class="text-[10px] uppercase text-gray-400 tracking-wider">Status (>=700)</div>
+        </div>
+        <div class="bg-gray-800/80 p-3 rounded-xl border border-gray-700">
+          <div id="modal-time-taken" class="text-2xl font-black text-cyan-400 font-mono">34:12</div>
+          <div class="text-[10px] uppercase text-gray-400 tracking-wider">Time Taken</div>
+        </div>
+      </div>
+
+      <!-- DOMAIN BREAKDOWN BARS -->
+      <div class="mb-6 space-y-3">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Domain Competency Diagnostic</h3>
+        
+        <!-- DOMAIN 1 -->
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-gray-300 font-medium">1. Prepare the Data (17 Qs)</span>
+            <span id="score-d1" class="font-mono text-gray-400">14/17 (82%)</span>
+          </div>
+          <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+            <div id="bar-d1" class="bg-yellow-400 h-2 rounded-full" style="width: 82%"></div>
+          </div>
+        </div>
+
+        <!-- DOMAIN 2 -->
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-gray-300 font-medium">2. Model the Data (17 Qs)</span>
+            <span id="score-d2" class="font-mono text-gray-400">13/17 (76%)</span>
+          </div>
+          <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+            <div id="bar-d2" class="bg-yellow-400 h-2 rounded-full" style="width: 76%"></div>
+          </div>
+        </div>
+
+        <!-- DOMAIN 3 -->
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-gray-300 font-medium">3. Visualize and Analyze (13 Qs)</span>
+            <span id="score-d3" class="font-mono text-gray-400">11/13 (85%)</span>
+          </div>
+          <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+            <div id="bar-d3" class="bg-yellow-400 h-2 rounded-full" style="width: 85%"></div>
+          </div>
+        </div>
+
+        <!-- DOMAIN 4 -->
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-gray-300 font-medium">4. Deploy and Maintain (13 Qs)</span>
+            <span id="score-d4" class="font-mono text-gray-400">11/13 (85%)</span>
+          </div>
+          <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+            <div id="bar-d4" class="bg-yellow-400 h-2 rounded-full" style="width: 85%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-800">
+        <button onclick="closeModalAndReview('all')" class="flex-1 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold transition-all">
+          Review All Questions
+        </button>
+        <button onclick="closeModalAndReview('incorrect')" class="flex-1 py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 text-xs font-bold transition-all">
+          Review Incorrect Only
+        </button>
+        <button onclick="retakeExam()" class="flex-1 py-2.5 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-gray-950 text-xs font-bold transition-all">
+          Retake Exam 🔄
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    const QUESTIONS = [{"id": 1,"prompt": "DirectQuery supports all time-intelligence functions without limitations.","options": ["\"True\"","\"False\""],"image": null,"correct_idx": 1,"domain": "Domain 2: Model the Data","topic": "DirectQuery Limitations & DAX","rationale": "DirectQuery does NOT support all DAX time-intelligence functions without limitations. Many time-intelligence functions (such as DATESYTD, SAMEPERIODLASTYEAR) require continuous dates and specialized in-memory VertiPaq structures, or they cannot be efficiently folded into native relational SQL queries. Furthermore, Power BI's Auto Date/Time feature is disabled in DirectQuery mode.","trap": "Assuming DAX functions behave identically across Import and DirectQuery modes. In DirectQuery, formulas must translate into native SQL dialect queries supported by the underlying source."},{"id": 2,"prompt": "You have a PBIX file that imports several tables from an Azure SQL database. The data will be migrated to another Azure SQL database. You need to change the connections in the PBIX file. The solution must minimize administrative effort. What should you do?","options": ["Modify the Data source settings.","From Power Query Editor, create new queries.","From Power Query Editor, modify the source of each query.","Create a PBIT file, open the file, and change the data sources when prompted."],"image": null,"correct_idx": 0,"domain": "Domain 1: Prepare the Data","topic": "Data Source Settings & Connection Migration","rationale": "In Power BI Desktop, navigating to File > Options and settings > Data source settings allows updating the server and database path globally for the entire PBIX file in one central location. All imported tables querying that database are instantly repointed, minimizing administrative overhead.","trap": "Editing the M Source step individually in every single query within Power Query Editor is repetitive, tedious, and prone to syntax errors."},{"id": 3,"prompt": "You have a Microsoft Excel file in a Microsoft OneDrive folder. The file must be imported to a Power BI dataset. You need to ensure that the dataset can be refreshed in powerbi.com. Which connector can you use to connect to the file?","options": ["Excel Workbook","SharePoint Online List","SharePoint folder","Text/CSV"],"image": null,"correct_idx": 2,"domain": "Domain 1: Prepare the Data","topic": "Cloud Data Sources & Gateway-Free Refresh","rationale": "Connecting to OneDrive for Business or SharePoint files using the SharePoint folder connector (or Web connector using the OneDrive URL) allows Power BI Service to perform automated cloud-to-cloud scheduled refreshes using OAuth2 credentials without requiring an On-premises Data Gateway.","trap": "Selecting 'Excel Workbook' binds Power Query to a local drive letter path (e.g. C:\\Users\\...\\OneDrive), which Power BI Service cannot reach without a personal gateway."},{"id": 4,"prompt": "A business intelligence (BI) developer creates a dataflow in Power BI that uses DirectQuery to access tables from an on-premises Microsoft SQL server. The\nEnhanced Dataflows Compute Engine is turned on for the dataflow.\nYou need to use the dataflow in a report. The solution must meet the following requirements:\n- Minimize online processing operations.\n- Minimize calculation times and render times for visuals.\n- Include data from the current year, up to and including the previous day.\nWhat should you do?","options": ["Create a dataflows connection that has Import mode selected and create a Microsoft Power Automate solution to refresh the data hourly.","Create a dataflows connection that has DirectQuery mode selected.","Create a dataflows connection that has Import mode selected and schedule a daily refresh.","Create a dataflows connection that has DirectQuery mode selected and configure a gateway connection for the dataset."],"image": null,"correct_idx": 2,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Storage Mode SLA & Refresh Strategy","rationale": "Import mode loads data into the VertiPaq in-memory columnar engine, delivering the fastest visual rendering and calculation times while eliminating real-time interactive query loads on backend servers. Because the analytical requirement specifies data 'up to and including the previous day', a daily scheduled refresh satisfies the data freshness SLA without wasteful hourly executions.","trap": "Choosing DirectQuery because the source dataflow uses DirectQuery; DirectQuery degrades visual render speed and creates ongoing query load on user clicks."},{"id": 5,"prompt": "You need to override the relationship direction inside a DAX expression. Which function does this?","options": ["CROSSFILTER","RELATED","MAXX","SUMX"],"image": null,"correct_idx": 0,"domain": "Domain 2: Model the Data","topic": "DAX Relationship Filtering (CROSSFILTER)","rationale": "CROSSFILTER(columnName1, columnName2, direction) allows overriding the cross-filtering behavior (Both, Single, None) within the context of a CALCULATE or CALCULATETABLE expression, without permanently changing the model relationship.","trap": "RELATED retrieves a value from the 'one' side of an existing active relationship; it cannot modify relationship direction or cross-filtering behavior."},{"id": 6,"prompt": "You are building a Power BI report that uses data from an Azure SQL database named erp1.\nYou import the following tables.\nYou need to perform the following analyses:\nOrders sold over time that include a measure of the total order value\nOrders by attributes of products sold\nThe solution must minimize update times when interacting with visuals in the report.\nWhat should you do first?","options": ["Calculate the count of orders per product by using a DAX function.","From Power Query, merge the Order Line Items query and the Products query.","From Power Query, merge the Orders query and the Order Line Items query.","Create a calculated column that adds a list of product categories to the Orders table by using a DAX function."],"image": "https://inst-fs-iad-prod.inscloudgate.net/files/beede128-d9a4-4984-aa5c-13f443ebd16c/image-1.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6Im5ldy1xdWl6emVzL21haW4ifQ.eyJyZXNvdXJjZSI6Ii9maWxlcy9iZWVkZTEyOC1kOWE0LTQ5ODQtYWE1Yy0xM2Y0NDNlYmQxNmMvaW1hZ2UtMS5wbmciLCJ0ZW5hbnRfYXV0aCI6eyJsb2NhdGlvbiI6ImJhbmsvMTExMDUwMDAwMDAwMDAwODU5In0sImV4cCI6MTc4ODY1OTg5MSwiaWF0IjoxNzg4NjEzMDkxLCJpc3MiOiJuZXctcXVpenplcyIsImF1ZCI6Imh0dHBzOi8vaW5zdC1mcy1pYWQtcHJvZC5pbnNjbG91ZGdhdGUubmV0In0.FStMEnHkR_NrzUnbyt6Al75rKj4pFVobAJvlw9vjzS2CtPbRD6PiNnZu5zXvn9WyxJRMPBICcsod7Rl7r1rarw","correct_idx": 2,"domain": "Domain 2: Model the Data","topic": "Star Schema Modeling & Header-Line Consolidation","rationale": "In dimensional modeling (Kimball Star Schema), separating header (Orders) and details (Order Line Items) into two tables creates a 1-to-many relationship between transactions. Merging Orders into Order Line Items consolidates transaction facts into a single unified Sales Fact table at the line-item grain, with Products linked as a clean dimension table. This optimizes VertiPaq columnar compression and maximizes query speed.","trap": "Merging Products into Order Line Items denormalizes descriptive product attributes directly into fact rows, bloating memory and duplicating product text."},{"id": 7,"prompt": "For the sales department at your company, you publish a Power BI report that imports data from a Microsoft Excel file located in a Microsoft SharePoint folder. The data model contains several measures. You need to create a Power BI report from the existing data. The solution must minimize development effort. Which type of data source should you use?","options": ["a SharePoint folder","Power BI dataset","an Excel workbook","Power BI dataflows"],"image": null,"correct_idx": 1,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Shared Semantic Models & Measure Reuse","rationale": "Connecting to an existing published Power BI dataset (semantic model) via Live Connection provides instant access to all pre-built relationships, hierarchies, and calculated measures. This eliminates redundant modeling work and ensures a single version of truth with minimum development effort.","trap": "Connecting directly to the raw Excel workbook or SharePoint folder requires re-creating all relationships, hierarchies, and DAX measures from scratch."},{"id": 8,"prompt": "You need a measure to format differently depending on value type. Which feature supports this?","options": ["Display folders","Grouping","Dynamic format strings","Data categories"],"image": null,"correct_idx": 2,"domain": "Domain 2: Model the Data","topic": "DAX Dynamic Format Strings","rationale": "Dynamic format strings for DAX measures allow authors to define conditional formatting rules via DAX expressions (e.g. displaying Currency for revenue, Percentage for margins, and Integer for units based on slicer selection).","trap": "Data categories assign semantic spatial or URL contexts (e.g., Address, City, ImageURL) rather than numeric number display formatting."},{"id": 9,"prompt": "When preparing your Power BI report for mobile consumption, which design feature is specifically provided in Power BI Desktop to optimize the layout for smaller mobile screens?","options": ["Use the same visual arrangement for desktop and mobile screens.","Place visuals side by side on the mobile layout for easy comparison.","Use the Mobile Layout View to arrange and size visuals for mobile devices.","Display all available visuals from the desktop version on the mobile layout."],"image": null,"correct_idx": 2,"domain": "Domain 3: Visualize and Analyze the Data","topic": "Mobile Layout View Design","rationale": "Power BI Desktop provides a dedicated Mobile Layout View (canvas) where authors can arrange, resize, and reorder selected visuals specifically for phone portrait orientation without impacting the desktop report layout.","trap": "Using the same visual arrangement as desktop makes charts unreadable on mobile screens; cramming all visuals onto mobile causes extreme clutter."},{"id": 10,"prompt": "A text column contains many unique values, increasing the Power BI semantic model size. The individual values are not required for analysis, but their broader categories are important. What should you do?","options": ["Delete the entire column.","Replace the text values with numeric codes without creating a lookup table.","Split the column into multiple text columns.","Group the values into meaningful categories."],"image": null,"correct_idx": 3,"domain": "Domain 1: Prepare the Data","topic": "Cardinality Reduction & VertiPaq Compression","rationale": "High-cardinality text columns dramatically increase dictionary size and memory consumption in the VertiPaq engine. Grouping granular text values into broader, standardized categories significantly reduces unique value cardinality, optimizing compression and performance.","trap": "Deleting the entire column strips necessary business context and prevents category-level rollups."},{"id": 11,"prompt": "You have a project management app that is fully hosted in Microsoft Teams. The app was developed by using Microsoft Power Apps.\nYou need to create a Power BI report that connects to the project management app.","options": ["Which connector should you select?","Microsoft Teams Personal Analytics","Dataflows","Dataverse","SQL Server database"],"image": null,"correct_idx": 3,"domain": "Domain 1: Prepare the Data","topic": "Power Platform Connectors (Dataverse)","rationale": "Power Apps hosted natively inside Microsoft Teams store relational application data in Microsoft Dataverse for Teams. Power BI provides a native Dataverse connector to query tables, relationships, and choice fields directly.","trap": "Assuming Teams apps store operational tables in SQL Server or Personal Analytics."},{"id": 12,"prompt": "A visual unexpectedly shows duplicate rows. What is the most common cause?","options": ["Incorrect relationship cardinality","Sorting issue","Too many slicers","Hidden columns"],"image": null,"correct_idx": 0,"domain": "Domain 2: Model the Data","topic": "Relationship Cardinality & Row Duplication","rationale": "When relationship cardinality is incorrectly configured (such as Many-to-Many instead of One-to-Many, or wrong cross-filter direction), queries can generate unexpected Cartesian products and row duplication across visuals.","trap": "Blaming visual sorting or hidden columns for fundamental tabular join duplication."},{"id": 13,"prompt": "You have a CSV file that contains user complaints. The file contains a column named Logged. Logged contains the date and time each complaint occurred. The data in Logged is in the following format: 2018-12-31 at 08:59. You need to be able to analyze the complaints by the logged date and use a built-in date hierarchy. What should you do?","options": ["Change the data type of the Logged column to Date.","Split the Logged column by using **\"at\"** as the delimiter.","Apply a transformation to extract the first 11 characters of the Logged column.","Apply a transformation to extract the last 11 characters of the Logged column and set the data type of the new column to Date."],"image": null,"correct_idx": 1,"domain": "Domain 1: Prepare the Data","topic": "Power Query Delimiter Splitting & Date Parsing","rationale": "The combined string '2018-12-31 at 08:59' cannot be directly parsed as a Date without conversion errors due to the word 'at'. Splitting by the delimiter ' at ' isolates the date string ('2018-12-31') and the time string ('08:59'). Converting the date portion to Date data type enables built-in date hierarchies, while keeping time separate prevents high cardinality.","trap": "Changing data type directly produces red error cells; fixed length character extraction breaks if time is formatted with variable padding."},{"id": 14,"prompt": "Regional managers must only see records assigned to their region. You have a [ManagerEmail] column. What DAX RLS rule is correct?","options": ["Region[ManagerEmail] = USERPRINCIPALNAME()","Region = USERNAME()","Region[ManagerEmail] = CURRENTUSER()","Region = USEREMAIL()"],"image": null,"correct_idx": 0,"domain": "Domain 2: Model the Data","topic": "Dynamic Row-Level Security (USERPRINCIPALNAME)","rationale": "In Power BI Service, USERPRINCIPALNAME() returns the authenticated user's corporate email address (UPN). Applying Region[ManagerEmail] = USERPRINCIPALNAME() as a DAX filter expression ensures managers only see records where their email matches the row.","trap": "CURRENTUSER() and USEREMAIL() are not valid DAX functions; USERNAME() in Power BI Service returns UPN, but in Power BI Desktop it returns DOMAIN\\User, making USERPRINCIPALNAME() the official best practice."},{"id": 15,"prompt": "You need to calculate last year’s sales. Which DAX function do you use?","options": ["YEAR()","MIN()","SAMEPERIODLASTYEAR()","EARLIER()"],"image": null,"correct_idx": 0,"domain": "Domain 2: Model the Data","topic": "DAX Time Intelligence (SAMEPERIODLASTYEAR)","rationale": "SAMEPERIODLASTYEAR('Date'[Date]) returns a table of dates shifted one year back from the current filter context, perfectly calculating prior-year comparative metrics inside CALCULATE.","trap": "YEAR() is a scalar function returning the 4-digit year number of a single date, not a time-intelligence table filter."},{"id": 16,"prompt": "You attempt to connect Power BI Desktop to a Cassandra database. From the Get Data connector list, you discover that there is no specific connector for the Cassandra database. You need to select an alternate data connector that will connect to the database. Which type of connector should you choose?","options": ["Microsoft SQL Server database","ODBC","OData","OLE DB"],"image": null,"correct_idx": 1,"domain": "Domain 1: Prepare the Data","topic": "Generic Database Connectivity (ODBC)","rationale": "When Power BI Desktop lacks a dedicated proprietary connector for a specialized database like Apache Cassandra, Microsoft recommends installing the vendor's ODBC driver and using the generic ODBC connector.","trap": "OLE DB is primarily legacy Windows/SQL Server technology; OData is a web API protocol, not a direct Cassandra driver."},{"id": 17,"prompt": "You import two Microsoft Excel tables named Customer and Address into Power Query. Customer contains the following columns:\n✑ Customer ID\n✑ Customer Name\n✑ Phone\n✑ Email Address\n✑ Address ID\nAddress contains the following columns:\n✑ Address ID\n✑ Address Line 1\n✑ Address Line 2\n✑ City\n✑ State/Region\n✑ Country\n✑ Postal Code\nEach Customer ID represents a unique customer in the Customer table. Each Address ID represents a unique address in the Address table.\nYou need to create a query that has one row per customer. Each row must contain City, State/Region, and Country for each customer.\nWhat should you do?","options": ["Transpose the Customer and Address tables.","Group the Customer and Address tables by the Address ID column.","Append the Customer and Address tables.","Merge the Customer and Address tables."],"image": null,"correct_idx": 3,"domain": "Domain 1: Prepare the Data","topic": "Power Query Merge (JOIN) Operations","rationale": "Merging Customer and Address queries on the matching Address ID key combines columns horizontally into a single record per customer (equivalent to an SQL LEFT OUTER JOIN).","trap": "Appending stacks tables vertically (SQL UNION), which fails when tables have completely different columns."},{"id": 18,"prompt": "Within the Power BI report filter hierarchy, which filter type applies the most restrictive filtering?","options": ["Report-level filter","Visual-level filter","Page-level filter"],"image": null,"correct_idx": 1,"domain": "Domain 3: Visualize and Analyze the Data","topic": "Filter Hierarchy & Precedence","rationale": "The Power BI filter hierarchy evaluates from broadest to narrowest: Report-level > Page-level > Visual-level. A visual-level filter applies strictly to that specific visual on top of all page/report filters, making its scope the most restrictive.","trap": "Thinking Report-level is most restrictive because it affects the whole report; in exam terminology, restrictive refers to the narrowness/specificity of the filter scope."},{"id": 19,"prompt": "You need to enable Power BI’s built-in time-intelligence (YTD, QTD, etc.). What must be done?","options": ["Rename date column to “Date”","Enable Auto date/time","Create a manual date hierarchy","Mark the Date table as the Date Table"],"image": null,"correct_idx": 3,"domain": "Domain 2: Model the Data","topic": "Marking the Date Table for Time Intelligence","rationale": "DAX time-intelligence functions (TOTALYTD, SAMEPERIODLASTYEAR, DATESQTD, etc.) require a proper date dimension marked as the official Date table in Model view. Mark as date table establishes continuous date metadata so time-intelligence functions evaluate correctly across the model.","trap": "Auto date/time creates hidden auto-generated date tables per date column, but marking a dedicated Date table is the required configuration to enable built-in time-intelligence behavior on a proper calendar dimension."},{"id": 20,"prompt": "Your dimension table is extremely large and slows model performance. What is the recommended optimization?","options": ["Normalize it into sub-dimension tables","Convert model to DirectQuery","Convert every column to text","Remove relationships"],"image": null,"correct_idx": 0,"domain": "Domain 2: Model the Data","topic": "Dimension Optimization & Snowflaking","rationale": "When a dimension table is excessively large with dozens of descriptive attributes, normalizing less-frequently used attributes into secondary sub-dimension tables (or separate lookup dimensions) narrows the primary dimension's row width and reduces VertiPaq memory footprint.","trap": "Switching to DirectQuery degrades query performance; converting columns to text severely increases VertiPaq memory consumption."},{"id": 21,"prompt": "A KPI visual requires a target value in order to display its status indicator.","options": ["\"True\"","\"False\""],"image": null,"correct_idx": 0,"domain": "Domain 3: Visualize and Analyze the Data","topic": "KPI Visual Anatomy","rationale": "A KPI visual requires three parameters: an Indicator (Value), a Trend Axis, and a Target Goal. Without a target goal value, the KPI cannot calculate variance or evaluate the threshold status indicator (green/red icon).","trap": "Confusing a KPI visual with a Card visual, which only requires a single metric."},{"id": 22,"prompt": "A dataset must refresh only rows modified within the last 7 days. What should you use?","options": ["Performance Analyzer","Incremental refresh","Auto date/time","Change Detection"],"image": null,"correct_idx": 1,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Incremental Refresh Architecture","rationale": "Incremental refresh allows defining a policy where only partitions containing data modified within a rolling window (e.g. the last 7 days) are refreshed, leaving historical archived partitions untouched and speeding up refresh cycles.","trap": "Auto date/time is an internal date table generator; Performance Analyzer records render timings."},{"id": 23,"prompt": "You store daily data but analysts only review weekly summaries. What improves performance while keeping detail?","options": ["Aggregations","Use DirectQuery","Delete daily rows","Turn off auto-date tables"],"image": null,"correct_idx": 0,"domain": "Domain 2: Model the Data","topic": "User-Defined Aggregations","rationale": "Aggregations allow creating pre-summarized tables (e.g. weekly totals) in memory. Power BI visual queries automatically hit the lightning-fast aggregate table when possible, while retaining seamless drill-down to the detailed daily transactional rows.","trap": "Deleting daily rows destroys granular reporting capabilities; DirectQuery slows down response times."},{"id": 24,"prompt": "You have a PBIX file that imports several tables from an Azure SQL database.\nThe data will be migrated to another Azure SQL database.\nYou need to change the connections in the PBIX file. The solution must minimize administrative effort. What should you do?","options": ["Modify the Data source settings.","Create a PBIT file, open the file. and change the data sources when prompted.","From Power Query Editor, create new queries.","From Power Query Editor, modify the source of each query."],"image": null,"correct_idx": 0,"domain": "Domain 1: Prepare the Data","topic": "Data Source Settings Re-pointing","rationale": "In Power BI Desktop, changing the target database connection in 'Data source settings' globally updates all queries utilizing that source in a single operation with minimal administrative effort.","trap": "Modifying each query source one-by-one in Power Query is labor-intensive and unnecessary."},{"id": 25,"prompt": "You have a Microsoft SharePoint Online site that contains several document libraries. One of the document libraries contains manufacturing reports saved as Microsoft Excel files. All the manufacturing reports have the same data structure. You need to use Power BI Desktop to load only the manufacturing reports to a table for analysis. What should you do?","options": ["Get data from a SharePoint folder, enter the site URL, and then select Combine & Load.","Get data from a SharePoint folder and enter the site URL Select Transform, then filter by the folder path to the manufacturing reports library.","Get data from a SharePoint list and enter the site URL. Select Combine & Transform, then filter by the folder path to the manufacturing reports library.","Get data from a SharePoint list, enter the site URL, and then select Combine & Load."],"image": null,"correct_idx": 1,"domain": "Domain 1: Prepare the Data","topic": "SharePoint Folder Path Filtering","rationale": "Connecting to a SharePoint folder returns a directory of all files across all document libraries on the site. Choosing 'Transform Data' and filtering by the 'Folder Path' column isolates only files inside the manufacturing reports library before combining binaries.","trap": "Clicking 'Combine & Load' immediately attempts to combine every single file on the SharePoint site, leading to schema errors."},{"id": 26,"prompt": "Auto Date/Time automatically creates hidden date tables for each date column in the model.","options": ["\"True\"","\"False\""],"image": null,"correct_idx": 0,"domain": "Domain 2: Model the Data","topic": "Auto Date/Time Hidden Tables","rationale": "When Auto Date/Time is enabled, Power BI Desktop silently generates a separate hidden local date table (named LocalDateTable_...) for every date and datetime column across all tables in the data model.","trap": "Assuming Power BI shares one global hidden calendar table across all columns."},{"id": 27,"prompt": "You must use a specific inactive relationship inside a DAX expression. Which function accomplishes this?","options": ["RELATEDTABLE","USERELATIONSHIP","SUMMARIZE","DIVIDE"],"image": null,"correct_idx": 1,"domain": "Domain 2: Model the Data","topic": "Activating Inactive Relationships (USERELATIONSHIP)","rationale": "USERELATIONSHIP(column1, column2) is used inside CALCULATE to activate a specific inactive relationship for that calculation only, enabling role-playing dimension analysis (e.g. Sales by Ship Date vs Order Date).","trap": "RELATEDTABLE evaluates table row context; SUMMARIZE groups tables; neither activates relationships."},{"id": 28,"prompt": "A report must allow users to switch dynamically between metrics such as Sales, Margin, and Profit. What feature enables this?","options": ["Drillthrough","Slicers","Field Parameters","Automatic date hierarchy"],"image": null,"correct_idx": 2,"domain": "Domain 3: Visualize and Analyze the Data","topic": "Dynamic Metric Switching (Field Parameters)","rationale": "Field Parameters allow report creators to bundle multiple measures (Sales, Margin, Profit) into a dynamic slicer. Users can switch visuals between different metrics dynamically without needing multiple duplicate charts.","trap": "Standard slicers filter column row values, not the choice of measure itself."},{"id": 29,"prompt": "**You need to create a report that will demonstrate the sales performance of the company. The sales team has requested you to add a single visualization (if possible) that might help them in identifying the factors that drive the sales and affect the success. Which of the following visualizations would you use?**","options": ["Q&A visualization","Funnel chart","Donut Chart","Key influencers"],"image": null,"correct_idx": 3,"domain": "Domain 3: Visualize and Analyze the Data","topic": "AI Visuals (Key Influencers)","rationale": "The Key Influencers visual uses machine learning to analyze data, rank factors by importance, and reveal the primary drivers that influence a specific business metric or outcome.","trap": "Funnel and Donut charts visualize proportion or process stages, not causal driver ranking."},{"id": 30,"prompt": "After a successful dataset refresh, the report still shows outdated values. What is the most likely reason?","options": ["The model contains inactive relationships","RLS is turned on","The visuals or dashboard tiles are using cached data","The report uses a composite model"],"image": null,"correct_idx": 2,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Visual & Dashboard Tile Caching","rationale": "Power BI Service caches dashboard tile query results and visual queries for speed. Even after a dataset successfully refreshes, dashboard tiles refresh on a background cadence, or open browser sessions may display cached visual results until reloaded.","trap": "RLS restricts unauthorized row access, but does not serve stale data to valid users."},{"id": 31,"prompt": "Users must drill down from year → quarter → month → day. What should you configure?","options": ["Custom formatting","A field hierarchy","Drillthrough","Tooltips"],"image": null,"correct_idx": 1,"domain": "Domain 3: Visualize and Analyze the Data","topic": "Field Hierarchies for Drill-Down","rationale": "Creating a hierarchy in the data model (e.g. Year > Quarter > Month > Day) automatically enables drill-down navigation buttons on visual headers.","trap": "Drillthrough moves the user to a completely separate report page, rather than expanding levels on the same visual."},{"id": 32,"prompt": "You want to securely share a report with people outside your organization so they can interact with it. What must be enabled first?","options": ["Azure AD B2B guest access for external users","Publish to My Workspace","Scheduled refresh","Export to Excel"],"image": null,"correct_idx": 0,"domain": "Domain 4: Deploy and Maintain Assets","topic": "External Governance (Azure AD B2B)","rationale": "To securely share Power BI reports with external stakeholders, Microsoft Entra ID (Azure AD) B2B guest user access must be enabled in the tenant, allowing external users to authenticate using their organizational identities.","trap": "Publish to Web is completely unauthenticated and exposes data publicly to the internet."},{"id": 33,"prompt": "Only certain users should publish to a workspace. Proper configuration is?","options": ["All users as Admin","Viewers as Contributors","Authors as Members; consumers as Viewers","All users as Members"],"image": null,"correct_idx": 2,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Workspace Role Permissions","rationale": "In Power BI modern workspaces, Members (and Contributors) have permission to create, edit, and publish reports, while Viewers are restricted to read-only access. Assigning authors as Members and consumers as Viewers enforces proper separation and least privilege.","trap": "Making everyone Admin or Member gives report consumers the ability to edit or delete production reports."},{"id": 34,"prompt": "Users want to ask natural-language questions about their data, such as “What are the top customers by margin?” Which Power BI feature should they use?","options": ["Slicer Search","Copilot for Power BI","Decomposition Tree","Smart narrative"],"image": null,"correct_idx": 1,"domain": "Domain 3: Visualize and Analyze the Data","topic": "Natural Language Querying (Copilot / Q&A)","rationale": "Copilot for Power BI (and the native Q&A visual) allows business users to query data models using natural language questions (e.g. 'What are the top customers by margin?') and automatically generates visual responses.","trap": "Smart narrative auto-summarizes existing charts, but does not take interactive free-text user questions."},{"id": 35,"prompt": "You want to apply a virtual relationship between two tables. Which function should you use?","options": ["VALUES","UNION","TREATAS","DISTINCT"],"image": null,"correct_idx": 2,"domain": "Domain 2: Model the Data","topic": "DAX Virtual Relationships (TREATAS)","rationale": "TREATAS applies the result of a table expression as filters to columns from an unrelated table, effectively establishing a virtual relationship in DAX without creating a physical relationship in the schema.","trap": "VALUES extracts distinct column values; UNION stacks tables; DISTINCT deduplicates rows."},{"id": 36,"prompt": "A report page loads slowly, and you want to measure which visuals cause the delays. What should you use?","options": ["Dataset refresh history","Data lineage view","Performance Analyzer","Power Query diagnostics"],"image": null,"correct_idx": 2,"domain": "Domain 3: Visualize and Analyze the Data","topic": "Performance Analyzer Diagnostics","rationale": "Performance Analyzer in Power BI Desktop logs and displays the exact duration required to render every visual on a page, broken down by DAX query, Visual display, and Other background processing.","trap": "Power Query diagnostics measures backend ETL load times, not front-end report visual rendering."},{"id": 37,"prompt": "You need to expand structured JSON stored inside a column. What should you use?","options": ["Split Column","Replace Values","Parse JSON","Trim"],"image": null,"correct_idx": 2,"domain": "Domain 1: Prepare the Data","topic": "JSON Parsing in Power Query","rationale": "In Power Query Editor, selecting Transform > Parse > JSON parses text containing structured JSON into native expandable records and lists.","trap": "Split Column delimiter fails to handle nested JSON objects and arrays."},{"id": 38,"prompt": "A user complains export stops at a fixed number of rows. What explains this limitation?","options": ["Power BI enforces export row limits based on visual type","Dataset is too small","Their license tier restricts exporting","RLS blocking the export"],"image": null,"correct_idx": 0,"domain": "Domain 3: Visualize and Analyze the Data","topic": "Visual Data Export Row Limits","rationale": "Power BI enforces hard limits when exporting visual data: up to 150,000 rows for Excel unsummarized data, 30,000 rows for summarized visual data, and 300,000 rows for CSV exports.","trap": "RLS restricts row access by security role, not by arbitrary capped export limits."},{"id": 39,"prompt": "You need a single semantic source of truth for multiple reports. What should you use?","options": ["Q synonyms","Local Excel sheets","Shared semantic models (shared datasets)","Copies of PBIX files"],"image": null,"correct_idx": 2,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Shared Semantic Models (Golden Datasets)","rationale": "Publishing a shared semantic model (golden dataset) establishes a single source of truth that multiple reports across workspaces can connect to live, preventing duplicated ETL and divergence of business logic.","trap": "Distributing duplicate PBIX files causes version control chaos and conflicting metric definitions."},{"id": 40,"prompt": "A report needs a button that resets all filters to the original state. What feature accomplishes this?","options": ["Reset to Default","Role-level permissions","Drillthrough","Bookmark Navigator"],"image": null,"correct_idx": 0,"domain": "Domain 3: Visualize and Analyze the Data","topic": "Reset to Default Filter State","rationale": "Reset to default returns slicers and report filters to their original baseline state—the built-in control for undoing ad-hoc filtering without authoring bookmarks or custom navigation visuals.","trap": "Bookmark Navigator is a navigation visual for switching between saved bookmark states; it is not the native one-click control that resets filters to their default configuration."},{"id": 41,"prompt": "A bridge table is used for many-to-many relationships. What must be true for correct filtering?","options": ["Fact tables must be DirectQuery","Bridge must contain numeric keys","Bridge must be bidirectional","Bridge table must contain unique linking values"],"image": null,"correct_idx": 3,"domain": "Domain 2: Model the Data","topic": "Bridge Table Requirements in Many-to-Many","rationale": "In Kimball dimensional modeling, resolving a many-to-many relationship using a bridge/dimension table requires the bridge table to contain unique, deduplicated key values so it can establish 1-to-many relationships with both related tables.","trap": "Bidirectional filtering on non-unique bridge tables introduces ambiguous relationship paths and severe performance penalties."},{"id": 42,"prompt": "You want to implement RLS for multiple departments using a single table. What must you create?","options": ["Manual filter rules per user","A user-to-department mapping table","Multiple gateways","Multiple datasets"],"image": null,"correct_idx": 1,"domain": "Domain 2: Model the Data","topic": "Dynamic RLS User Mapping Tables","rationale": "To implement scalable dynamic RLS across multiple departments, a security mapping table is created containing User Principal Name (UPN) and Department ID. A single DAX rule filters the mapping table, which cascades to data tables.","trap": "Hardcoding manual filter rules per user requires updating the PBIX every time staff change."},{"id": 43,"prompt": "You need to refresh a dataset every 15 minutes. What requirement must be met?","options": ["Power BI Pro license","Workspace must be on Premium capacity","Dataset must be certified","Dataset must be Import mode only"],"image": null,"correct_idx": 1,"domain": "Domain 4: Deploy and Maintain Assets","topic": "High-Frequency Refresh & Premium Capacity","rationale": "Power BI Pro workspaces are strictly capped at 8 scheduled refreshes per day. Refreshing every 15 minutes requires Premium capacity (or Fabric Capacity / Premium Per User), which supports up to 48 daily scheduled refreshes and unlimited API/XMLA refreshes.","trap": "Power BI Pro licenses cannot schedule refreshes more frequently than every 2 hours."},{"id": 44,"prompt": "**For the query opened in Power Query Editor, you are interested in finding out the percentage of empty cells or values in each column as soon as possible. Which of the following data Preview Options would you select?**","options": ["Show Whitespaces","Column profile","Column quality","Column distribution"],"image": null,"correct_idx": 2,"domain": "Domain 1: Prepare the Data","topic": "Data Profiling (Column Quality)","rationale": "In Power Query View tab, enabling 'Column quality' displays a status bar at the head of every column showing the exact percentages of Valid, Error, and Empty values.","trap": "Column profile displays detailed value counts for a single selected column; Column distribution shows distinct vs unique value distributions."},{"id": 45,"prompt": "Email keys differ in casing and prevent correct merges. What transformation should be applied?","options": ["Convert both columns to lowercase","Enable fuzzy matching","Delete duplicates","Add index columns"],"image": null,"correct_idx": 0,"domain": "Domain 1: Prepare the Data","topic": "Power Query Case Sensitivity","rationale": "Power Query M language is strictly case-sensitive. 'User@Domain.com' will not match 'user@domain.com' during a merge. Converting both key columns to lowercase ensures reliable, deterministic joins.","trap": "Fuzzy matching introduces computational overhead and can create unintended false positive matches."},{"id": 46,"prompt": "You build a Power BI report that displays IoT temperature data streaming from a refrigerator. You publish the report to the Power BI service. You need to be notified when the temperature rises above four degrees Celsius. What should you do?","options": ["Pin a card visual to a dashboard and create a subscription.","Pin a report page to a dashboard and set an alert on the page.","Pin a card visual to a dashboard and set an alert on the tile.","Set an alert on a KPI visual in the report."],"image": null,"correct_idx": 2,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Data Alerts on Pinned Dashboard Tiles","rationale": "In Power BI Service, Data Alerts can only be configured on pinned dashboard tiles (specifically single-value visuals: Cards, KPIs, and Gauges). Alerts cannot be set on report pages or live report canvas visuals.","trap": "Attempting to configure data alerts directly inside the report canvas or on full report pages."},{"id": 47,"prompt": "For the sales department at your company, you publish a Power BI report that imports data from a Microsoft Excel file located in a Microsoft SharePoint folder. The data model contains several measures. You need to create a Power BI report from the existing data. The solution must minimize development effort. Which type of data source should you use?","options": ["Power BI dataflows","an Excel workbook","a SharePoint folder","Power BI dataset"],"image": null,"correct_idx": 3,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Reusing Published Semantic Models","rationale": "Reusing the existing published Power BI dataset (semantic model) allows building new reports instantly with all pre-calculated measures and relationships intact, minimizing development effort.","trap": "Re-importing from SharePoint or Excel requires rebuilding the entire data model from scratch."},{"id": 48,"prompt": "A measure displays correct row values but incorrect totals in a matrix. Why?","options": ["Measures cannot aggregate totals","Totals add up all raw rows","Totals evaluate under a different filter context","Matrix visuals ignore relationships"],"image": null,"correct_idx": 2,"domain": "Domain 2: Model the Data","topic": "DAX Filter Context in Matrix Totals","rationale": "In DAX, total rows do NOT sum the visible values above them! Total rows evaluate the exact same DAX measure in an expanded filter context where the row-dimension filter has been removed. If a measure calculates a non-additive formula without row iteration (like SUMX), the total calculates across the whole table.","trap": "Believing Power BI total rows perform simple visual arithmetic addition."},{"id": 49,"prompt": "Calculated tables recalculate when slicers or filters change on a report page.","options": ["\"True\"","\"False\""],"image": null,"correct_idx": 1,"domain": "Domain 2: Model the Data","topic": "Calculated Tables Runtime Independence","rationale": "Calculated tables and calculated columns are computed exclusively at data refresh time and stored in the VertiPaq database. They do NOT re-evaluate dynamically when slicers or filters are manipulated on a report page (only DAX measures respond to slicers).","trap": "Confusing static calculated table evaluations with dynamic DAX measure evaluation contexts."},{"id": 50,"prompt": "Incremental refresh is enabled, but the dataset still reloads all data instead of only recent partitions. What is the most likely cause?","options": ["RangeStart and RangeEnd parameters were not used to filter the table","The dataset uses import mode","The gateway is not configured correctly","The table is too large"],"image": null,"correct_idx": 0,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Incremental Refresh Parameters (RangeStart/RangeEnd)","rationale": "Incremental refresh relies strictly on two reserved, case-sensitive DateTime parameters: RangeStart and RangeEnd. If the date column in Power Query is not filtered using these exact parameters, Power BI cannot partition the table and falls back to a full reload.","trap": "Incremental refresh is designed specifically for Import mode; import mode is not the issue."},{"id": 51,"prompt": "When creating bookmarks in a Power BI report, which elements are saved with the bookmark?","options": ["Bookmarks only preserve the visuals currently displayed.","Only the current page being viewed and the Slicers invoked.","Only the name of the bookmark and the Filters currently active.","Filters, Slicers, Visual selection state, Sort order, and Drill location."],"image": null,"correct_idx": 3,"domain": "Domain 3: Visualize and Analyze the Data","topic": "Bookmark State Preservation","rationale": "Power BI bookmarks save the complete UI state: filters and slicers, visual selection and visibility (Selection Pane), visual sort orders, and current drill location.","trap": "Thinking bookmarks only capture visual visibility."},{"id": 52,"prompt": "You need to identify which transformation step caused query folding to stop. What should you check?","options": ["Column Statistics","View Native Query","Q preview","Lineage view"],"image": null,"correct_idx": 1,"domain": "Domain 1: Prepare the Data","topic": "Query Folding Diagnostics (View Native Query)","rationale": "In Power Query Applied Steps, right-clicking each transformation step and checking 'View Native Query' reveals whether that step folds to SQL. The first step where 'View Native Query' is disabled (grayed out) indicates where folding stopped.","trap": "Column statistics profiles data distribution, but does not provide SQL query folding telemetry."},{"id": 53,"prompt": "You need to provide a user with the ability to add members to a workspace. The solution must use the principle of least privilege. Which role should you assign to the user?","options": ["Contributor","Admin","Member","Viewer"],"image": null,"correct_idx": 2,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Workspace Roles & Least Privilege","rationale": "In Power BI modern workspaces, Members have the privilege to add other members, contributors, and viewers (unless restricted by workspace admin settings). Assigning Member satisfies least privilege, as Admin would grant unnecessary rights to delete the workspace or remove administrators.","trap": "Assigning Admin violates least privilege; Contributors cannot manage workspace memberships."},{"id": 54,"prompt": "In Power Query, a text column contains currency values such as “$1,850.40.” How should you correctly convert the column to a numeric data type while recognizing the currency symbol and number format?","options": ["Split each value into individual characters and recombine the numeric characters.","Use **Change Type > Using Locale**, select **Currency**, and choose **English (United States)**.","Remove all rows that produce conversion errors.","Convert the column directly to a decimal number without specifying a locale."],"image": null,"correct_idx": 1,"domain": "Domain 1: Prepare the Data","topic": "Locale-Aware Type Conversion","rationale": "Currency strings containing symbols ('$') and commas require locale-aware parsing. Using 'Change Type > Using Locale' instructs Power Query to parse characters according to US formatting rules, avoiding type errors on systems with different regional defaults.","trap": "Direct conversion to Decimal causes runtime data errors due to the '$' and thousand separators."},{"id": 55,"prompt": "You have an Azure SQL database that contains sales transactions. The database is updated frequently. You need to generate reports from the data to detect fraudulent transactions. The data must be visible within five minutes of an update. How should you configure the data connection?","options": ["Set Data Connectivity mode to Import.","Set Data Connectivity mode to DirectQuery.","Set the Command timeout in minutes setting.","Add a SQL statement."],"image": null,"correct_idx": 1,"domain": "Domain 1: Prepare the Data","topic": "DirectQuery for Real-Time Fraud Detection","rationale": "To detect fraudulent transactions within 5 minutes of occurrence, DirectQuery is required. DirectQuery passes live SQL queries to Azure SQL upon report rendering, whereas Import mode scheduled refresh cannot support a 5-minute cadence under standard licensing.","trap": "Import mode requires batch scheduled refreshes, which cannot achieve near real-time 5-minute fraud visibility."},{"id": 56,"prompt": "You are using the Analyze feature in the Power BI Service and you want to perform an analysis in Excel. Which of the following is a valid way to export your report's semantic model for use in Excel?","options": ["Select a visual, click on **\"More options (.)\"** and click on \"Analyze in Excel” on the menu bar.","In the report, go to File - **\"Download this file\"** on the top ribbon.","In the report, go to Export - **\"Analyze in Excel”** on the top ribbon.","In the semantic model, click on **\"More options** **(...)\"**; select **\"Analyze in Excel\"** then click on **\"Export to Excel”**"],"image": null,"correct_idx": 2,"domain": "Domain 4: Deploy and Maintain Assets","topic": "Analyze in Excel from Report Ribbon","rationale": "When viewing a published report in Power BI Service, clicking Export > Analyze in Excel on the top action ribbon exports an Office Data Connection (.odc) file linked directly to the underlying dataset.","trap": "'Download this file' downloads the raw PBIX file, not an Excel pivot connection."},{"id": 57,"prompt": "You have a project management app that is fully hosted in Microsoft Teams. The app was developed by using Microsoft Power Apps.\nYou need to create a Power BI report that connects to the project management app. Which connector should you select?","options": ["Microsoft Teams Personal Analytics","Dataflows","Dataverse","SQL Server database"],"image": null,"correct_idx": 2,"domain": "Domain 1: Prepare the Data","topic": "Power Apps Dataverse Connectivity","rationale": "Microsoft Power Apps deployed inside Microsoft Teams store relational data in Microsoft Dataverse for Teams. Power BI connects directly via the Dataverse connector.","trap": "Assuming Teams apps store operational tables in SQL Server or Personal Analytics."},{"id": 58,"prompt": "You want an audit trail of all Power Query transformations. Where do you find it?","options": ["Fields Pane","Visual Interactions","Model View","Applied Steps"],"image": null,"correct_idx": 3,"domain": "Domain 1: Prepare the Data","topic": "Power Query Applied Steps Audit Trail","rationale": "The Applied Steps pane in Power Query Editor records every sequential transformation applied to the dataset, providing a complete, auditable ETL recipe.","trap": "Fields Pane displays model columns; Visual Interactions manages cross-filtering between charts."},{"id": 59,"prompt": "Your DirectQuery report is slow during slicer interactions. What improves performance?","options": ["Enable bidirectional filters","Add more relationships","Remove all filter cards","Reduce the number of visuals on the page"],"image": null,"correct_idx": 3,"domain": "Domain 3: Visualize and Analyze the Data","topic": "DirectQuery Visual Load Optimization","rationale": "In DirectQuery, every visual on the page sends one or more concurrent SQL queries to the source database whenever a slicer or filter changes. Reducing the number of visuals minimizes concurrent query thrashing and accelerates page responsiveness.","trap": "Enabling bidirectional filters degrades performance by generating complex SQL joins on every query."},{"id": 60,"prompt": "You must rank customers by total sales. Which DAX function should you use?","options": ["CALCULATE","RANKX","VAR","COUNTX"],"image": "https://pria.praxislxp.com/uploads/67f1536fa0e0958328b7940f/ChatGPT20Image20Jul20162C2020252C2003422320PM_1752695165890.png \"Azari\"","correct_idx": 1,"domain": "Domain 2: Model the Data","topic": "DAX Ranking (RANKX)","rationale": "RANKX(table, expression, [value], [order], [ties]) evaluates an expression (such as [Total Sales]) across a table of customers and returns the numerical rank of each customer.","trap": "COUNTX counts rows meeting conditions; CALCULATE evaluates expressions in modified filter contexts."}];
+
+    // STATE
+    let currentIdx = 0;
+    let currentMode = 'study'; // 'study' or 'exam'
+    let currentFilter = 'all'; // 'all', 'unanswered', 'incorrect', 'correct', 'flagged', 'prepare', 'model', 'visualize', 'deploy'
+    let userAnswers = {}; // qid -> optionIdx
+    let userFlags = new Set();
+    let timerInterval = null;
+    let secondsElapsed = 0;
+    let examTimeLimit = 90 * 60; // 90 mins
+    let isExamSubmitted = false;
+    let searchQuery = '';
+    let isRationaleManuallyRevealed = false;
+
+    // AUDIO FEEDBACK (WEB AUDIO SYNTH)
+    let audioCtx = null;
+    function playBeep(freq, type, duration) {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function init() {
+      loadStorage();
+
+      // 1. Check URL Hash (e.g. #q15 or #15)
+      let initialIdx = null;
+      const hashMatch = window.location.hash.match(/#?q?(\d+)/i);
+      if (hashMatch) {
+        const qNum = parseInt(hashMatch[1], 10);
+        const found = QUESTIONS.findIndex(q => q.id === qNum);
+        if (found !== -1) initialIdx = found;
+      }
+
+      // 2. Check localStorage if no hash
+      if (initialIdx === null) {
+        const savedIdx = localStorage.getItem('pbi_exam1_current_idx');
+        if (savedIdx !== null && !isNaN(parseInt(savedIdx, 10))) {
+          const parsed = parseInt(savedIdx, 10);
+          if (parsed >= 0 && parsed < QUESTIONS.length) {
+            initialIdx = parsed;
+          }
+        }
+      }
+
+      // Set currentIdx
+      if (initialIdx !== null) {
+        currentIdx = initialIdx;
+        if (currentIdx > 0 || Object.keys(userAnswers).length > 0) {
+          showResumeBanner();
+        }
+      } else {
+        currentIdx = 0;
+      }
+
+      // Restore saved mode
+      const savedMode = localStorage.getItem('pbi_exam1_mode');
+      if (savedMode === 'exam' || savedMode === 'study') {
+        setMode(savedMode, false);
+      } else {
+        setMode('study', false);
+      }
+
+      // Restore saved filter
+      const savedFilter = localStorage.getItem('pbi_exam1_filter');
+      if (savedFilter && isValidFilter(savedFilter)) {
+        currentFilter = savedFilter;
+      } else {
+        currentFilter = 'all';
+      }
+
+      updateFilterButtonStyles();
+      populateQuickJump();
+      renderGrid();
+      renderCurrentQuestion();
+      updateStats();
+      updateFilterCounts();
+      setupKeyboard();
+
+      // Listen for browser back / forward buttons
+      window.addEventListener('popstate', handleHashNav);
+      window.addEventListener('hashchange', handleHashNav);
+    }
+
+    function handleHashNav() {
+      const match = window.location.hash.match(/#?q?(\d+)/i);
+      if (match) {
+        const qNum = parseInt(match[1], 10);
+        const idx = QUESTIONS.findIndex(q => q.id === qNum);
+        if (idx !== -1 && idx !== currentIdx) {
+          goToQuestion(idx, false);
+        }
+      }
+    }
+
+    function isValidFilter(f) {
+      return ['all', 'unanswered', 'incorrect', 'correct', 'flagged', 'prepare', 'model', 'visualize', 'deploy'].includes(f);
+    }
+
+    function loadStorage() {
+      try {
+        const savedAns = localStorage.getItem('pbi_exam1_answers');
+        if (savedAns) userAnswers = JSON.parse(savedAns);
+        const savedFlags = localStorage.getItem('pbi_exam1_flags');
+        if (savedFlags) userFlags = new Set(JSON.parse(savedFlags));
+        const savedSub = localStorage.getItem('pbi_exam1_submitted');
+        if (savedSub === 'true') isExamSubmitted = true;
+        const savedSecs = localStorage.getItem('pbi_exam1_seconds_elapsed');
+        if (savedSecs) secondsElapsed = parseInt(savedSecs, 10) || 0;
+      } catch(e) {}
+    }
+
+    function saveStorage() {
+      try {
+        localStorage.setItem('pbi_exam1_answers', JSON.stringify(userAnswers));
+        localStorage.setItem('pbi_exam1_flags', JSON.stringify(Array.from(userFlags)));
+        localStorage.setItem('pbi_exam1_current_idx', currentIdx.toString());
+        localStorage.setItem('pbi_exam1_mode', currentMode);
+        localStorage.setItem('pbi_exam1_filter', currentFilter);
+        localStorage.setItem('pbi_exam1_submitted', isExamSubmitted ? 'true' : 'false');
+        localStorage.setItem('pbi_exam1_seconds_elapsed', secondsElapsed.toString());
+      } catch(e) {}
+    }
+
+    function showResumeBanner() {
+      const banner = document.getElementById('resume-banner');
+      if (!banner) return;
+      const q = QUESTIONS[currentIdx];
+      const resumeQnum = document.getElementById('resume-qnum');
+      const resumeAnswered = document.getElementById('resume-answered-cnt');
+      if (resumeQnum) resumeQnum.textContent = q ? q.id : (currentIdx + 1);
+      if (resumeAnswered) resumeAnswered.textContent = Object.keys(userAnswers).length;
+      banner.classList.remove('hidden');
+    }
+
+    function dismissResumeBanner() {
+      const banner = document.getElementById('resume-banner');
+      if (banner) banner.classList.add('hidden');
+    }
+
+    function goToQuestion(idx, updateHash = true) {
+      if (idx < 0 || idx >= QUESTIONS.length) return;
+      currentIdx = idx;
+      isRationaleManuallyRevealed = false;
+      saveStorage();
+
+      if (updateHash) {
+        history.replaceState(null, null, '#q' + QUESTIONS[currentIdx].id);
+      }
+
+      renderGrid();
+      renderCurrentQuestion();
+      updateQuickJump();
+
+      // Keep active button visible in question-grid WITHOUT scrolling the main page/window
+      setTimeout(() => {
+        const grid = document.getElementById('question-grid');
+        const activeBtn = document.getElementById(`grid-btn-${QUESTIONS[currentIdx].id}`);
+        if (grid && activeBtn) {
+          const gridRect = grid.getBoundingClientRect();
+          const btnRect = activeBtn.getBoundingClientRect();
+          if (btnRect.top < gridRect.top) {
+            grid.scrollTop -= (gridRect.top - btnRect.top + 8);
+          } else if (btnRect.bottom > gridRect.bottom) {
+            grid.scrollTop += (btnRect.bottom - gridRect.bottom + 8);
+          }
+        }
+      }, 40);
+    }
+
+    function goToNextUnanswered() {
+      let nextIdx = -1;
+      // Search forward from currentIdx + 1
+      for (let i = currentIdx + 1; i < QUESTIONS.length; i++) {
+        if (userAnswers[QUESTIONS[i].id] === undefined) {
+          nextIdx = i;
+          break;
+        }
+      }
+      // Wrap around from 0 to currentIdx - 1
+      if (nextIdx === -1) {
+        for (let i = 0; i < currentIdx; i++) {
+          if (userAnswers[QUESTIONS[i].id] === undefined) {
+            nextIdx = i;
+            break;
+          }
+        }
+      }
+
+      if (nextIdx !== -1) {
+        goToQuestion(nextIdx);
+      } else {
+        alert("🎉 All 60 questions have been answered! You can review your answers or submit your exam.");
+      }
+    }
+
+    function selectOption(optIdx) {
+      const q = QUESTIONS[currentIdx];
+      userAnswers[q.id] = optIdx;
+      saveStorage();
+
+      if (currentMode === 'study') {
+        if (optIdx === q.correct_idx) {
+          playBeep(880, 'sine', 0.15); // pleasant chime
+        } else {
+          playBeep(220, 'triangle', 0.25); // low warning tone
+        }
+      }
+
+      renderGrid();
+      renderCurrentQuestion();
+      updateStats();
+      updateFilterCounts();
+      updateQuickJump();
+    }
+
+    function clearCurrentAnswer() {
+      const q = QUESTIONS[currentIdx];
+      if (userAnswers[q.id] !== undefined) {
+        delete userAnswers[q.id];
+        isRationaleManuallyRevealed = false;
+        saveStorage();
+        renderGrid();
+        renderCurrentQuestion();
+        updateStats();
+        updateFilterCounts();
+        updateQuickJump();
+      }
+    }
+
+    function toggleFlag() {
+      const q = QUESTIONS[currentIdx];
+      if (userFlags.has(q.id)) {
+        userFlags.delete(q.id);
+      } else {
+        userFlags.add(q.id);
+      }
+      saveStorage();
+      renderGrid();
+      renderCurrentQuestion();
+      updateStats();
+      updateFilterCounts();
+      updateQuickJump();
+    }
+
+    function toggleRationale() {
+      isRationaleManuallyRevealed = !isRationaleManuallyRevealed;
+      renderCurrentQuestion();
+    }
+
+    function nextQuestion() {
+      let next = currentIdx + 1;
+      while (next < QUESTIONS.length && !matchesFilter(QUESTIONS[next])) {
+        next++;
+      }
+      if (next < QUESTIONS.length) {
+        goToQuestion(next);
+      } else {
+        const firstMatch = QUESTIONS.findIndex(q => matchesFilter(q));
+        if (firstMatch !== -1 && firstMatch < currentIdx) {
+          goToQuestion(firstMatch);
+        }
+      }
+    }
+
+    function prevQuestion() {
+      let prev = currentIdx - 1;
+      while (prev >= 0 && !matchesFilter(QUESTIONS[prev])) {
+        prev--;
+      }
+      if (prev >= 0) {
+        goToQuestion(prev);
+      }
+    }
+
+    function setFilter(flt) {
+      currentFilter = flt;
+      saveStorage();
+      updateFilterButtonStyles();
+
+      if (!matchesFilter(QUESTIONS[currentIdx])) {
+        const firstMatch = QUESTIONS.findIndex(q => matchesFilter(q));
+        if (firstMatch !== -1) {
+          goToQuestion(firstMatch);
+        } else {
+          renderGrid();
+          renderCurrentQuestion();
+        }
+      } else {
+        renderGrid();
+      }
+    }
+
+    function updateFilterButtonStyles() {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.className = "filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:bg-gray-800 hover:text-gray-200 flex justify-between items-center";
+      });
+      const activeBtn = document.getElementById(`flt-${currentFilter}`);
+      if (activeBtn) {
+        activeBtn.className = "filter-btn text-left px-2.5 py-1.5 rounded-lg font-medium transition-all bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 flex justify-between items-center";
+      }
+    }
+
+    function matchesFilter(q) {
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const idMatch = q.id.toString() === query || ('q' + q.id) === query;
+        const topicMatch = q.topic && q.topic.toLowerCase().includes(query);
+        const promptMatch = q.prompt && q.prompt.toLowerCase().includes(query);
+        if (!idMatch && !topicMatch && !promptMatch) return false;
+      }
+
+      if (currentFilter === 'all') return true;
+      if (currentFilter === 'unanswered') return userAnswers[q.id] === undefined;
+      if (currentFilter === 'incorrect') return userAnswers[q.id] !== undefined && userAnswers[q.id] !== q.correct_idx;
+      if (currentFilter === 'correct') return userAnswers[q.id] === q.correct_idx;
+      if (currentFilter === 'flagged') return userFlags.has(q.id);
+      if (currentFilter === 'prepare') return q.domain.includes('Prepare');
+      if (currentFilter === 'model') return q.domain.includes('Model');
+      if (currentFilter === 'visualize') return q.domain.includes('Visualize');
+      if (currentFilter === 'deploy') return q.domain.includes('Deploy');
+      return true;
+    }
+
+    function onGridSearch(val) {
+      searchQuery = val.trim();
+      const clearBtn = document.getElementById('btn-clear-search');
+      if (clearBtn) {
+        if (searchQuery) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+      renderGrid();
+    }
+
+    function clearGridSearch() {
+      const input = document.getElementById('grid-search-input');
+      if (input) input.value = '';
+      searchQuery = '';
+      const clearBtn = document.getElementById('btn-clear-search');
+      if (clearBtn) clearBtn.classList.add('hidden');
+      renderGrid();
+    }
+
+    function populateQuickJump() {
+      const sel = document.getElementById('quick-jump-select');
+      if (!sel) return;
+      sel.innerHTML = '';
+
+      QUESTIONS.forEach((q, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+
+        let icon = '⏳';
+        if (userFlags.has(q.id)) {
+          icon = '🚩';
+        } else if (userAnswers[q.id] !== undefined) {
+          if (currentMode === 'study' || isExamSubmitted) {
+            icon = userAnswers[q.id] === q.correct_idx ? '✓' : '✕';
+          } else {
+            icon = '●';
+          }
+        }
+
+        opt.textContent = `Q${q.id} [${icon}] ${q.topic}`;
+        if (idx === currentIdx) opt.selected = true;
+        sel.appendChild(opt);
+      });
+    }
+
+    function updateQuickJump() {
+      const sel = document.getElementById('quick-jump-select');
+      if (!sel) return;
+      sel.value = currentIdx;
+      const opt = sel.options[currentIdx];
+      if (opt) {
+        const q = QUESTIONS[currentIdx];
+        let icon = '⏳';
+        if (userFlags.has(q.id)) {
+          icon = '🚩';
+        } else if (userAnswers[q.id] !== undefined) {
+          if (currentMode === 'study' || isExamSubmitted) {
+            icon = userAnswers[q.id] === q.correct_idx ? '✓' : '✕';
+          } else {
+            icon = '●';
+          }
+        }
+        opt.textContent = `Q${q.id} [${icon}] ${q.topic}`;
+      }
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('question-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      QUESTIONS.forEach((q, idx) => {
+        const isAnswered = userAnswers[q.id] !== undefined;
+        const isFlagged = userFlags.has(q.id);
+        const isCurrent = idx === currentIdx;
+        const matches = matchesFilter(q);
+
+        const btn = document.createElement('button');
+        btn.id = `grid-btn-${q.id}`;
+        btn.textContent = q.id;
+
+        let baseClass = "h-8 rounded text-xs font-mono font-bold transition-all flex items-center justify-center relative ";
+
+        if (!matches) {
+          baseClass += "opacity-20 pointer-events-none ";
+        }
+
+        if (isCurrent) {
+          baseClass += "ring-2 ring-yellow-400 ring-offset-2 ring-offset-gray-900 z-10 shadow-sm ";
+        }
+
+        if (isAnswered) {
+          if (currentMode === 'study' || isExamSubmitted) {
+            const isCorrect = userAnswers[q.id] === q.correct_idx;
+            baseClass += isCorrect ? "bg-emerald-600 text-white " : "bg-red-600 text-white ";
+          } else {
+            baseClass += "bg-blue-600 text-white ";
+          }
+        } else {
+          baseClass += "bg-gray-800 hover:bg-gray-700 text-gray-300 ";
+        }
+
+        // Flag indicator dot on button
+        if (isFlagged) {
+          const flagDot = document.createElement('span');
+          flagDot.className = "absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-400 rounded-full border border-gray-900";
+          btn.appendChild(flagDot);
+        }
+
+        btn.className = baseClass;
+        btn.onclick = () => goToQuestion(idx);
+        grid.appendChild(btn);
+      });
+    }
+
+    function renderCurrentQuestion() {
+      const q = QUESTIONS[currentIdx];
+      if (!q) return;
+
+      document.getElementById('badge-qnum').textContent = `Q${q.id} / 60`;
+      document.getElementById('badge-domain').textContent = q.domain;
+      document.getElementById('q-topic').textContent = q.topic;
+      document.getElementById('q-prompt').textContent = q.prompt;
+
+      // Handle Image
+      const imgContainer = document.getElementById('q-image-container');
+      const imgTag = document.getElementById('q-image');
+      if (q.image) {
+        imgTag.src = q.image;
+        imgContainer.classList.remove('hidden');
+      } else {
+        imgContainer.classList.add('hidden');
+      }
+
+      // Flag status
+      const isFlagged = userFlags.has(q.id);
+      document.getElementById('flag-icon').textContent = isFlagged ? "🚩" : "🏳️";
+      document.getElementById('flag-text').textContent = isFlagged ? "Flagged" : "Flag";
+      document.getElementById('btn-flag').className = isFlagged 
+        ? "px-2.5 py-1 rounded-lg border border-amber-500 bg-amber-500/20 text-xs font-medium text-amber-400 flex items-center gap-1.5 transition-colors"
+        : "px-2.5 py-1 rounded-lg border border-gray-700 hover:border-amber-500/50 text-xs font-medium text-gray-400 hover:text-amber-400 flex items-center gap-1.5 transition-colors";
+
+      // Retry / Clear Button in Study Mode
+      const btnRetry = document.getElementById('btn-retry');
+      if (btnRetry) {
+        if (currentMode === 'study' && userAnswers[q.id] !== undefined) {
+          btnRetry.classList.remove('hidden');
+        } else {
+          btnRetry.classList.add('hidden');
+        }
+      }
+
+      // Render Options
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      const selectedIdx = userAnswers[q.id];
+      const showFeedback = (currentMode === 'study' && selectedIdx !== undefined) || isExamSubmitted;
+
+      q.options.forEach((opt, optIdx) => {
+        const btn = document.createElement('button');
+        const isChosen = selectedIdx === optIdx;
+        const isCorrect = optIdx === q.correct_idx;
+
+        let optClass = "w-full text-left p-3.5 sm:p-4 rounded-xl border transition-all text-sm font-medium flex items-start gap-3 relative ";
+
+        if (showFeedback) {
+          if (isCorrect) {
+            optClass += "bg-emerald-950/50 border-emerald-500 text-emerald-200 shadow-sm ";
+          } else if (isChosen && !isCorrect) {
+            optClass += "bg-red-950/50 border-red-500 text-red-200 ";
+          } else {
+            optClass += "bg-gray-800/30 border-gray-800 text-gray-500 opacity-50 ";
+          }
+        } else {
+          if (isChosen) {
+            optClass += "bg-yellow-400/10 border-yellow-400 text-yellow-300 shadow-md shadow-yellow-400/5 ";
+          } else {
+            optClass += "bg-gray-800/60 hover:bg-gray-800 border-gray-800 hover:border-gray-700 text-gray-300 ";
+          }
+        }
+
+        btn.className = optClass;
+        btn.onclick = () => selectOption(optIdx);
+
+        // Option letter prefix
+        const letter = String.fromCharCode(65 + optIdx);
+        let badgeHtml = `<span class="w-6 h-6 rounded-md bg-gray-900 border border-gray-700 flex items-center justify-center text-xs font-bold flex-shrink-0">${letter}</span>`;
+        if (showFeedback && isCorrect) {
+          badgeHtml = `<span class="w-6 h-6 rounded-md bg-emerald-500 text-black flex items-center justify-center text-xs font-bold flex-shrink-0">✓</span>`;
+        } else if (showFeedback && isChosen && !isCorrect) {
+          badgeHtml = `<span class="w-6 h-6 rounded-md bg-red-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">✕</span>`;
+        }
+
+        btn.innerHTML = `
+          ${badgeHtml}
+          <div class="flex-1 leading-relaxed">${opt.replace(/\xa0/g, ' ')}</div>
+        `;
+
+        optionsContainer.appendChild(btn);
+      });
+
+      // RATIONALE BOX
+      const rationaleBox = document.getElementById('rationale-box');
+      const btnToggleRat = document.getElementById('btn-toggle-rationale');
+      if (showFeedback || isRationaleManuallyRevealed) {
+        document.getElementById('rationale-text').textContent = q.rationale;
+        document.getElementById('trap-text').textContent = q.trap;
+        rationaleBox.classList.remove('hidden');
+        if (btnToggleRat) {
+          btnToggleRat.className = "px-2.5 py-1 rounded-lg border border-emerald-500 bg-emerald-500/20 text-xs font-medium text-emerald-300 flex items-center gap-1 transition-colors";
+        }
+      } else {
+        rationaleBox.classList.add('hidden');
+        if (btnToggleRat) {
+          btnToggleRat.className = "px-2.5 py-1 rounded-lg border border-gray-700 hover:border-emerald-500/50 text-xs font-medium text-gray-400 hover:text-emerald-400 flex items-center gap-1 transition-colors";
+        }
+      }
+
+      // Prev / Next button states
+      document.getElementById('btn-prev').disabled = currentIdx === 0;
+      document.getElementById('btn-next').disabled = currentIdx === QUESTIONS.length - 1;
+    }
+
+    function updateStats() {
+      const total = QUESTIONS.length;
+      const answeredCount = Object.keys(userAnswers).length;
+      const unansweredCount = total - answeredCount;
+      const pct = Math.round((answeredCount / total) * 100);
+
+      document.getElementById('stat-progress-pct').textContent = `${pct}%`;
+      document.getElementById('stat-progress-bar').style.width = `${pct}%`;
+      document.getElementById('stat-answered').textContent = `${answeredCount}/${total}`;
+      document.getElementById('stat-unanswered').textContent = unansweredCount;
+      document.getElementById('stat-flagged').textContent = userFlags.size;
+
+      // Calculate accuracy
+      let correctCount = 0;
+      for (const [qid, chosen] of Object.entries(userAnswers)) {
+        const q = QUESTIONS.find(x => x.id === parseInt(qid));
+        if (q && q.correct_idx === chosen) correctCount++;
+      }
+
+      if (answeredCount > 0) {
+        const accPct = Math.round((correctCount / answeredCount) * 100);
+        document.getElementById('stat-accuracy').textContent = `${accPct}%`;
+      } else {
+        document.getElementById('stat-accuracy').textContent = `--`;
+      }
+    }
+
+    function updateFilterCounts() {
+      let unanswered = 0;
+      let correct = 0;
+      let incorrect = 0;
+      let flagged = userFlags.size;
+
+      QUESTIONS.forEach(q => {
+        if (userAnswers[q.id] === undefined) {
+          unanswered++;
+        } else if (userAnswers[q.id] === q.correct_idx) {
+          correct++;
+        } else {
+          incorrect++;
+        }
+      });
+
+      const elUnanswered = document.getElementById('cnt-unanswered');
+      if (elUnanswered) elUnanswered.textContent = unanswered;
+      const elIncorrect = document.getElementById('cnt-incorrect');
+      if (elIncorrect) elIncorrect.textContent = incorrect;
+      const elCorrect = document.getElementById('cnt-correct');
+      if (elCorrect) elCorrect.textContent = correct;
+      const elFlagged = document.getElementById('cnt-flagged');
+      if (elFlagged) elFlagged.textContent = flagged;
+
+      // Header button count
+      const hdrUnanswered = document.getElementById('hdr-cnt-unanswered');
+      if (hdrUnanswered) hdrUnanswered.textContent = unanswered;
+
+      // Next unanswered button in footer
+      const btnNextUnanswered = document.getElementById('btn-next-unanswered');
+      if (btnNextUnanswered) {
+        if (unanswered === 0) {
+          btnNextUnanswered.innerHTML = `<span>✓</span> All Answered`;
+          btnNextUnanswered.className = "px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gray-800 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center gap-1.5 transition-all opacity-70";
+        } else {
+          btnNextUnanswered.innerHTML = `<span>⏩</span> Next Unanswered (${unanswered}) <kbd class="hidden sm:inline px-1 py-0.5 rounded bg-gray-900 text-yellow-400 text-[10px] font-mono border border-yellow-400/40">U</kbd>`;
+          btnNextUnanswered.className = "px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gray-800 hover:bg-yellow-400 hover:text-gray-950 text-yellow-300 border border-yellow-400/30 text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm";
+        }
+      }
+    }
+
+    function setMode(mode, resetTime = true) {
+      currentMode = mode;
+      saveStorage();
+
+      const btnStudy = document.getElementById('btn-mode-study');
+      const btnExam = document.getElementById('btn-mode-exam');
+      const timerBox = document.getElementById('timer-box');
+      const btnFinish = document.getElementById('btn-finish-exam');
+
+      if (mode === 'study') {
+        btnStudy.className = "px-2.5 py-1 rounded transition-all bg-yellow-400 text-gray-950 font-bold shadow";
+        btnExam.className = "px-2.5 py-1 rounded text-gray-400 hover:text-white transition-all";
+        timerBox.classList.add('hidden');
+        timerBox.classList.remove('flex');
+        btnFinish.classList.add('hidden');
+        clearInterval(timerInterval);
+      } else {
+        btnExam.className = "px-2.5 py-1 rounded transition-all bg-yellow-400 text-gray-950 font-bold shadow";
+        btnStudy.className = "px-2.5 py-1 rounded text-gray-400 hover:text-white transition-all";
+        timerBox.classList.remove('hidden');
+        timerBox.classList.add('flex');
+        btnFinish.classList.remove('hidden');
+        if (resetTime) secondsElapsed = 0;
+        startTimer();
+      }
+      renderGrid();
+      renderCurrentQuestion();
+      populateQuickJump();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        saveStorage();
+        const remaining = Math.max(0, examTimeLimit - secondsElapsed);
+        const mins = Math.floor(remaining / 60);
+        const secs = remaining % 60;
+        document.getElementById('timer-display').textContent = 
+          `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        if (remaining <= 0) {
+          clearInterval(timerInterval);
+          submitExam();
+        }
+      }, 1000);
+    }
+
+    function submitExam() {
+      clearInterval(timerInterval);
+      isExamSubmitted = true;
+      saveStorage();
+
+      let correctCount = 0;
+      const domainStats = {
+        'Prepare': { total: 0, correct: 0 },
+        'Model': { total: 0, correct: 0 },
+        'Visualize': { total: 0, correct: 0 },
+        'Deploy': { total: 0, correct: 0 }
+      };
+
+      QUESTIONS.forEach(q => {
+        let dKey = 'Prepare';
+        if (q.domain.includes('Model')) dKey = 'Model';
+        else if (q.domain.includes('Visualize')) dKey = 'Visualize';
+        else if (q.domain.includes('Deploy')) dKey = 'Deploy';
+
+        domainStats[dKey].total++;
+        if (userAnswers[q.id] === q.correct_idx) {
+          correctCount++;
+          domainStats[dKey].correct++;
+        }
+      });
+
+      const scaledScore = Math.round((correctCount / QUESTIONS.length) * 1000);
+      const isPass = scaledScore >= 700;
+
+      document.getElementById('modal-score-scaled').textContent = scaledScore;
+      document.getElementById('modal-score-raw').textContent = `${correctCount}/${QUESTIONS.length}`;
+      document.getElementById('modal-result').textContent = isPass ? "PASS" : "FAIL";
+      document.getElementById('modal-result').className = isPass ? "text-2xl font-black text-emerald-400 font-mono" : "text-2xl font-black text-red-400 font-mono";
+
+      const mins = Math.floor(secondsElapsed / 60);
+      const secs = secondsElapsed % 60;
+      document.getElementById('modal-time-taken').textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+
+      // Update Domain breakdown
+      function updateDomainBar(key, idSuffix) {
+        const d = domainStats[key];
+        const pct = Math.round((d.correct / d.total) * 100);
+        document.getElementById(`score-${idSuffix}`).textContent = `${d.correct}/${d.total} (${pct}%)`;
+        document.getElementById(`bar-${idSuffix}`).style.width = `${pct}%`;
+        document.getElementById(`bar-${idSuffix}`).className = pct >= 70 ? "bg-emerald-400 h-2 rounded-full" : "bg-red-400 h-2 rounded-full";
+      }
+
+      updateDomainBar('Prepare', 'd1');
+      updateDomainBar('Model', 'd2');
+      updateDomainBar('Visualize', 'd3');
+      updateDomainBar('Deploy', 'd4');
+
+      document.getElementById('modal-score').classList.remove('hidden');
+      renderGrid();
+      renderCurrentQuestion();
+      populateQuickJump();
+    }
+
+    function closeModalAndReview(filterType) {
+      document.getElementById('modal-score').classList.add('hidden');
+      if (filterType === 'incorrect') {
+        setFilter('incorrect');
+      } else {
+        setFilter('all');
+      }
+    }
+
+    function retakeExam() {
+      document.getElementById('modal-score').classList.add('hidden');
+      resetProgress();
+      setMode('exam');
+    }
+
+    function resetProgress() {
+      if (confirm("Reset all exam progress and answers back to Question 1?")) {
+        userAnswers = {};
+        userFlags.clear();
+        currentIdx = 0;
+        secondsElapsed = 0;
+        isExamSubmitted = false;
+        saveStorage();
+        history.replaceState(null, null, '#q1');
+        dismissResumeBanner();
+        renderGrid();
+        renderCurrentQuestion();
+        updateStats();
+        updateFilterCounts();
+        populateQuickJump();
+      }
+    }
+
+    function toggleShortcutsModal() {
+      const modal = document.getElementById('modal-shortcuts');
+      if (modal) {
+        modal.classList.toggle('hidden');
+      }
+    }
+
+    function setupKeyboard() {
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+
+        const key = e.key.toUpperCase();
+        if (['1', 'A'].includes(key)) selectOption(0);
+        else if (['2', 'B'].includes(key)) selectOption(1);
+        else if (['3', 'C'].includes(key)) selectOption(2);
+        else if (['4', 'D'].includes(key)) selectOption(3);
+        else if (key === 'N' || e.key === 'ArrowRight') nextQuestion();
+        else if (key === 'P' || e.key === 'ArrowLeft') prevQuestion();
+        else if (key === 'U') goToNextUnanswered();
+        else if (key === 'F') toggleFlag();
+        else if (key === 'R') toggleRationale();
+        else if (key === 'C') clearCurrentAnswer();
+        else if (key === '?' || (e.key === '/' && e.shiftKey)) toggleShortcutsModal();
+        else if (e.key === 'Escape') {
+          document.getElementById('modal-score')?.classList.add('hidden');
+          document.getElementById('modal-shortcuts')?.classList.add('hidden');
+          dismissResumeBanner();
+        }
+      });
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>
