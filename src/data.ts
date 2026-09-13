@@ -374,50 +374,6 @@ def recommend_books(book_name: str, top_k: int = 5):
     ],
   },
   {
-    slug: "focus-pomodoro-chrome-extension",
-    title: "Focus Pomodoro Chrome Extension",
-    subtitle: "Deep Work Sprint & Productivity Tool for Developers",
-    description:
-      "A lightweight, micro-sprint productivity Chrome extension built for deep work focus management, custom timer intervals, and local session analytics.",
-    tech: ["JavaScript", "Chrome Extension V3 API", "HTML5", "CSS3", "Productivity"],
-    repoUrl: "https://github.com/ShaunDataAnalytics/focus-pomodoro-chrome-extension",
-    demoUrl: "https://github.com/ShaunDataAnalytics/focus-pomodoro-chrome-extension",
-    category: "Productivity",
-    projectGroup: "ai",
-    featured: true,
-    quickHighlights: [
-      "Manifest V3 Background Service Worker Architecture",
-      "Zero-Overhead (<10ms UI latency) Local Storage Synchronization",
-      "Customizable 25/5 Deep Work Sprint Intervals",
-      "Privacy-First: 100% Client-Side Session Analytics",
-    ],
-    metrics: [
-      { label: "Focus Sprint Cap", value: "25 Min" },
-      { label: "UI Overhead", value: "< 10ms" },
-      { label: "Data Storage", value: "100% Local" },
-      { label: "Memory Footprint", value: "< 12 MB" },
-    ],
-    problemStatement:
-      "Knowledge workers and developers lose significant momentum due to task-switching and cognitive friction. Heavy productivity apps often introduce distraction. This extension provides frictionless 25-minute focus timers directly inside the browser.",
-    phases: [
-      {
-        phaseNumber: 1,
-        phaseName: "Manifest V3 Architecture & State Machine",
-        objective: "Build reliable timer state synchronization using modern Chrome extension standards.",
-        tech: ["Chrome Alarms API", "Service Workers", "chrome.storage.local"],
-        deliverables: [
-          "Implemented background alarm triggers resilient to tab suspension and browser throttling.",
-          "Created lightweight popup UI communicating with background workers via message passing.",
-          "Enforced zero external tracker dependencies for complete user privacy.",
-        ],
-      },
-    ],
-    keyResults: [
-      "Delivered lightweight, zero-distraction deep work sprint timer for high-focus execution.",
-      "Achieved sub-10ms UI interaction response with zero memory leaks.",
-    ],
-  },
-  {
     slug: "powerbi-exam-studio",
     title: "Power BI PL-300 Diagnostic & Simulation Studio",
     subtitle: "Interactive 60-Question Sparring & Active Feynman Recall Engine",

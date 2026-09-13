@@ -38,4 +38,5 @@
 | 📊 **[Customer Segmentation & 3D Clustering](https://github.com/ShaunDataAnalytics/data-science-portfolio-labs)** | `Python`, `Scikit-Learn`, `PCA` | Unsupervised ML dashboard with K-Means clustering and interactive 3D PCA. |
 | 🏠 **[Real Estate Valuation Model](https://github.com/ShaunDataAnalytics/real-estate-valuation-ml)** | `Python`, `XGBoost`, `Pandas` | Feature engineering, regression modeling, and property price forecasting pipeline. |
 | 🍿 **[TMDB Movie Analytics & EDA](https://github.com/ShaunDataAnalytics/TMDB-Dataset)** | `Python`, `EDA`, `Matplotlib`, `Seaborn` | Exploratory data analysis, box office revenue trends, and ROI metrics. |
-| 🤖 **[Focus Pomodoro Chrome Extension](https://github.com/ShaunDataAnalytics/focus-pomodoro-chrome-extension)** | `JavaScript`, `Chrome API` | Micro-sprint productivity browser extension for deep work execution. |
+| 📊 **[Power BI Diagnostic Studio](https://shaundataanalytics.github.io/demos/powerbi-studio/)** | `JavaScript`, `Tailwind`, `DAX` | Interactive 60-question PL-300 simulation studio with Feynman diagnostic sparring. |
+| 🎧 **[Bilingual Neural Audio Suite](https://shaundataanalytics.github.io/demos/bilingual-audio/)** | `Edge-TTS`, `Web Audio API`, `Python` | Dual-language neural audio reader with chapter Socratic active-recall sparring. |
