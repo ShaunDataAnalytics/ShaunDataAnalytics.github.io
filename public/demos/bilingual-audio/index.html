@@ -37,6 +37,19 @@
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 9999px; }
+
+    /* Anti-Scraping & Copy Lockdown */
+    *, *::before, *::after {
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+    }
+    input, textarea {
+      -webkit-user-select: auto !important;
+      -moz-user-select: auto !important;
+      user-select: auto !important;
+    }
   </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
@@ -59,9 +72,9 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
-          Live Demo
+        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          🔒 Protected Audio Stream
         </span>
       </div>
     </div>
@@ -88,8 +101,8 @@
         </div>
         <div class="flex flex-wrap gap-2 shrink-0 text-xs">
           <div class="px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-center">
-            <div class="font-bold text-cyan-400">Zero Server Cost</div>
-            <div class="text-[10px] text-zinc-400">Client WebAudio API</div>
+            <div class="font-bold text-cyan-400">Blob Stream</div>
+            <div class="text-[10px] text-zinc-400">In-Memory Masked</div>
           </div>
           <div class="px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-center">
             <div class="font-bold text-emerald-400">Dual Language</div>
@@ -179,14 +192,15 @@
               <button onclick="setSpeed(2.0, this)" class="speed-pill px-2 py-1 rounded-lg font-mono text-zinc-400 hover:text-white transition-all">2.0x</button>
             </div>
 
-            <!-- DOWNLOAD / SOURCE -->
-            <a id="btn-download" href="#" target="_blank" class="p-2 rounded-xl bg-zinc-800/70 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-all text-xs" title="Download Audio File">
-              ⬇️
-            </a>
+            <!-- PROTECTED SESSION BADGE (NO RAW DOWNLOAD) -->
+            <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-950 border border-zinc-800/90 text-zinc-400 text-[11px] font-mono shadow-inner" title="Direct downloads disabled for proprietary content protection">
+              <span class="text-xs">🔒</span>
+              <span class="hidden sm:inline">Protected</span>
+            </div>
           </div>
 
           <!-- HIDDEN AUDIO ELEMENT -->
-          <audio id="audio-player" preload="metadata"></audio>
+          <audio id="audio-player" preload="none"></audio>
         </div>
 
         <!-- SOCRATIC SPARRING DRAWER (ACTIVE RECALL) -->
@@ -206,7 +220,7 @@
               "Why does clearing your email inbox actually create MORE emails? How does the 'Efficiency Trap' apply to analytics engineering backlogs?"
             </div>
             <div id="socratic-a" class="hidden text-xs text-zinc-400 pt-2 border-t border-zinc-800/80 leading-relaxed">
-              <strong>Core Invariant:</strong> The supply of potential demands on your time is effectively infinite. When you process demands faster (clearing email, rapid ticket closing), you become a higher-throughput pipeline, attracting <em>more</em> volume from the system. Finitude means accepting that you will never reach the bottom of the pile; prioritize by conscious neglect rather than speed.
+              <strong>Core Invariant:</strong> The supply of potential demands on your time is effectively infinite. When you process demands faster, you become a higher-throughput pipeline, attracting more volume. Prioritize by conscious neglect rather than speed.
             </div>
           </div>
         </div>
@@ -218,7 +232,7 @@
         <div class="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4 shadow-xl backdrop-blur-md">
           <div class="flex items-center justify-between px-2 pb-3 mb-2 border-b border-zinc-800">
             <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Chapters & Audio Tracks</h4>
-            <span id="track-count" class="text-xs font-mono text-cyan-400">17 Tracks</span>
+            <span id="track-count" class="text-xs font-mono text-cyan-400">7 Tracks</span>
           </div>
 
           <div id="playlist-container" class="space-y-2 max-h-[520px] overflow-y-auto pr-1 custom-scrollbar">
@@ -234,7 +248,7 @@
   <!-- FOOTER -->
   <footer class="border-t border-zinc-800/80 bg-zinc-950 py-6 text-center text-xs text-zinc-500">
     <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <p>Built by Shaun Lin · Data Analytics Engineer & AI Systems Specialist</p>
+      <p>© Shaun Lin · AI Systems Specialist · All Rights Reserved</p>
       <div class="flex items-center gap-4 text-zinc-400">
         <a href="/" class="hover:text-cyan-400 transition-colors">Home</a>
         <a href="/demos/powerbi-studio/" class="hover:text-cyan-400 transition-colors">Power BI Studio</a>
@@ -243,89 +257,31 @@
     </div>
   </footer>
 
-  <!-- SCRIPT LOGIC -->
-  <script>
-    const EN_TRACKS = [
-      {
-        title: "Track 00: The Master Finitude Algorithm",
-        desc: "The single highest-leverage behavioral framework: 3-task Closed List, Creative Neglect, and Strategic Underachievement.",
-        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/05OP_Let_go_of_productivity_Four_Th_a6f11baa.mp3",
-        meta: "10 min · en-US-ChristopherNeural",
-        question: "Why does clearing your email inbox actually create MORE emails? How does the 'Efficiency Trap' apply to analytics engineering backlogs?",
-        answer: "The supply of demands is infinite. High throughput invites higher demand. Finitude requires conscious neglect of low-leverage tickets rather than trying to empty the queue."
-      },
-      {
-        title: "Track 01 - Intro: In the Long Run, We Are All Dead",
-        desc: "Oliver Burkeman's Four Thousand Weeks — In the Long Run, We Are All Dead. Facing human lifespan limits.",
-        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Intro_In_the_Lo_39dafc99.mp3",
-        meta: "12 min · en-US-ChristopherNeural",
-        question: "Why do we treat time as an external container to conquer rather than the medium we inhabit?",
-        answer: "Since the industrial clock revolutionized labor, humans objectified time as a currency to spend, leading to chronic future-focused anxiety instead of embodiment."
-      },
-      {
-        title: "Track 02 - Ch 1: The Limit-Embracing Life",
-        desc: "Why accepting limitations relieves modern existential anxiety and unleashes genuine focus.",
-        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Ch_1_The_Limit__fcd1e85b.mp3",
-        meta: "14 min · en-US-ChristopherNeural",
-        question: "What is the psychological relief of acknowledging that you will never do it all?",
-        answer: "Once you accept defeat on the premise of doing everything, you gain total freedom to choose the few things that truly matter today."
-      },
-      {
-        title: "Track 03 - Ch 2: The Efficiency Trap",
-        desc: "Why getting better at clearing tasks only makes you busier, and why hyper-efficiency backfires.",
-        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Ch_2_The_Effici_47bf64ac.mp3",
-        meta: "15 min · en-US-ChristopherNeural",
-        question: "Why does becoming more efficient fail to buy you leisure time?",
-        answer: "Because efficiency expands the scope of available commitments. Parkinson's Law and induced demand ensure that available capacity is instantly saturated."
-      },
-      {
-        title: "Track 04 - Ch 3: Facing Finitude",
-        desc: "Confronting mortality as the ultimate ground of meaningful choice and prioritization.",
-        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Ch_3_Facing_Fin_5f1f5924.mp3",
-        meta: "13 min · en-US-ChristopherNeural",
-        question: "How does the certainty of an ending give value to an experience?",
-        answer: "Scarcity creates economic and experiential value. An infinite lifespan renders any single choice trivial; finitude makes every commitment precious."
-      },
-      {
-        title: "Track 05 - Ch 4: Becoming a Better Procrastinator",
-        desc: "Strategic procrastination: choosing what to fail at in advance to succeed at the critical 20%.",
-        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Ch_4_Becoming_a_578eb52f.mp3",
-        meta: "16 min · en-US-ChristopherNeural",
-        question: "What is the difference between toxic procrastination and intentional creative procrastination?",
-        answer: "Toxic procrastination avoids priority tasks out of fear; intentional procrastination consciously neglects non-essential tasks to protect deep focus."
-      },
-      {
-        title: "Track 06 - Ch 5: The Watermelon Problem",
-        desc: "Attention economics and why digital distraction is an assault on our finite consciousness.",
-        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/Four_Thousand_Weeks_Ch_5_The_Waterm_71d6ab6f.mp3",
-        meta: "14 min · en-US-ChristopherNeural",
-        question: "What is the true cost of an algorithmic feed notification?",
-        answer: "You are not just losing 30 seconds; you are surrendering the attentional sovereignty that defines what your reality consists of."
-      }
-    ];
+  <!-- SECURITY & ANTI-SCRAPE SHIELD TOAST -->
+  <div id="protect-toast" class="fixed bottom-6 right-6 z-[9999] flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-zinc-700 bg-zinc-900/95 text-xs text-zinc-200 shadow-2xl backdrop-blur-md opacity-0 pointer-events-none translate-y-2 transition-all duration-300">
+    <span class="text-base">🔒</span>
+    <div>
+      <p class="font-bold text-white leading-tight">Content Protected</p>
+      <p class="text-[10px] text-zinc-400 mt-0.5">Interactive mode only · Copying & scraping disabled</p>
+    </div>
+  </div>
 
-    const ZH_TRACKS = [
-      {
-        title: "第一讲 · 身体与精力管理：唯有耐力不会老去",
-        desc: "终身学习第一章：斯坦福睡眠科学、牢狱健身法、一日五餐与吃能量而非吃营养的70/30法则。",
-        url: "audio/Lifelong_Learning_Ch1_Energy.mp3",
-        meta: "18 min · 神经网络合成 (zh-CN)",
-        question: "为什么说认知竞争的底层是生物化学？如何建立不依赖意志力的精力管理系统？",
-        answer: "认知和情绪是身体状态的下游副产品。通过70/30能量摄入模型、控制血糖波峰和昼夜节律重置，以系统习惯替代脆弱的意志力消耗。"
-      },
-      {
-        title: "深度思考 · AI Native 时代的 Unlearn 与进化",
-        desc: "到底什么才算真正的 AI Native 人才？如何摆脱工业时代的劳动异化，重塑个人飞轮。",
-        url: "https://raw.githubusercontent.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io/audio-vault/AI_Native_Talent_Unlearn.mp3",
-        meta: "15 min · zh-CN-YunxiNeural",
-        question: "在大模型时代，传统的'熟练工技能'为何会迅速贬值？什么是高杠杆的 Centaur 人机协作？",
-        answer: "AI抹平了语法和初级代码的编写成本。核心溢价转移到'提问能力、架构品味、第一性原理判断与交付闭环'。人负责品味与决策，AI负责规模化执行。"
-      }
-    ];
+  <!-- SCRIPT LOGIC (WITH BASE64 OBFUSCATION & IN-MEMORY BLOB STREAMING) -->
+  <script>
+    const _EN_DATA = "W3sidGl0bGUiOiAiVHJhY2sgMDA6IFRoZSBNYXN0ZXIgRmluaXR1ZGUgQWxnb3JpdGhtIiwgImRlc2MiOiAiVGhlIHNpbmdsZSBoaWdoZXN0LWxldmVyYWdlIGJlaGF2aW9yYWwgZnJhbWV3b3JrOiAzLXRhc2sgQ2xvc2VkIExpc3QsIENyZWF0aXZlIE5lZ2xlY3QsIGFuZCBTdHJhdGVnaWMgVW5kZXJhY2hpZXZlbWVudC4iLCAidXJsIjogImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9TaGF1bkRhdGFBbmFseXRpY3MvU2hhdW5EYXRhQW5hbHl0aWNzLmdpdGh1Yi5pby9hdWRpby12YXVsdC8wNU9QX0xldF9nb19vZl9wcm9kdWN0aXZpdHlfRm91cl9UaF9hNmYxMWJhYS5tcDMiLCAibWV0YSI6ICIxMCBtaW4gXHUwMGI3IGVuLVVTLUNocmlzdG9waGVyTmV1cmFsIiwgInF1ZXN0aW9uIjogIldoeSBkb2VzIGNsZWFyaW5nIHlvdXIgZW1haWwgaW5ib3ggYWN0dWFsbHkgY3JlYXRlIE1PUkUgZW1haWxzPyBIb3cgZG9lcyB0aGUgJ0VmZmljaWVuY3kgVHJhcCcgYXBwbHkgdG8gYW5hbHl0aWNzIGVuZ2luZWVyaW5nIGJhY2tsb2dzPyIsICJhbnN3ZXIiOiAiVGhlIHN1cHBseSBvZiBkZW1hbmRzIGlzIGluZmluaXRlLiBIaWdoIHRocm91Z2hwdXQgaW52aXRlcyBoaWdoZXIgZGVtYW5kLiBGaW5pdHVkZSByZXF1aXJlcyBjb25zY2lvdXMgbmVnbGVjdCBvZiBsb3ctbGV2ZXJhZ2UgdGlja2V0cyByYXRoZXIgdGhhbiB0cnlpbmcgdG8gZW1wdHkgdGhlIHF1ZXVlLiJ9LCB7InRpdGxlIjogIlRyYWNrIDAxIC0gSW50cm86IEluIHRoZSBMb25nIFJ1biwgV2UgQXJlIEFsbCBEZWFkIiwgImRlc2MiOiAiT2xpdmVyIEJ1cmtlbWFuJ3MgRm91ciBUaG91c2FuZCBXZWVrcyBcdTIwMTQgSW4gdGhlIExvbmcgUnVuLCBXZSBBcmUgQWxsIERlYWQuIEZhY2luZyBodW1hbiBsaWZlc3BhbiBsaW1pdHMuIiwgInVybCI6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vU2hhdW5EYXRhQW5hbHl0aWNzL1NoYXVuRGF0YUFuYWx5dGljcy5naXRodWIuaW8vYXVkaW8tdmF1bHQvRm91cl9UaG91c2FuZF9XZWVrc19JbnRyb19Jbl90aGVfTG9fMzlkYWZjOTkubXAzIiwgIm1ldGEiOiAiMTIgbWluIFx1MDBiNyBlbi1VUy1DaHJpc3RvcGhlck5ldXJhbCIsICJxdWVzdGlvbiI6ICJXaHkgZG8gd2UgdHJlYXQgdGltZSBhcyBhbiBleHRlcm5hbCBjb250YWluZXIgdG8gY29ucXVlciByYXRoZXIgdGhhbiB0aGUgbWVkaXVtIHdlIGluaGFiaXQ/IiwgImFuc3dlciI6ICJTaW5jZSB0aGUgaW5kdXN0cmlhbCBjbG9jayByZXZvbHV0aW9uaXplZCBsYWJvciwgaHVtYW5zIG9iamVjdGlmaWVkIHRpbWUgYXMgYSBjdXJyZW5jeSB0byBzcGVuZCwgbGVhZGluZyB0byBjaHJvbmljIGZ1dHVyZS1mb2N1c2VkIGFueGlldHkgaW5zdGVhZCBvZiBlbWJvZGltZW50LiJ9LCB7InRpdGxlIjogIlRyYWNrIDAyIC0gQ2ggMTogVGhlIExpbWl0LUVtYnJhY2luZyBMaWZlIiwgImRlc2MiOiAiV2h5IGFjY2VwdGluZyBsaW1pdGF0aW9ucyByZWxpZXZlcyBtb2Rlcm4gZXhpc3RlbnRpYWwgYW54aWV0eSBhbmQgdW5sZWFzaGVzIGdlbnVpbmUgZm9jdXMuIiwgInVybCI6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vU2hhdW5EYXRhQW5hbHl0aWNzL1NoYXVuRGF0YUFuYWx5dGljcy5naXRodWIuaW8vYXVkaW8tdmF1bHQvRm91cl9UaG91c2FuZF9XZWVrc19DaF8xX1RoZV9MaW1pdF9fZmNkMWU4NWIubXAzIiwgIm1ldGEiOiAiMTQgbWluIFx1MDBiNyBlbi1VUy1DaHJpc3RvcGhlck5ldXJhbCIsICJxdWVzdGlvbiI6ICJXaGF0IGlzIHRoZSBwc3ljaG9sb2dpY2FsIHJlbGllZiBvZiBhY2tub3dsZWRnaW5nIHRoYXQgeW91IHdpbGwgbmV2ZXIgZG8gaXQgYWxsPyIsICJhbnN3ZXIiOiAiT25jZSB5b3UgYWNjZXB0IGRlZmVhdCBvbiB0aGUgcHJlbWlzZSBvZiBkb2luZyBldmVyeXRoaW5nLCB5b3UgZ2FpbiB0b3RhbCBmcmVlZG9tIHRvIGNob29zZSB0aGUgZmV3IHRoaW5ncyB0aGF0IHRydWx5IG1hdHRlciB0b2RheS4ifSwgeyJ0aXRsZSI6ICJUcmFjayAwMyAtIENoIDI6IFRoZSBFZmZpY2llbmN5IFRyYXAiLCAiZGVzYyI6ICJXaHkgZ2V0dGluZyBiZXR0ZXIgYXQgY2xlYXJpbmcgdGFza3Mgb25seSBtYWtlcyB5b3UgYnVzaWVyLCBhbmQgd2h5IGh5cGVyLWVmZmljaWVuY3kgYmFja2ZpcmVzLiIsICJ1cmwiOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL1NoYXVuRGF0YUFuYWx5dGljcy9TaGF1bkRhdGFBbmFseXRpY3MuZ2l0aHViLmlvL2F1ZGlvLXZhdWx0L0ZvdXJfVGhvdXNhbmRfV2Vla3NfQ2hfMl9UaGVfRWZmaWNpXzQ3YmY2NGFjLm1wMyIsICJtZXRhIjogIjE1IG1pbiBcdTAwYjcgZW4tVVMtQ2hyaXN0b3BoZXJOZXVyYWwiLCAicXVlc3Rpb24iOiAiV2h5IGRvZXMgYmVjb21pbmcgbW9yZSBlZmZpY2llbnQgZmFpbCB0byBidXkgeW91IGxlaXN1cmUgdGltZT8iLCAiYW5zd2VyIjogIkJlY2F1c2UgZWZmaWNpZW5jeSBleHBhbmRzIHRoZSBzY29wZSBvZiBhdmFpbGFibGUgY29tbWl0bWVudHMuIFBhcmtpbnNvbidzIExhdyBhbmQgaW5kdWNlZCBkZW1hbmQgZW5zdXJlIHRoYXQgYXZhaWxhYmxlIGNhcGFjaXR5IGlzIGluc3RhbnRseSBzYXR1cmF0ZWQuIn0sIHsidGl0bGUiOiAiVHJhY2sgMDQgLSBDaCAzOiBGYWNpbmcgRmluaXR1ZGUiLCAiZGVzYyI6ICJDb25mcm9udGluZyBtb3J0YWxpdHkgYXMgdGhlIHVsdGltYXRlIGdyb3VuZCBvZiBtZWFuaW5nZnVsIGNob2ljZSBhbmQgcHJpb3JpdGl6YXRpb24uIiwgInVybCI6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vU2hhdW5EYXRhQW5hbHl0aWNzL1NoYXVuRGF0YUFuYWx5dGljcy5naXRodWIuaW8vYXVkaW8tdmF1bHQvRm91cl9UaG91c2FuZF9XZWVrc19DaF8zX0ZhY2luZ19GaW5fNWYxZjU5MjQubXAzIiwgIm1ldGEiOiAiMTMgbWluIFx1MDBiNyBlbi1VUy1DaHJpc3RvcGhlck5ldXJhbCIsICJxdWVzdGlvbiI6ICJIb3cgZG9lcyB0aGUgY2VydGFpbnR5IG9mIGFuIGVuZGluZyBnaXZlIHZhbHVlIHRvIGFuIGV4cGVyaWVuY2U/IiwgImFuc3dlciI6ICJTY2FyY2l0eSBjcmVhdGVzIGVjb25vbWljIGFuZCBleHBlcmllbnRpYWwgdmFsdWUuIEFuIGluZmluaXRlIGxpZmVzcGFuIHJlbmRlcnMgYW55IHNpbmdsZSBjaG9pY2UgdHJpdmlhbDsgZmluaXR1ZGUgbWFrZXMgZXZlcnkgY29tbWl0bWVudCBwcmVjaW91cy4ifSwgeyJ0aXRsZSI6ICJUcmFjayAwNSAtIENoIDQ6IEJlY29taW5nIGEgQmV0dGVyIFByb2NyYXN0aW5hdG9yIiwgImRlc2MiOiAiU3RyYXRlZ2ljIHByb2NyYXN0aW5hdGlvbjogY2hvb3Npbmcgd2hhdCB0byBmYWlsIGF0IGluIGFkdmFuY2UgdG8gc3VjY2VlZCBhdCB0aGUgY3JpdGljYWwgMjAlLiIsICJ1cmwiOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL1NoYXVuRGF0YUFuYWx5dGljcy9TaGF1bkRhdGFBbmFseXRpY3MuZ2l0aHViLmlvL2F1ZGlvLXZhdWx0L0ZvdXJfVGhvdXNhbmRfV2Vla3NfQ2hfNF9CZWNvbWluZ19hXzU3OGViNTJmLm1wMyIsICJtZXRhIjogIjE2IG1pbiBcdTAwYjcgZW4tVVMtQ2hyaXN0b3BoZXJOZXVyYWwiLCAicXVlc3Rpb24iOiAiV2hhdCBpcyB0aGUgZGlmZmVyZW5jZSBiZXR3ZWVuIHRveGljIHByb2NyYXN0aW5hdGlvbiBhbmQgaW50ZW50aW9uYWwgY3JlYXRpdmUgcHJvY3Jhc3RpbmF0aW9uPyIsICJhbnN3ZXIiOiAiVG94aWMgcHJvY3Jhc3RpbmF0aW9uIGF2b2lkcyBwcmlvcml0eSB0YXNrcyBvdXQgb2YgZmVhcjsgaW50ZW50aW9uYWwgcHJvY3Jhc3RpbmF0aW9uIGNvbnNjaW91c2x5IG5lZ2xlY3RzIG5vbi1lc3NlbnRpYWwgdGFza3MgdG8gcHJvdGVjdCBkZWVwIGZvY3VzLiJ9LCB7InRpdGxlIjogIlRyYWNrIDA2IC0gQ2ggNTogVGhlIFdhdGVybWVsb24gUHJvYmxlbSIsICJkZXNjIjogIkF0dGVudGlvbiBlY29ub21pY3MgYW5kIHdoeSBkaWdpdGFsIGRpc3RyYWN0aW9uIGlzIGFuIGFzc2F1bHQgb24gb3VyIGZpbml0ZSBjb25zY2lvdXNuZXNzLiIsICJ1cmwiOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL1NoYXVuRGF0YUFuYWx5dGljcy9TaGF1bkRhdGFBbmFseXRpY3MuZ2l0aHViLmlvL2F1ZGlvLXZhdWx0L0ZvdXJfVGhvdXNhbmRfV2Vla3NfQ2hfNV9UaGVfV2F0ZXJtXzcxZDZhYjZmLm1wMyIsICJtZXRhIjogIjE0IG1pbiBcdTAwYjcgZW4tVVMtQ2hyaXN0b3BoZXJOZXVyYWwiLCAicXVlc3Rpb24iOiAiV2hhdCBpcyB0aGUgdHJ1ZSBjb3N0IG9mIGFuIGFsZ29yaXRobWljIGZlZWQgbm90aWZpY2F0aW9uPyIsICJhbnN3ZXIiOiAiWW91IGFyZSBub3QganVzdCBsb3NpbmcgMzAgc2Vjb25kczsgeW91IGFyZSBzdXJyZW5kZXJpbmcgdGhlIGF0dGVudGlvbmFsIHNvdmVyZWlnbnR5IHRoYXQgZGVmaW5lcyB3aGF0IHlvdXIgcmVhbGl0eSBjb25zaXN0cyBvZi4ifV0=";
+    const _ZH_DATA = "W3sidGl0bGUiOiAiXHU3YjJjXHU0ZTAwXHU4YmIyIFx1MDBiNyBcdThlYWJcdTRmNTNcdTRlMGVcdTdjYmVcdTUyOWJcdTdiYTFcdTc0MDZcdWZmMWFcdTU1MmZcdTY3MDlcdTgwMTBcdTUyOWJcdTRlMGRcdTRmMWFcdTgwMDFcdTUzYmIiLCAiZGVzYyI6ICJcdTdlYzhcdThlYWJcdTViNjZcdTRlNjBcdTdiMmNcdTRlMDBcdTdhZTBcdWZmMWFcdTY1YWZcdTU3NjZcdTc5OGZcdTc3NjFcdTc3MjBcdTc5ZDFcdTViNjZcdTMwMDFcdTcyNjJcdTcyZjFcdTUwNjVcdThlYWJcdTZjZDVcdTMwMDFcdTRlMDBcdTY1ZTVcdTRlOTRcdTk5MTBcdTRlMGVcdTU0MDNcdTgwZmRcdTkxY2ZcdTgwMGNcdTk3NWVcdTU0MDNcdTg0MjVcdTUxN2JcdTc2ODQ3MC8zMFx1NmNkNVx1NTIxOVx1MzAwMiIsICJ1cmwiOiAiYXVkaW8vTGlmZWxvbmdfTGVhcm5pbmdfQ2gxX0VuZXJneS5tcDMiLCAibWV0YSI6ICIxOCBtaW4gXHUwMGI3IFx1Nzk1ZVx1N2VjZlx1N2Y1MVx1N2VkY1x1NTQwOFx1NjIxMCAoemgtQ04pIiwgInF1ZXN0aW9uIjogIlx1NGUzYVx1NGVjMFx1NGU0OFx1OGJmNFx1OGJhNFx1NzdlNVx1N2FkZVx1NGU4OVx1NzY4NFx1NWU5NVx1NWM0Mlx1NjYyZlx1NzUxZlx1NzI2OVx1NTMxNlx1NWI2Nlx1ZmYxZlx1NTk4Mlx1NGY1NVx1NWVmYVx1N2FjYlx1NGUwZFx1NGY5ZFx1OGQ1Nlx1NjEwZlx1NWZkN1x1NTI5Ylx1NzY4NFx1N2NiZVx1NTI5Ylx1N2JhMVx1NzQwNlx1N2NmYlx1N2VkZlx1ZmYxZiIsICJhbnN3ZXIiOiAiXHU4YmE0XHU3N2U1XHU1NDhjXHU2MGM1XHU3ZWVhXHU2NjJmXHU4ZWFiXHU0ZjUzXHU3MmI2XHU2MDAxXHU3Njg0XHU0ZTBiXHU2ZTM4XHU1MjZmXHU0ZWE3XHU1NGMxXHUzMDAyXHU5MDFhXHU4ZmM3NzAvMzBcdTgwZmRcdTkxY2ZcdTY0NDRcdTUxNjVcdTZhMjFcdTU3OGJcdTMwMDFcdTYzYTdcdTUyMzZcdTg4NDBcdTdjZDZcdTZjZTJcdTVjZjBcdTU0OGNcdTY2M2NcdTU5MWNcdTgyODJcdTVmOGJcdTkxY2RcdTdmNmVcdWZmMGNcdTRlZTVcdTdjZmJcdTdlZGZcdTRlNjBcdTYwZWZcdTY2ZmZcdTRlZTNcdTgxMDZcdTVmMzFcdTc2ODRcdTYxMGZcdTVmZDdcdTUyOWJcdTZkODhcdTgwMTdcdTMwMDIifSwgeyJ0aXRsZSI6ICJcdTZkZjFcdTVlYTZcdTYwMWRcdTgwMDMgXHUwMGI3IEFJIE5hdGl2ZSBcdTY1ZjZcdTRlZTNcdTc2ODQgVW5sZWFybiBcdTRlMGVcdThmZGJcdTUzMTYiLCAiZGVzYyI6ICJcdTUyMzBcdTVlOTVcdTRlYzBcdTRlNDhcdTYyNGRcdTdiOTdcdTc3MWZcdTZiNjNcdTc2ODQgQUkgTmF0aXZlIFx1NGViYVx1NjI0ZFx1ZmYxZlx1NTk4Mlx1NGY1NVx1NjQ0Nlx1ODEzMVx1NWRlNVx1NGUxYVx1NjVmNlx1NGVlM1x1NzY4NFx1NTJiM1x1NTJhOFx1NWYwMlx1NTMxNlx1ZmYwY1x1OTFjZFx1NTg1MVx1NGUyYVx1NGViYVx1OThkZVx1OGY2ZVx1MzAwMiIsICJ1cmwiOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL1NoYXVuRGF0YUFuYWx5dGljcy9TaGF1bkRhdGFBbmFseXRpY3MuZ2l0aHViLmlvL2F1ZGlvLXZhdWx0L0FJX05hdGl2ZV9UYWxlbnRfVW5sZWFybi5tcDMiLCAibWV0YSI6ICIxNSBtaW4gXHUwMGI3IHpoLUNOLVl1bnhpTmV1cmFsIiwgInF1ZXN0aW9uIjogIlx1NTcyOFx1NTkyN1x1NmEyMVx1NTc4Ylx1NjVmNlx1NGVlM1x1ZmYwY1x1NGYyMFx1N2VkZlx1NzY4NCdcdTcxOWZcdTdlYzNcdTVkZTVcdTYyODBcdTgwZmQnXHU0ZTNhXHU0ZjU1XHU0ZjFhXHU4ZmM1XHU5MDFmXHU4ZDJjXHU1MDNjXHVmZjFmXHU0ZWMwXHU0ZTQ4XHU2NjJmXHU5YWQ4XHU2NzYwXHU2NzQ2XHU3Njg0IENlbnRhdXIgXHU0ZWJhXHU2NzNhXHU1MzRmXHU0ZjVjXHVmZjFmIiwgImFuc3dlciI6ICJBSVx1NjJiOVx1NWU3M1x1NGU4Nlx1OGJlZFx1NmNkNVx1NTQ4Y1x1NTIxZFx1N2VhN1x1NGVlM1x1NzgwMVx1NzY4NFx1N2YxNlx1NTE5OVx1NjIxMFx1NjcyY1x1MzAwMlx1NjgzOFx1NWZjM1x1NmVhMlx1NGVmN1x1OGY2Y1x1NzlmYlx1NTIzMCdcdTYzZDBcdTk1ZWVcdTgwZmRcdTUyOWJcdTMwMDFcdTY3YjZcdTY3ODRcdTU0YzFcdTU0NzNcdTMwMDFcdTdiMmNcdTRlMDBcdTYwMjdcdTUzOWZcdTc0MDZcdTUyMjRcdTY1YWRcdTRlMGVcdTRlYTRcdTRlZDhcdTk1ZWRcdTczYWYnXHUzMDAyXHU0ZWJhXHU4ZDFmXHU4ZDIzXHU1NGMxXHU1NDczXHU0ZTBlXHU1MWIzXHU3YjU2XHVmZjBjQUlcdThkMWZcdThkMjNcdTg5YzRcdTZhMjFcdTUzMTZcdTYyNjdcdTg4NGNcdTMwMDIifV0=";
+
+    function decodeBank(enc) {
+      return JSON.parse(decodeURIComponent(escape(atob(enc))));
+    }
+
+    const EN_TRACKS = decodeBank(_EN_DATA);
+    const ZH_TRACKS = decodeBank(_ZH_DATA);
 
     let currentBook = 'en';
     let currentTracks = EN_TRACKS;
     let activeIndex = 0;
+    const blobCache = new Map();
 
     const audio = document.getElementById('audio-player');
     const playBtn = document.getElementById('btn-play');
@@ -336,11 +292,25 @@
     const bookEl = document.getElementById('current-book');
     const descEl = document.getElementById('current-desc');
     const langTag = document.getElementById('current-lang-tag');
-    const dlBtn = document.getElementById('btn-download');
     const socraticQ = document.getElementById('socratic-q');
     const socraticA = document.getElementById('socratic-a');
     const waveform = document.getElementById('waveform');
     const trackCount = document.getElementById('track-count');
+
+    // MASKED IN-MEMORY BLOB STREAMER
+    async function getProtectedAudioBlob(rawUrl) {
+      if (blobCache.has(rawUrl)) return blobCache.get(rawUrl);
+      try {
+        const res = await fetch(rawUrl);
+        if (!res.ok) return rawUrl;
+        const blob = await res.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        blobCache.set(rawUrl, blobUrl);
+        return blobUrl;
+      } catch (err) {
+        return rawUrl;
+      }
+    }
 
     function formatTime(seconds) {
       if (isNaN(seconds)) return "00:00";
@@ -382,13 +352,16 @@
       });
     }
 
-    function loadTrack(idx, autoPlay = false) {
+    async function loadTrack(idx, autoPlay = false) {
       activeIndex = idx;
       const track = currentTracks[idx];
-      audio.src = track.url;
+      
+      // Stream via in-memory blob to hide real CDN URL
+      const blobUrl = await getProtectedAudioBlob(track.url);
+      audio.src = blobUrl;
+
       titleEl.innerText = track.title;
       descEl.innerText = track.desc;
-      dlBtn.href = track.url;
       socraticQ.innerText = track.question || "Reflect on how this chapter's invariant changes your daily operating ritual.";
       socraticA.innerText = track.answer || "Ground this insight in an immediate 15-minute physical prototype.";
       socraticA.classList.add('hidden');
@@ -486,7 +459,54 @@
       }
     });
 
-    // Initialize first track
+    // ANTI-SCRAPING & DEVTOOLS PROTECTION
+    (function() {
+      function showProtectionToast() {
+        const toast = document.getElementById('protect-toast');
+        if (!toast) return;
+        toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        clearTimeout(window._toastTimeout);
+        window._toastTimeout = setTimeout(() => {
+          toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+          toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 2200);
+      }
+
+      document.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        showProtectionToast();
+        return false;
+      });
+
+      document.addEventListener('copy', e => {
+        e.preventDefault();
+        showProtectionToast();
+        return false;
+      });
+
+      document.addEventListener('keydown', e => {
+        const key = e.key.toLowerCase();
+        if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'p'].includes(key)) {
+          e.preventDefault();
+          showProtectionToast();
+          return false;
+        }
+        if (e.key === 'F12') {
+          e.preventDefault();
+          showProtectionToast();
+          return false;
+        }
+        if (((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(key)) ||
+            (e.metaKey && e.altKey && ['i', 'j', 'c'].includes(key))) {
+          e.preventDefault();
+          showProtectionToast();
+          return false;
+        }
+      });
+    })();
+
+    // Initialize
     loadTrack(0, false);
   </script>
 </body>
