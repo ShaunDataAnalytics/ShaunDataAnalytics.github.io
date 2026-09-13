@@ -31,6 +31,9 @@ export default async function Home() {
     }))
   );
 
+  const aiProjects = projectsWithStars.filter((p) => p.projectGroup === "ai");
+  const dataProjects = projectsWithStars.filter((p) => p.projectGroup === "data");
+
   return (
     <div className="relative min-h-screen bg-zinc-50 dark:bg-zinc-950">
       <Navbar />
@@ -40,21 +43,43 @@ export default async function Home() {
         <TechStackGrid />
         <CareerTimeline />
 
-        <section id="projects" className="py-16 scroll-mt-24">
+        {/* 1. AI USE CASES & INTERACTIVE DEMOS */}
+        <section id="ai-projects" className="py-16 scroll-mt-24">
           <div className="mb-12 text-center">
             <span className="rounded-full bg-cyan-500/10 px-3.5 py-1 text-xs font-bold text-cyan-600 dark:bg-cyan-400/10 dark:text-cyan-400">
-              Selected Work
+              AI Systems & Interactive Labs
             </span>
             <h2 className="mt-3 text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 sm:text-4xl">
-              Featured Case Studies & Projects
+              🤖 AI Use Cases & Interactive Demos
             </h2>
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 max-w-lg mx-auto">
-              Explore in-depth technical breakdowns, algorithms, and interactive live simulations.
+            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">
+              Autonomous workflows, neural speech synthesis pipelines (Edge-TTS), and active Socratic sparring engines solving real retention & productivity friction.
             </p>
           </div>
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
-            {projectsWithStars.map((project, index) => (
+            {aiProjects.map((project, index) => (
+              <ProjectCard key={project.slug} project={project} index={index} />
+            ))}
+          </div>
+        </section>
+
+        {/* 2. DATA ANALYTICS & MACHINE LEARNING CASE STUDIES */}
+        <section id="data-projects" className="py-16 scroll-mt-24 border-t border-zinc-200 dark:border-zinc-800/80">
+          <div className="mb-12 text-center">
+            <span className="rounded-full bg-indigo-500/10 px-3.5 py-1 text-xs font-bold text-indigo-600 dark:bg-indigo-400/10 dark:text-indigo-400">
+              Analytics Engineering & ML
+            </span>
+            <h2 className="mt-3 text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 sm:text-4xl">
+              📊 Data Analytics & Machine Learning Projects
+            </h2>
+            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">
+              End-to-end data pipelines, unsupervised 3D clustering, regression modeling, and financial box office ROI analytics.
+            </p>
+          </div>
+
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
+            {dataProjects.map((project, index) => (
               <ProjectCard key={project.slug} project={project} index={index} />
             ))}
           </div>

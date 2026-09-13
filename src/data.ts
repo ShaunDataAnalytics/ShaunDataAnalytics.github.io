@@ -40,7 +40,8 @@ export type Project = {
   tech: string[];
   repoUrl: string;
   demoUrl?: string;
-  category: "Machine Learning" | "Data Analytics" | "Web App" | "Productivity";
+  category: "AI Systems" | "Machine Learning" | "Data Analytics" | "Web App" | "Productivity";
+  projectGroup?: "ai" | "data";
   featured: boolean;
   metrics: MetricHighlight[];
   quickHighlights: string[];
@@ -67,6 +68,7 @@ export const projects: Project[] = [
     repoUrl: "https://github.com/ShaunDataAnalytics/data-science-portfolio-labs",
     demoUrl: "https://github.com/ShaunDataAnalytics/data-science-portfolio-labs",
     category: "Machine Learning",
+    projectGroup: "data",
     featured: true,
     quickHighlights: [
       "Optimal Cluster Validation via Elbow Method & Silhouette Analysis",
@@ -158,6 +160,7 @@ print(f"Optimal Silhouette Score: {score:.3f} | Variance Explained: {pca_3d.expl
     repoUrl: "https://github.com/ShaunDataAnalytics/collaborative-book-recommender-engine",
     demoUrl: "https://github.com/ShaunDataAnalytics/collaborative-book-recommender-engine",
     category: "Machine Learning",
+    projectGroup: "data",
     featured: true,
     quickHighlights: [
       "Matrix Sparsity Reduction on 1.1M User-Item Interactions",
@@ -258,6 +261,7 @@ def recommend_books(book_name: str, top_k: int = 5):
     repoUrl: "https://github.com/ShaunDataAnalytics/real-estate-valuation-ml",
     demoUrl: "https://github.com/ShaunDataAnalytics/real-estate-valuation-ml",
     category: "Machine Learning",
+    projectGroup: "data",
     featured: true,
     quickHighlights: [
       "35+ Engineered Structural, Amenity, and Interaction Features",
@@ -324,6 +328,7 @@ def recommend_books(book_name: str, top_k: int = 5):
     repoUrl: "https://github.com/ShaunDataAnalytics/TMDB-Dataset",
     demoUrl: "https://github.com/ShaunDataAnalytics/TMDB-Dataset",
     category: "Data Analytics",
+    projectGroup: "data",
     featured: true,
     quickHighlights: [
       "10,800+ Movie Financial Records Ingested & Cleaned",
@@ -378,6 +383,7 @@ def recommend_books(book_name: str, top_k: int = 5):
     repoUrl: "https://github.com/ShaunDataAnalytics/focus-pomodoro-chrome-extension",
     demoUrl: "https://github.com/ShaunDataAnalytics/focus-pomodoro-chrome-extension",
     category: "Productivity",
+    projectGroup: "ai",
     featured: true,
     quickHighlights: [
       "Manifest V3 Background Service Worker Architecture",
@@ -420,7 +426,8 @@ def recommend_books(book_name: str, top_k: int = 5):
     tech: ["JavaScript", "Tailwind CSS", "DAX", "Power BI", "Active Recall"],
     repoUrl: "https://github.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io",
     demoUrl: "/demos/powerbi-studio/",
-    category: "Data Analytics",
+    category: "AI Systems",
+    projectGroup: "ai",
     featured: true,
     quickHighlights: [
       "60-Question Curated PL-300 Diagnostic Problem Bank",
@@ -472,7 +479,8 @@ def recommend_books(book_name: str, top_k: int = 5):
     tech: ["Web Audio API", "Edge-TTS", "Python", "Tailwind CSS", "Socratic Sparring"],
     repoUrl: "https://github.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io",
     demoUrl: "/demos/bilingual-audio/",
-    category: "Productivity",
+    category: "AI Systems",
+    projectGroup: "ai",
     featured: true,
     quickHighlights: [
       "Bilingual Streaming: English (Four Thousand Weeks) & Chinese (终身学习)",

@@ -32,16 +32,18 @@ export default function Navbar() {
             Timeline
           </Link>
           <Link
-            href="/#projects"
-            className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+            href="/#ai-projects"
+            className="text-sm font-bold text-cyan-600 transition-colors hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 flex items-center gap-1"
           >
-            Projects
+            <span>🤖</span>
+            <span>AI Demos</span>
           </Link>
           <Link
-            href="/projects/clustering-analytics"
-            className="text-sm font-medium text-cyan-600 dark:text-cyan-400 hover:underline"
+            href="/#data-projects"
+            className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 flex items-center gap-1"
           >
-            Featured Demo ✨
+            <span>📊</span>
+            <span>Data Projects</span>
           </Link>
         </nav>
 
