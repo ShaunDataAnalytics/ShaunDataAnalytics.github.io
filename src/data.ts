@@ -434,7 +434,6 @@ def recommend_books(book_name: str, top_k: int = 5):
       "Dual-language neural voice player solving screen fatigue and commute retention loss. Combines Edge-TTS high-fidelity models (en-US / zh-CN) with in-player Socratic oral recall drills.",
     tech: ["Web Audio API", "Edge-TTS", "Python", "Tailwind CSS", "Socratic Sparring"],
     repoUrl: "https://github.com/ShaunDataAnalytics/ShaunDataAnalytics.github.io",
-    demoUrl: "/demos/bilingual-audio/",
     category: "AI Systems",
     projectGroup: "ai",
     featured: true,
