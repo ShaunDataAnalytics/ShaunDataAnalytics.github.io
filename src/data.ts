@@ -632,4 +632,106 @@ LIMIT 5;`,
       "Increased knowledge retention by pairing auditory immersion with instant Socratic recall tests.",
     ],
   },
+  {
+    slug: "career-pulse-quiz",
+    title: "Career Pulse · Career Anxiety & Persona Quiz",
+    subtitle: "Interactive Behavioral Diagnostic Engine & 80/20 Actionable Breakthrough Lab",
+    description:
+      "A mobile-first behavioral assessment and diagnostic tool helping job seekers identify hidden psychological bottlenecks (imposter syndrome, resume perfectionism paralysis, spray-and-pray burnout). Features real-time state machines, 1080x1440 HD canvas shareable poster export, and zero-cost client-side scoring.",
+    tech: ["JavaScript", "HTML5 Canvas", "Pico CSS", "State Machine", "QRCode.js", "Local-First"],
+    repoUrl: "https://github.com/ShaunDataAnalytics/career-pulse-quiz",
+    demoUrl: "https://shaundataanalytics.github.io/career-pulse-quiz/",
+    category: "AI Systems",
+    projectGroup: "ai",
+    featured: true,
+    quickHighlights: [
+      "6 Immersive Scenario Questions Diagnosing Job Search Friction & Inaction",
+      "4 Granular Psychological Archetypes with Actionable 80/20 Breakthrough Playbooks",
+      "High-Performance HTML5 Canvas Rendering 1080x1440 Shareable Social Posters",
+      "100% Client-Side Local State Machine: Zero Server Dependency, Zero Cloud Cost",
+    ],
+    metrics: [
+      { label: "Diagnostic Scenarios", value: "6 Questions" },
+      { label: "Persona Archetypes", value: "4 Archetypes" },
+      { label: "Poster Generation", value: "1080x1440 HD" },
+      { label: "Client Latency", value: "< 10ms" },
+    ],
+    problemStatement:
+      "Job seekers frequently face severe emotional exhaustion, imposter syndrome, and analysis paralysis during prolonged search cycles. Most career advice prescribes generic resume updates or endless application volume, treating surface symptoms rather than the root psychological blockers (e.g. over-preparation vs. fear of rejection). Career Pulse provides an instant, interactive behavioral diagnostic that categorizes distinct inertia archetypes and offers concrete 80/20 micro-protocols.",
+    architectureFlow: [
+      { step: "01", title: "Scenario Diagnostics", tool: "Vanilla JS / DOM", description: "Presents 6 high-resonance situational dilemmas across application, interview, and follow-up stages." },
+      { step: "02", title: "State Machine Engine", tool: "Local State / Storage", description: "Tracks multi-dimensional user choice vectors with seamless back-navigation and state persistence." },
+      { step: "03", title: "Archetype Scoring", tool: "Scoring Algorithm", description: "Evaluates dominant response patterns to map users into 1 of 4 tailored behavioral personas." },
+      { step: "04", title: "HD Canvas Generation", tool: "HTML5 Canvas API", description: "Renders branded 1080x1440 high-density social posters with custom text typography and QR code." },
+      { step: "05", title: "Actionable Conversion", tool: "Community / Form", description: "Guides users into supportive community cohorts and structured 1-on-1 coaching workflows." },
+    ],
+    phases: [
+      {
+        phaseNumber: 1,
+        phaseName: "Pedagogical Persona & Question Design",
+        objective: "Structure high-resonance job seeker dilemmas and map 4 distinct inertia archetypes.",
+        tech: ["Behavioral Psychology", "Persona Mapping", "SCQA"],
+        deliverables: [
+          "Developed 6 situational questions testing delivery confidence, rejection reaction, and daily routines.",
+          "Profiled 4 core archetypes: 全装仓鼠型, 地毯扫射型, 高敏占卜型, and 深水隐忍型.",
+          "Formulated targeted 80/20 cognitive de-escalation protocols for each profile.",
+        ],
+      },
+      {
+        phaseNumber: 2,
+        phaseName: "Lightweight Zero-Dependency UI Architecture",
+        objective: "Build an ultra-responsive, mobile-first single-page app with fluid state management.",
+        tech: ["HTML5", "Pico CSS", "Vanilla JavaScript"],
+        deliverables: [
+          "Engineered interactive progress bar, smooth transition animations, and instantaneous option feedback.",
+          "Implemented local storage caching to preserve user progress across accidental page refreshes.",
+          "Zero build step requirement: 100% vanilla browser execution with sub-10ms response times.",
+        ],
+      },
+      {
+        phaseNumber: 3,
+        phaseName: "Canvas Poster Generation & Mobile Ergonomics",
+        objective: "Enable 1-click viral sharing via client-side high-resolution poster compilation.",
+        tech: ["HTML5 Canvas", "QRCode.js", "Blob API"],
+        deliverables: [
+          "Engineered 1080x1440 portrait poster renderer with dynamic text wrapping and color gradients.",
+          "Integrated on-the-fly QR code generation for effortless peer sharing in mobile browsers.",
+          "Provided native long-press save and copy-to-clipboard invitation templates.",
+        ],
+      },
+    ],
+    keyResults: [
+      "Sub-10ms instant response time across mobile and desktop devices with zero server operating cost.",
+      "Delivered native 1080x1440 mobile poster generator with dynamic SVG/Canvas QR composition.",
+      "Equipped job seekers with actionable clarity, dismantling imposter syndrome into high-leverage micro-actions.",
+    ],
+    codeSnippet: {
+      language: "javascript",
+      title: "Client-Side 1080x1440 HD Poster Canvas Renderer",
+      code: `// Dynamic 1080x1440 Canvas Social Poster Generator
+function generatePoster(result, answers) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1080;
+  canvas.height = 1440;
+  const ctx = canvas.getContext('2d');
+  
+  // Render Background Gradient & Card Frames
+  drawBackground(ctx, 1080, 1440);
+  
+  // Render Result Persona Title & 80/20 Breakthrough Rule
+  ctx.font = 'bold 54px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+  ctx.fillStyle = '#0f172a';
+  ctx.fillText(result.personaName, 80, 240);
+  
+  // Wrap and render personalized psychological diagnosis
+  wrapText(ctx, result.diagnosisText, 80, 360, 920, 48);
+  
+  // Composite Dynamic QR Code onto canvas for viral social sharing
+  QRCode.toCanvas(qrContainer, result.shareUrl, { width: 160 }, (err, qrCanvas) => {
+    ctx.drawImage(qrCanvas, 840, 1200, 160, 160);
+  });
+  return canvas.toDataURL('image/png');
+}`,
+    },
+  },
 ];

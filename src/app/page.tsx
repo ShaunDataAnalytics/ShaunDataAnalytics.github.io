@@ -57,7 +57,7 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
             {aiProjects.map((project, index) => (
               <ProjectCard key={project.slug} project={project} index={index} />
             ))}
