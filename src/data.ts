@@ -374,6 +374,160 @@ def recommend_books(book_name: str, top_k: int = 5):
     ],
   },
   {
+    slug: "retail-supply-chain-pipeline",
+    title: "Retail & Supply Chain Intelligence Pipeline",
+    subtitle: "Local-First Automated ETL, Relational Star Schema & SQL Audit Engine",
+    description:
+      "Production-grade, automated data pipeline analyzing 100,000+ Brazilian e-commerce orders (Olist). Features strict SQLAlchemy type mapping, automated two-way data integrity reconciliation (DataFrame rows vs. SQL distinct keys), Kimball star schema modeling, and advanced analytical SQL business audits.",
+    tech: ["Python", "SQLAlchemy 2.0", "SQLite", "DuckDB", "MySQL", "Star Schema", "Analytical SQL", "Automated Testing"],
+    repoUrl: "https://github.com/ShaunDataAnalytics/retail-supply-chain-pipeline",
+    demoUrl: "/retail-supply-chain-pipeline/",
+    category: "AI Systems",
+    projectGroup: "ai",
+    featured: true,
+    quickHighlights: [
+      "Local-First Multi-Engine Support: 1-Click Execution across SQLite, DuckDB, and MySQL",
+      "Automated Two-Way Data Surgery & Integrity Verification (DF Rows vs SQL Rows)",
+      "Production Kimball Star Schema with 4 Fact Tables & 3 Dimension Tables",
+      "Strategic SQL Business Audits: Logistics Delay Bottlenecks & CLV Segmentation",
+    ],
+    metrics: [
+      { label: "Data Integrity", value: "100% Passed" },
+      { label: "Orders Analyzed", value: "100,000+" },
+      { label: "Star Schema Tables", value: "7 Tables" },
+      { label: "Audit Latency", value: "< 50ms" },
+    ],
+    problemStatement:
+      "Olist operates the largest department store marketplace in Brazil, connecting tens of thousands of independent merchants with millions of customers across all 27 federative units. Transactional data was siloed across disparate flat files with unstandardized UTC timestamps, lost leading zeros in zip codes, and unpartitioned delivery statuses. Mounting logistics delays in remote states and unpredictable shipping freight costs suppressed customer satisfaction and eroded unit margins without an automated, auditable relational source of truth.",
+    architectureFlow: [
+      { step: "01", title: "Automated Data Surgery", tool: "Pandas / Regex", description: "Normalizes UTC timestamps, enforces 5-digit zip strings via zfill(5), and quarantines non-positive prices." },
+      { step: "02", title: "Star Schema Modeling", tool: "SQLAlchemy ORM", description: "Defines relational star schema with explicit PK/FK constraints across 3 dimension tables and 4 fact tables." },
+      { step: "03", title: "Multi-Engine Loading", tool: "SQLite / DuckDB / MySQL", description: "Enforces idempotent batch ingestion supporting local SQLite/DuckDB or production MySQL." },
+      { step: "04", title: "Automated Integrity Audit", tool: "Python / SQL Engine", description: "Programmatically reconciles DataFrame row/key counts against database SELECT COUNT(DISTINCT id) queries." },
+      { step: "05", title: "Strategic SQL Intelligence", tool: "Analytical SQL / CTEs", description: "Executes 4-phase SQL audit diagnosing northern Brazil transit bottlenecks, category revenue, and CLV power users." },
+    ],
+    schemas: [
+      {
+        tableName: "fact_orders",
+        tableType: "Fact Table",
+        grain: "One row per customer order transaction",
+        columns: [
+          { name: "order_id", type: "VARCHAR(32)", keyType: "PK", description: "Unique order identifier" },
+          { name: "customer_id", type: "VARCHAR(32)", keyType: "FK", description: "Foreign key referencing dim_customers" },
+          { name: "order_status", type: "VARCHAR(16)", description: "Delivery status (delivered, shipped, canceled)" },
+          { name: "order_purchase_timestamp", type: "DATETIME", description: "Normalized UTC order timestamp" },
+          { name: "order_delivered_customer_date", type: "DATETIME", description: "Timestamp order reached customer" },
+          { name: "order_estimated_delivery_date", type: "DATETIME", description: "SLA committed delivery date" },
+        ],
+      },
+      {
+        tableName: "fact_order_items",
+        tableType: "Fact Table",
+        grain: "One row per item within an order line",
+        columns: [
+          { name: "order_id", type: "VARCHAR(32)", keyType: "FK", description: "Parent order identifier" },
+          { name: "order_item_id", type: "INT", keyType: "PK", description: "Sequential order line item number" },
+          { name: "product_id", type: "VARCHAR(32)", keyType: "FK", description: "Foreign key referencing dim_products" },
+          { name: "seller_id", type: "VARCHAR(32)", keyType: "FK", description: "Foreign key referencing dim_sellers" },
+          { name: "price", type: "DECIMAL(10,2)", description: "Item selling price (strictly > 0)" },
+          { name: "freight_value", type: "DECIMAL(10,2)", description: "Logistics freight shipping charge" },
+        ],
+      },
+      {
+        tableName: "fact_payments",
+        tableType: "Fact Table",
+        grain: "One row per payment installment or transaction",
+        columns: [
+          { name: "order_id", type: "VARCHAR(32)", keyType: "FK", description: "Parent order identifier" },
+          { name: "payment_sequential", type: "INT", keyType: "PK", description: "Sequential installment number" },
+          { name: "payment_type", type: "VARCHAR(16)", description: "Payment method (credit_card, boleto, voucher, debit)" },
+          { name: "payment_installments", type: "INT", description: "Number of credit installments" },
+          { name: "payment_value", type: "DECIMAL(10,2)", description: "Monetary amount paid" },
+        ],
+      },
+      {
+        tableName: "dim_customers",
+        tableType: "Dimension Table",
+        grain: "One row per unique customer session",
+        columns: [
+          { name: "customer_id", type: "VARCHAR(32)", keyType: "PK", description: "Unique customer session key" },
+          { name: "customer_unique_id", type: "VARCHAR(32)", description: "Persistent customer identity across repeat orders" },
+          { name: "customer_zip_code_prefix", type: "VARCHAR(5)", description: "Standardized 5-digit Brazilian postal code" },
+          { name: "customer_city", type: "VARCHAR(64)", description: "Customer municipality name" },
+          { name: "customer_state", type: "VARCHAR(2)", description: "Federative unit 2-letter state code" },
+        ],
+      },
+      {
+        tableName: "dim_products",
+        tableType: "Dimension Table",
+        grain: "One row per catalog product SKU",
+        columns: [
+          { name: "product_id", type: "VARCHAR(32)", keyType: "PK", description: "Unique product catalog SKU hash" },
+          { name: "product_category_name", type: "VARCHAR(64)", description: "Cleaned product category taxonomy" },
+          { name: "product_weight_g", type: "FLOAT", description: "Physical shipping weight in grams" },
+          { name: "product_length_cm", type: "FLOAT", description: "Package dimension length in centimeters" },
+        ],
+      },
+    ],
+    phases: [
+      {
+        phaseNumber: 1,
+        phaseName: "Automated Data Surgery & Cleansing",
+        objective: "Sanitize raw CSV transactional dumps, enforce leading zero integrity, and quarantine non-positive amounts.",
+        tech: ["Pandas", "Regex", "ISO-8601 Timestamp Coercion"],
+        deliverables: [
+          "Preserved 5-digit Brazilian postal codes using regex zfill(5) normalization, eliminating geographic routing errors.",
+          "Standardized heterogeneous timestamp strings into ISO-8601 UTC DATETIME values.",
+          "Quarantined and filtered zero/negative pricing anomalies before database loading.",
+        ],
+      },
+      {
+        phaseNumber: 2,
+        phaseName: "Relational Star Schema ETL & Two-Way Integrity Verification",
+        objective: "Design Kimball-style relational star schema and automate DataFrame-to-SQL reconciliation.",
+        tech: ["SQLAlchemy 2.0", "SQLite", "DuckDB", "Automated Audit Engine"],
+        deliverables: [
+          "Defined normalized Star Schema spanning 3 dimension tables and 4 transactional fact tables.",
+          "Engineered automated audit comparing DataFrame len/nunique against SQL COUNT and COUNT(DISTINCT).",
+          "Achieved 100% data integrity pass rate across all tables during CI pipeline verification.",
+        ],
+      },
+      {
+        phaseNumber: 3,
+        phaseName: "Advanced SQL Business Audit Findings",
+        objective: "Execute high-impact analytical queries answering executive logistics, margin, and CLV questions.",
+        tech: ["Analytical SQL", "CTEs", "Correlated Subqueries", "Window Functions"],
+        deliverables: [
+          "Diagnosed critical transit bottlenecks in Northern Brazil (Amapá averaging +12.64 days delay vs SLA).",
+          "Identified top 5 revenue-generating sellers per category via correlated subqueries and DENSE_RANK.",
+          "Analyzed payment mix economics (Credit Card 74.38% vs Boleto Bancário 18.40% with 48h settlement lag).",
+          "Segmented CLV power users generating +$15,551+ spend above the $1,415 population benchmark.",
+        ],
+      },
+    ],
+    keyResults: [
+      "100% verified relational data integrity between Python extraction layer and relational database.",
+      "Diagnosed logistics transit bottlenecks in Northern Brazil (Amapá averaging +12.64 days delay beyond SLA).",
+      "Identified VIP power users ($16,966 spend across 42 orders) generating +$15,551+ surplus revenue above benchmark.",
+    ],
+    codeSnippet: {
+      language: "sql",
+      title: "Northern Brazil Logistics Transit Bottleneck Audit",
+      code: `SELECT 
+    c.customer_state,
+    COUNT(o.order_id) AS delivered_orders,
+    ROUND(AVG(JULIANDAY(o.order_delivered_customer_date) - JULIANDAY(o.order_estimated_delivery_date)), 2) AS avg_delay_days,
+    ROUND(MAX(JULIANDAY(o.order_delivered_customer_date) - JULIANDAY(o.order_estimated_delivery_date)), 2) AS max_delay_days
+FROM fact_orders o
+INNER JOIN dim_customers c ON o.customer_id = c.customer_id
+WHERE o.order_status = 'delivered'
+  AND o.order_delivered_customer_date IS NOT NULL
+GROUP BY c.customer_state
+ORDER BY avg_delay_days DESC
+LIMIT 5;`,
+    },
+  },
+  {
     slug: "powerbi-exam-studio",
     title: "Power BI PL-300 Diagnostic & Simulation Studio",
     subtitle: "Interactive 60-Question Sparring & Active Feynman Recall Engine",

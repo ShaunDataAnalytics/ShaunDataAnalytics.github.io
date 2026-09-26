@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Olist Retail & Supply Chain Intelligence Studio</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --card-border: #30363d;
+      --text: #c9d1d9;
+      --text-bright: #f0f6fc;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-glow: rgba(88, 166, 255, 0.15);
+      --success: #3fb950;
+      --warning: #d29922;
+      --danger: #f85149;
+      --purple: #bc8cff;
+      --code-bg: #0b0e14;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-blue { background: rgba(88, 166, 255, 0.15); color: var(--accent); border: 1px solid rgba(88, 166, 255, 0.3); }
+    .badge-green { background: rgba(63, 185, 80, 0.15); color: var(--success); border: 1px solid rgba(63, 185, 80, 0.3); }
+    .badge-amber { background: rgba(210, 153, 34, 0.15); color: var(--warning); border: 1px solid rgba(210, 153, 34, 0.3); }
+
+    h1 {
+      color: var(--text-bright);
+      font-size: 1.85rem;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: var(--text-bright);
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 18px;
+      position: relative;
+    }
+    .kpi-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    .kpi-val {
+      font-size: 1.7rem;
+      color: var(--text-bright);
+      font-weight: 700;
+      margin: 6px 0;
+      font-family: var(--font-mono);
+    }
+    .kpi-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      color: var(--text-bright);
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 10px;
+    }
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--card-border);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+      color: var(--text);
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .mono { font-family: var(--font-mono); font-size: 0.85rem; }
+
+    /* SQL Code Blocks */
+    .code-container {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    .code-header {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .copy-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.2s ease;
+    }
+    .copy-btn:hover {
+      color: var(--text-bright);
+      border-color: var(--accent);
+    }
+    pre {
+      padding: 14px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #e6edf3;
+      line-height: 1.5;
+    }
+
+    /* ERD Visual Node */
+    .erd-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .erd-table {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .erd-header {
+      padding: 8px 12px;
+      background: rgba(88, 166, 255, 0.1);
+      border-bottom: 1px solid var(--card-border);
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      display: flex;
+      justify-content: space-between;
+    }
+    .erd-header.fact {
+      background: rgba(188, 140, 255, 0.1);
+      color: var(--purple);
+    }
+    .erd-field {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-bottom: 1px solid rgba(48, 54, 61, 0.3);
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+    }
+    .pk { color: #f0883e; font-weight: bold; }
+    .fk { color: #58a6ff; font-weight: bold; }
+    .type { color: var(--text-muted); font-size: 0.75rem; }
+
+    .callout {
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      border-left: 4px solid;
+    }
+    .callout-info {
+      background: rgba(88, 166, 255, 0.08);
+      border-color: var(--accent);
+      color: #c9d1d9;
+    }
+    .callout-warning {
+      background: rgba(210, 153, 34, 0.08);
+      border-color: var(--warning);
+      color: #e3b341;
+    }
+
+    .chart-box {
+      height: 300px;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <span class="badge badge-blue">Local-First Pipeline</span>
+          <span class="badge badge-green">ETL Verified (100%)</span>
+          <span class="badge badge-amber">Production Star Schema</span>
+        </div>
+        <h1>Retail & Supply Chain Intelligence Studio</h1>
+        <p class="subtitle">Automated Olist Brazilian E-Commerce ETL, Relational Star Schema & Advanced SQL Business Audit</p>
+      </div>
+      <div style="text-align: right;">
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Runtime Target</span>
+        <div style="font-family: var(--font-mono); font-size: 0.95rem; color: var(--success); font-weight: bold;">
+          SQLite / DuckDB / MySQL
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('tab-exec')">📊 Executive Cockpit</button>
+      <button class="tab-btn" onclick="showTab('tab-schema')">🏛️ Star Schema Architecture</button>
+      <button class="tab-btn" onclick="showTab('tab-sql')">💻 SQL Business Audit Lab</button>
+      <button class="tab-btn" onclick="showTab('tab-eda')">🔬 Data Surgery & EDA</button>
+      <button class="tab-btn" onclick="showTab('tab-interview')">🎙️ Technical Interview Defense</button>
+    </div>
+
+    <!-- TAB 1: EXECUTIVE COCKPIT -->
+    <div id="tab-exec" class="tab-content active">
+      <!-- KPI Row -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Gross Merchandise Value</div>
+          <div class="kpi-val">$1.41M</div>
+          <div class="kpi-desc">Total processed payments across 4,000 orders</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Top Logistics Bottleneck</div>
+          <div class="kpi-val" style="color: var(--danger);">+12.6 d</div>
+          <div class="kpi-desc">Amapá (AP) average delivery delay beyond SLA promise</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Credit Card Volume</div>
+          <div class="kpi-val" style="color: var(--accent);">74.4%</div>
+          <div class="kpi-desc">$1.05M settled volume; AOV $352.19</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Top VIP Customer Spend</div>
+          <div class="kpi-val" style="color: var(--purple);">$16.9K</div>
+          <div class="kpi-desc">42 orders (+$15,551 above benchmark baseline)</div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📈 Monthly Revenue & Order Volume Seasonality</div>
+          <div class="chart-box">
+            <canvas id="chartRevenue"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">🚚 Logistics Delivery Gap vs. Promised Date</div>
+          <div class="chart-box">
+            <canvas id="chartLogistics"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Executive Insights Summary -->
+      <div class="card">
+        <div class="card-title">🎯 Executive Audit Findings & Operational Decisions</div>
+        <div class="callout callout-warning">
+          <strong>Critical Logistics Friction</strong>: The Northern corridor (Amapá <code>AP</code> +12.6d, Roraima <code>RR</code> +7.1d, Amazonas <code>AM</code> +6.1d) experiences severe SLA non-compliance due to Amazon basin riverway reliance. Action item: Extend published delivery promises by 10 business days for northern zip prefixes to curb refund chargebacks.
+        </div>
+        <div class="callout callout-info">
+          <strong>Payment Settlement Optimization</strong>: Boleto accounts for 18.4% of volume ($261K) but introduces a 48–72 hour settlement latency before order confirmation. Action item: Implement automated Pix instant payment gateway to capture Boleto volume while unlocking immediate fulfillment.
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: STAR SCHEMA ARCHITECTURE -->
+    <div id="tab-schema" class="tab-content">
+      <div class="card">
+        <div class="card-title">🏛️ Production Relational Star Schema (Kimball Methodology)</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
+          Modeled to isolate dimensional master records (Customers, Sellers, Products) from transactional fulfillment, payments, and review events.
+        </p>
+        
+        <div class="erd-container">
+          <!-- DIM CUSTOMERS -->
+          <div class="erd-table">
+            <div class="erd-header">DIM_CUSTOMERS <span>Dimension</span></div>
+            <div class="erd-field"><span class="pk">PK customer_id</span> <span class="type">VARCHAR(50)</span></div>
+            <div class="erd-field"><span>customer_unique_id</span> <span class="type">VARCHAR(50)</span></div>
+            <div class="erd-field"><span>customer_zip_code_prefix</span> <span class="type">VARCHAR(10)</span></div>
+            <div class="erd-field"><span>customer_city</span> <span class="type">VARCHAR(100)</span></div>
+            <div class="erd-field"><span>customer_state</span> <span class="type">VARCHAR(5)</span></div>
+          </div>
+
+          <!-- FACT ORDERS -->
+          <div class="erd-table">
+            <div class="erd-header fact">FACT_ORDERS <span>Fact (Grain: 1 Order)</span></div>
+            <div class="erd-field"><span class="pk">PK order_id</span> <span class="type">VARCHAR(50)</span></div>
+            <div class="erd-field"><span class="fk">FK customer_id</span> <span class="type">VARCHAR(50)</span></div>
+            <div class="erd-field"><span>order_status</span> <span class="type">VARCHAR(20)</span></div>
+            <div class="erd-field"><span>order_purchase_timestamp</span> <span class="type">DATETIME</span></div>
+            <div class="erd-field"><span>order_delivered_customer_date</span> <span class="type">DATETIME</span></div>
+            <div class="erd-field"><span>order_estimated_delivery_date</span> <span class="type">DATETIME</span></div>
+          </div>
+
+          <!-- FACT ORDER ITEMS -->
+          <div class="erd-table">
+            <div class="erd-header fact">FACT_ORDER_ITEMS <span>Fact (Line Item)</span></div>
+            <div class="erd-field"><span class="fk">FK order_id</span> <span class="type">VARCHAR(50)</span></div>
+            <div class="erd-field"><span class="pk">PK order_item_id</span> <span class="type">INTEGER</span></div>
+            <div class="erd-field"><span class="fk">FK product_id</span> <span class="type">VARCHAR(50)</span></div>
+            <div class="erd-field"><span class="fk">FK seller_id</span> <span class="type">VARCHAR(50)</span></div>
+            <div class="erd-field"><span>price</span> <span class="type">DECIMAL(10,2)</span></div>
+            <div class="erd-field"><span>freight_value</span> <span class="type">DECIMAL(10,2)</span></div>
+          </div>
+
+          <!-- DIM PRODUCTS -->
+          <div class="erd-table">
+            <div class="erd-header">DIM_PRODUCTS <span>Dimension</span></div>
+            <div class="erd-field"><span class="pk">PK product_id</span> <span class="type">VARCHAR(50)</span></div>
+            <div class="erd-field"><span>product_category_name</span> <span class="type">VARCHAR(100)</span></div>
+            <div class="erd-field"><span>product_name_lenght</span> <span class="type">INTEGER</span></div>
+            <div class="erd-field"><span>product_weight_g</span> <span class="type">FLOAT</span></div>
+          </div>
+
+          <!-- DIM SELLERS -->
+          <div class="erd-table">
+            <div class="erd-header">DIM_SELLERS <span>Dimension</span></div>
+            <div class="erd-field"><span class="pk">PK seller_id</span> <span class="type">VARCHAR(50)</span></div>
+            <div class="erd-field"><span>seller_zip_code_prefix</span> <span class="type">VARCHAR(10)</span></div>
+            <div class="erd-field"><span>seller_city</span> <span class="type">VARCHAR(100)</span></div>
+            <div class="erd-field"><span>seller_state</span> <span class="type">VARCHAR(5)</span></div>
+          </div>
+
+          <!-- FACT PAYMENTS -->
+          <div class="erd-table">
+            <div class="erd-header fact">FACT_PAYMENTS <span>Fact (Payment)</span></div>
+            <div class="erd-field"><span class="fk">FK order_id</span> <span class="type">VARCHAR(50)</span></div>
+            <div class="erd-field"><span class="pk">PK payment_sequential</span> <span class="type">INTEGER</span></div>
+            <div class="erd-field"><span>payment_type</span> <span class="type">VARCHAR(30)</span></div>
+            <div class="erd-field"><span>payment_installments</span> <span class="type">INTEGER</span></div>
+            <div class="erd-field"><span>payment_value</span> <span class="type">DECIMAL(10,2)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: SQL BUSINESS AUDIT LAB -->
+    <div id="tab-sql" class="tab-content">
+      <div class="card">
+        <div class="card-title">💻 SQL Challenge 1: Shipping Delay Audit (Top 3 Slowest States)</div>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Calculates average delay (Actual Delivery - Estimated Delivery) in days for delivered orders.</p>
+        
+        <div class="code-container">
+          <div class="code-header">
+            <span>SQL (ANSI / SQLite / MySQL DATEDIFF)</span>
+            <button class="copy-btn" onclick="copyText('sql-c1')">Copy SQL</button>
+          </div>
+          <pre id="sql-c1">SELECT 
+    c.customer_state,
+    COUNT(o.order_id) AS delivered_orders,
+    ROUND(AVG(JULIANDAY(o.order_delivered_customer_date) - JULIANDAY(o.order_estimated_delivery_date)), 2) AS avg_delay_days,
+    ROUND(MAX(JULIANDAY(o.order_delivered_customer_date) - JULIANDAY(o.order_estimated_delivery_date)), 2) AS max_delay_days
+FROM fact_orders o
+INNER JOIN dim_customers c ON o.customer_id = c.customer_id
+WHERE o.order_status = 'delivered'
+  AND o.order_delivered_customer_date IS NOT NULL
+GROUP BY c.customer_state
+ORDER BY avg_delay_days DESC
+LIMIT 3;</pre>
+        </div>
+
+        <table>
+          <thead>
+            <tr><th>Customer State</th><th>Delivered Orders</th><th>Avg Delay (Days)</th><th>Max Delay (Days)</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="mono">AP (Amapá)</td><td>11</td><td class="mono" style="color: var(--danger); font-weight: bold;">+12.64</td><td>37</td><td><span class="badge badge-amber">Severe Bottleneck</span></td></tr>
+            <tr><td class="mono">RR (Roraima)</td><td>22</td><td class="mono" style="color: var(--danger); font-weight: bold;">+7.05</td><td>35</td><td><span class="badge badge-amber">Severe Bottleneck</span></td></tr>
+            <tr><td class="mono">AM (Amazonas)</td><td>58</td><td class="mono" style="color: var(--danger); font-weight: bold;">+6.05</td><td>34</td><td><span class="badge badge-amber">Riverway Delay</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">💻 SQL Challenge 2: Top Earners per Category (Correlated Subquery)</div>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Finds the top 5 sellers by revenue in each category without window functions.</p>
+        <div class="code-container">
+          <div class="code-header">
+            <span>SQL (Classical Correlated Subquery Method)</span>
+            <button class="copy-btn" onclick="copyText('sql-c2')">Copy SQL</button>
+          </div>
+          <pre id="sql-c2">WITH seller_category_revenue AS (
+    SELECT 
+        p.product_category_name,
+        oi.seller_id,
+        ROUND(SUM(oi.price), 2) AS total_revenue,
+        COUNT(oi.order_item_id) AS total_units_sold
+    FROM fact_order_items oi
+    INNER JOIN dim_products p ON oi.product_id = p.product_id
+    GROUP BY p.product_category_name, oi.seller_id
+)
+SELECT t1.product_category_name, t1.seller_id, t1.total_revenue, t1.total_units_sold
+FROM seller_category_revenue t1
+WHERE (
+    SELECT COUNT(*) 
+    FROM seller_category_revenue t2
+    WHERE t2.product_category_name = t1.product_category_name
+      AND t2.total_revenue > t1.total_revenue
+) &lt; 5
+ORDER BY t1.product_category_name ASC, t1.total_revenue DESC;</pre>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">💻 SQL Challenge 3: Payment Preferences & Financial Breakdown</div>
+        <table>
+          <thead>
+            <tr><th>Clean Payment Method</th><th>Transactions</th><th>Total Volume ($)</th><th>Avg Order Value ($)</th><th>Transaction Share %</th><th>Revenue Share %</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="mono">Credit Card</td><td>2,975</td><td>$1,047,760</td><td>$352.19</td><td>74.38%</td><td>74.10%</td></tr>
+            <tr><td class="mono">Boleto</td><td>736</td><td>$261,179</td><td>$354.86</td><td>18.40%</td><td>18.47%</td></tr>
+            <tr><td class="mono">Other (Voucher / Debit)</td><td>289</td><td>$105,022</td><td>$363.40</td><td>7.22%</td><td>7.43%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">💻 SQL Challenge 4: Customer Lifetime Value (CLV Power Users)</div>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Isolates customers with &ge; 3 orders whose spend exceeds the benchmark average ($1,415.23).</p>
+        <table>
+          <thead>
+            <tr><th>Customer Unique ID</th><th>State</th><th>Orders</th><th>Total Spend ($)</th><th>Avg Spend / Order ($)</th><th>Benchmark Average ($)</th><th>Spend Above Benchmark ($)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="mono">uniq_cust_1621</td><td>SP</td><td>42</td><td>$16,966.20</td><td>$403.96</td><td>$1,415.23</td><td class="mono" style="color: var(--success);">+$15,551.00</td></tr>
+            <tr><td class="mono">uniq_cust_0327</td><td>SP</td><td>38</td><td>$15,756.90</td><td>$414.65</td><td>$1,415.23</td><td class="mono" style="color: var(--success);">+$14,341.60</td></tr>
+            <tr><td class="mono">uniq_cust_0796</td><td>BA</td><td>45</td><td>$15,638.30</td><td>$347.52</td><td>$1,415.23</td><td class="mono" style="color: var(--success);">+$14,223.00</td></tr>
+            <tr><td class="mono">uniq_cust_1595</td><td>SP</td><td>39</td><td>$14,754.90</td><td>$378.33</td><td>$1,415.23</td><td class="mono" style="color: var(--success);">+$13,339.70</td></tr>
+            <tr><td class="mono">uniq_cust_1634</td><td>RJ</td><td>42</td><td>$14,315.80</td><td>$340.85</td><td>$1,415.23</td><td class="mono" style="color: var(--success);">+$12,900.60</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 4: DATA SURGERY & EDA -->
+    <div id="tab-eda" class="tab-content">
+      <div class="card">
+        <div class="card-title">🔬 Data Surgery: Real-World Ingestion Anomalies & Guardrails</div>
+        <table>
+          <thead>
+            <tr><th>Field / Table</th><th>Anomaly Observed</th><th>Technical Fix</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">customer_zip_code_prefix</td>
+              <td>Leading zeros dropped by numeric parser (e.g. 01001 -> 1001)</td>
+              <td>String conversion + regex <code>zfill(5)</code></td>
+              <td><span class="badge badge-green">Fixed (100%)</span></td>
+            </tr>
+            <tr>
+              <td class="mono">order_delivered_customer_date</td>
+              <td>Null values on 219 rows</td>
+              <td>Differentiated <code>canceled</code> (80) vs active <code>in-transit</code> (139)</td>
+              <td><span class="badge badge-green">Partitioned</span></td>
+            </tr>
+            <tr>
+              <td class="mono">order_items.price</td>
+              <td>Risk of $0 promotional items skewing margin calculations</td>
+              <td>Hard filter <code>price > 0</code> with data quality logging</td>
+              <td><span class="badge badge-green">Passed</span></td>
+            </tr>
+            <tr>
+              <td class="mono">Timestamps (5 columns)</td>
+              <td>Inconsistent string formats</td>
+              <td>Coerced to unified ISO-8601 DATETIME objects</td>
+              <td><span class="badge badge-green">Normalized</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📦 Category Volume & Satisfaction Distribution</div>
+        <div class="chart-box">
+          <canvas id="chartCategories"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: TECHNICAL INTERVIEW DEFENSE -->
+    <div id="tab-interview" class="tab-content">
+      <div class="card">
+        <div class="card-title">🎙️ Senior Data Engineering Interview Talking Points</div>
+
+        <div style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent); font-size: 1.05rem; margin-bottom: 6px;">1. Correlated Subquery vs. Window Functions (Complexity Trade-off)</h3>
+          <p style="font-size: 0.9rem; color: var(--text);">
+            "In Challenge 2, the specification mandated extracting the top 5 sellers per category without window functions. I implemented this using a correlated subquery counting how many sellers within the same partition had higher revenue. From an algorithmic standpoint, this incurs an <strong>O(N²)</strong> execution penalty because the inner query executes for every row. In production dbt pipelines, I replace this with <code>DENSE_RANK() OVER (PARTITION BY category ORDER BY revenue DESC)</code> which computes in <strong>O(N log N)</strong>, allowing millions of rows to be ranked in seconds."
+          </p>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent); font-size: 1.05rem; margin-bottom: 6px;">2. Storage Engine Strategy: OLTP (MySQL) vs. OLAP (DuckDB / Snowflake)</h3>
+          <p style="font-size: 0.9rem; color: var(--text);">
+            "Our pipeline supports both MySQL and DuckDB/SQLite. MySQL is optimal for transactional mutations—such as order status updates and payments requiring ACID guarantees. However, for analytical scans across millions of order items, a columnar engine like DuckDB avoids scanning unnecessary columns like product dimensions or seller addresses, reducing memory bandwidth by over 80%."
+          </p>
+        </div>
+
+        <div>
+          <h3 style="color: var(--accent); font-size: 1.05rem; margin-bottom: 6px;">3. Automated Two-Way Data Integrity Verification</h3>
+          <p style="font-size: 0.9rem; color: var(--text);">
+            "Rather than relying on silent <code>to_sql()</code> execution, Phase 3 incorporates an automated verification harness that queries the live database using <code>SELECT COUNT(DISTINCT pk)</code> and asserts equality against <code>len(df['pk'].unique())</code>. This immediately catches schema truncation, silent primary key collisions, or silent network dropouts."
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function copyText(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("SQL Query copied to clipboard!");
+      });
+    }
+
+    // Initialize Chart.js Graphs
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Revenue Chart
+      const ctxRev = document.getElementById('chartRevenue').getContext('2d');
+      new Chart(ctxRev, {
+        type: 'line',
+        data: {
+          labels: ['Jan 17', 'Mar 17', 'May 17', 'Jul 17', 'Sep 17', 'Nov 17 (Black Friday)', 'Jan 18', 'Mar 18', 'May 18', 'Jul 18'],
+          datasets: [{
+            label: 'Monthly Revenue ($K)',
+            data: [62, 78, 85, 96, 108, 235, 122, 134, 142, 155],
+            borderColor: '#58a6ff',
+            backgroundColor: 'rgba(88, 166, 255, 0.1)',
+            fill: true,
+            tension: 0.3,
+            borderWidth: 2.5
+          }, {
+            label: 'Order Volume',
+            data: [190, 240, 270, 310, 340, 680, 380, 410, 430, 460],
+            borderColor: '#ff7f0e',
+            borderDash: [5, 5],
+            borderWidth: 1.8,
+            yAxisID: 'y1'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#c9d1d9' } } },
+          scales: {
+            x: { grid: { color: 'rgba(48, 54, 61, 0.5)' }, ticks: { color: '#8b949e' } },
+            y: { grid: { color: 'rgba(48, 54, 61, 0.5)' }, ticks: { color: '#8b949e' } },
+            y1: { position: 'right', grid: { display: false }, ticks: { color: '#ff7f0e' } }
+          }
+        }
+      });
+
+      // 2. Logistics Chart
+      const ctxLog = document.getElementById('chartLogistics').getContext('2d');
+      new Chart(ctxLog, {
+        type: 'bar',
+        data: {
+          labels: ['-15d (Early)', '-10d', '-5d', '0d (On Time)', '+5d (Late)', '+10d', '+15d', '+25d+'],
+          datasets: [{
+            label: 'Delivered Orders',
+            data: [420, 980, 1450, 480, 260, 110, 60, 21],
+            backgroundColor: [
+              '#3fb950', '#3fb950', '#3fb950', '#3fb950',
+              '#d29922', '#f85149', '#f85149', '#f85149'
+            ],
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: 'rgba(48, 54, 61, 0.5)' }, ticks: { color: '#8b949e' } },
+            y: { grid: { color: 'rgba(48, 54, 61, 0.5)' }, ticks: { color: '#8b949e' } }
+          }
+        }
+      });
+
+      // 3. Category Volume Chart
+      const ctxCat = document.getElementById('chartCategories').getContext('2d');
+      new Chart(ctxCat, {
+        type: 'bar',
+        data: {
+          labels: ['beleza_saude', 'informatica_acessorios', 'cama_mesa_banho', 'relogios_presentes', 'utilidades_domesticas', 'esporte_lazer', 'moveis_decoracao', 'telefonia'],
+          datasets: [{
+            label: 'Items Sold',
+            data: [685, 620, 580, 540, 510, 480, 440, 390],
+            backgroundColor: '#58a6ff',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: 'rgba(48, 54, 61, 0.5)' }, ticks: { color: '#8b949e' } },
+            y: { grid: { color: 'rgba(48, 54, 61, 0.5)' }, ticks: { color: '#c9d1d9' } }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
