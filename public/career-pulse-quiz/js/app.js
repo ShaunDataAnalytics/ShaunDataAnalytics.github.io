@@ -143,12 +143,12 @@
 
     el.app.innerHTML = `
       <header class="quiz-brand-bar">
-        <span>${escapeHtml(meta.brandName || "测评中心")}</span>
-        <span class="brand-badge">⚡ 体验版</span>
+        <span>${escapeHtml(meta.brandName || "Assessment Lab")}</span>
+        <span class="brand-badge">⚡ Live demo</span>
       </header>
 
       <section class="quiz-card cover-hero">
-        <div class="cover-badge">${escapeHtml(meta.badge || "个人优势与潜能探索")}</div>
+        <div class="cover-badge">${escapeHtml(meta.badge || "Self-discovery")}</div>
         <h1 class="cover-title">${escapeHtml(meta.title)}</h1>
         <div class="cover-subtitle">${escapeHtml(meta.subtitle)}</div>
 
@@ -158,10 +158,10 @@
 
         <div class="cover-meta-grid">
           <div class="cover-meta-item">
-            <span>⏱️</span> <span>${escapeHtml(meta.estimatedTime || "约 2 分钟")}</span>
+            <span>⏱️</span> <span>${escapeHtml(meta.estimatedTime || "~2 min")}</span>
           </div>
           <div class="cover-meta-item">
-            <span>📝</span> <span>共 ${qCount} 道精选单选题</span>
+            <span>📝</span> <span>${escapeHtml(meta.questionCountText || qCount + " scenario questions")}</span>
           </div>
         </div>
 
@@ -170,7 +170,7 @@
         </div>
 
         <button id="btn-start-quiz" class="btn-primary" style="width: 100%; font-size: 1.1rem; padding: 1rem;">
-          开始测评 🚀
+          Start quiz 🚀
         </button>
       </section>
     `;
@@ -212,7 +212,7 @@
     el.app.innerHTML = `
       <section class="quiz-progress-section">
         <div class="progress-header">
-          <span>进度：<span class="step-highlight">第 ${state.currentQuestionIndex + 1} / ${total} 题</span></span>
+          <span>Progress: <span class="step-highlight">Question ${state.currentQuestionIndex + 1} / ${total}</span></span>
           <span>${progressPct}%</span>
         </div>
         <div class="progress-track">
@@ -231,10 +231,10 @@
 
         <div class="nav-actions">
           <button id="btn-prev-question" class="btn-secondary">
-            ← 上一题
+            ← Previous
           </button>
           <button id="btn-next-question" class="btn-primary" ${canProceed ? "" : "disabled"}>
-            ${isLast ? "查看测评结果 🎯" : "下一题 →"}
+            ${isLast ? "See my type 🎯" : "Next →"}
           </button>
         </div>
       </section>
@@ -359,7 +359,7 @@
 
     el.app.innerHTML = `
       <section class="quiz-card result-header-card">
-        <div class="result-prefix">你的专属测评画像</div>
+        <div class="result-prefix">Your time personality type</div>
         <h1 class="result-name">${escapeHtml(result.name)}</h1>
         <div class="result-badge">${escapeHtml(result.badge)}</div>
 
@@ -368,31 +368,31 @@
         </div>
 
         <div style="text-align: left;">
-          <div class="result-section-title">💡 深度画像解析</div>
+          <div class="result-section-title">💡 Profile</div>
           <p class="result-summary-text">${escapeHtml(result.summary)}</p>
 
-          <div class="result-section-title">🌟 核心超能力</div>
+          <div class="result-section-title">🌟 Strengths</div>
           <ul class="feature-list">${strengthsHtml}</ul>
 
           ${
             result.pitfall
               ? `<div class="pitfall-box">
-                  <strong>⚠️ 潜在盲区警示：</strong>${escapeHtml(result.pitfall)}
+                  <strong>⚠️ Blind spot:</strong> ${escapeHtml(result.pitfall)}
                 </div>`
               : ""
           }
 
-          <div class="result-section-title">🚀 80/20 高效破局建议</div>
+          <div class="result-section-title">🚀 80/20 next steps</div>
           <ul class="feature-list">${adviceHtml}</ul>
         </div>
       </section>
 
       <section class="result-action-cluster">
         <button id="btn-open-poster-modal" class="btn-primary btn-generate-poster">
-          📸 生成高清分享海报
+          📸 Create share poster
         </button>
         <button id="btn-retest-quiz" class="btn-secondary btn-retest">
-          🔄 重新测评
+          🔄 Retake quiz
         </button>
       </section>
 
@@ -405,7 +405,7 @@
     });
 
     document.getElementById("btn-retest-quiz").addEventListener("click", () => {
-      if (confirm("确认要清除记录并重新进行测评吗？")) {
+      if (confirm("Clear your answers and start over?")) {
         resetQuiz();
       }
     });
@@ -415,7 +415,7 @@
    * 4. 生成分享海报（原生 Canvas 绘制 1080 x 1440 竖版图片）
    */
   function generateSharePoster(result) {
-    showToast("正在排版绘制高清海报，请稍候...");
+    showToast("Building your poster…");
 
     // 确保生成离屏二维码
     generateQrCodeImage(getShareUrl(), (qrCanvasOrImg) => {
@@ -546,7 +546,7 @@
     ctx.font = "bold 26px -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif";
     ctx.fillStyle = "#0d9488";
     ctx.textAlign = "center";
-    ctx.fillText(QUIZ_CONFIG.meta.badge || "✦ 个人优势与能量探索", width / 2, cursorY);
+    ctx.fillText(QUIZ_CONFIG.meta.badge || "✦ Time & energy diagnostic", width / 2, cursorY);
 
     cursorY += 55;
     ctx.font = "bold 44px -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif";
@@ -556,7 +556,7 @@
     cursorY += 45;
     ctx.font = "24px -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif";
     ctx.fillStyle = "#64748b";
-    ctx.fillText(QUIZ_CONFIG.meta.brandName || "Growth Lab 独家研发", width / 2, cursorY);
+    ctx.fillText(QUIZ_CONFIG.meta.brandName || "Career Pulse Lab", width / 2, cursorY);
 
     // 分割线
     cursorY += 45;
@@ -571,7 +571,7 @@
     cursorY += 65;
     ctx.font = "bold 28px -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif";
     ctx.fillStyle = "#64748b";
-    ctx.fillText("我的专属测试画像", width / 2, cursorY);
+    ctx.fillText("My time personality type", width / 2, cursorY);
 
     cursorY += 65;
     let nameFontSize = 52;
@@ -664,15 +664,15 @@
     ctx.textAlign = "left";
     ctx.font = "bold 28px -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif";
     ctx.fillStyle = "#0f766e";
-    ctx.fillText("长按或扫码 · 测测你的求职型格", footerX + 40, footerY + 66);
+    ctx.fillText("Scan · discover your time personality type", footerX + 40, footerY + 66);
 
-    ctx.font = "21px -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif";
+    ctx.font = "21px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
     ctx.fillStyle = "#64748b";
-    ctx.fillText("全国已有 3,600+ 求职伙伴参与测评", footerX + 40, footerY + 110);
+    ctx.fillText("Career Pulse · interactive demo", footerX + 40, footerY + 110);
 
-    ctx.font = "19px -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif";
+    ctx.font = "19px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
     ctx.fillStyle = "#94a3b8";
-    ctx.fillText(`共 ${QUIZ_CONFIG.questions.length} 道真实情景实测 · 获取专属破局指南`, footerX + 40, footerY + 150);
+    ctx.fillText(`${QUIZ_CONFIG.questions.length} scenarios · get your 80/20 playbook`, footerX + 40, footerY + 150);
 
     // 底部右侧绘制二维码
     const qrSize = 140;
@@ -692,7 +692,7 @@
       ctx.fillStyle = "#94a3b8";
       ctx.font = "18px sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText("扫码测试", qrX + qrSize / 2, qrY + qrSize / 2);
+      ctx.fillText("Scan to quiz", qrX + qrSize / 2, qrY + qrSize / 2);
     }
 
     // 8. 导出图像并弹窗展示
@@ -748,13 +748,13 @@
   function downloadPoster() {
     if (!state.generatedPosterDataUrl) return;
     const a = document.createElement("a");
-    const resultName = (QUIZ_CONFIG.results[state.resultKey] || {}).name || "测试结果";
-    a.download = `${resultName}-分享海报.png`;
+    const resultName = (QUIZ_CONFIG.results[state.resultKey] || {}).name || "quiz-result";
+    a.download = `${resultName}-poster.png`;
     a.href = state.generatedPosterDataUrl;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    showToast("海报下载已启动！若未自动保存请长按图片");
+    showToast("Download started — long-press the image if it did not save");
   }
 
   /**
@@ -772,11 +772,11 @@
     try {
       await navigator.share({
         title: QUIZ_CONFIG.meta.title,
-        text: `我测出了【${currentResult.name}】，快来看看你的能量人格！`,
+        text: `I got ${currentResult.name} on the Time Personality Type quiz — what's yours?`,
         url: shareUrl,
         files: [file]
       });
-      showToast("分享成功！");
+      showToast("Shared!");
     } catch (err) {
       if (err.name !== "AbortError") {
         console.warn("系统分享受限，转为直接下载", err);
@@ -791,7 +791,7 @@
   function copyInviteText() {
     const currentResult = QUIZ_CONFIG.results[state.resultKey] || QUIZ_CONFIG.results.A;
     const shareUrl = getShareUrl();
-    const template = QUIZ_CONFIG.meta.shareTemplate || "我刚刚测出了【{RESULT}】！快来测测你属于哪种风格 👉 {URL}";
+    const template = QUIZ_CONFIG.meta.shareTemplate || "I got {RESULT} on the Time Personality Type quiz 👉 {URL}";
     const fullText = template
       .replace("{RESULT}", currentResult.name)
       .replace("{URL}", shareUrl);
@@ -800,7 +800,7 @@
       navigator.clipboard
         .writeText(fullText)
         .then(() => {
-          showToast("已复制分享文案与链接！");
+          showToast("Invite text and link copied!");
         })
         .catch(() => {
           fallbackManualCopy(fullText);
@@ -818,7 +818,7 @@
       el.manualCopyBox.style.display = "block";
       el.manualCopyText.value = text;
       el.manualCopyText.select();
-      showToast("请长按或Ctrl+C复制下方文本框中的文案");
+      showToast("Long-press or Ctrl+C to copy the text below");
     }
   }
 

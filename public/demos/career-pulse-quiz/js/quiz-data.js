@@ -1,279 +1,173 @@
 /**
- * ===================================================================
- * 求职内耗型格测评配置中心 (Career Anxiety & Persona Quiz Data)
- * ===================================================================
- * 专为帮助求职焦虑群体设计：
- * 1. 集中管理测试文案、6 道沉浸式真实情景题、4 种内耗型格画像与计分规则
- * 2. 预留群二维码与 1 对 1 问卷预约转化入口，助推商业承接
- * ===================================================================
+ * Time Personality Type Quiz — configuration (Career Pulse demo)
+ * Six scenario questions · four time-personality archetypes · client-side scoring
  */
 
 const QUIZ_CONFIG = {
-  // 题库版本号：升级版本会自动刷新本地旧缓存，确保答题平滑
-  version: "2.0.0",
+  version: "2.1.0-en",
 
-  // 基础信息与分享文案
   meta: {
-    title: "求职内耗型格测评",
-    subtitle: "测测你在看机会中的核心内耗卡点与 80/20 破局出路",
-    badge: "✦ 2026 求职者减压与破局指南",
-    brandName: "Career Pulse · 求职能量与破局实验室",
-    estimatedTime: "约 2 分钟",
-    questionCountText: "共 6 道高共鸣情境题",
-    introText: "找工作的最大瓶颈往往不是能力，而是看不见的心理内耗。每天修改简历却不敢投递？已读不回就开始自我否定？通过 6 个极其真实的求职场景，测出你的隐性内耗模式，拿到专属于你的 80/20 脱困出路。",
-    coverTags: ["告别海投", "内耗脱敏", "拒绝内卷", "抱团取暖"],
-    // 公开分享的链接（用于海报二维码和复制分享，已精准对齐 GitHub Pages 公网地址）
+    title: "Time Personality Type Quiz",
+    subtitle: "How you spend attention under job-search pressure—and your 80/20 breakthrough path",
+    badge: "✦ 2026 Time & Energy Diagnostic",
+    brandName: "Career Pulse · Time Personality Lab",
+    estimatedTime: "~2 minutes",
+    questionCountText: "6 high-signal scenario questions",
+    introText:
+      "The bottleneck is often not skill—it is how your time personality reacts to uncertainty. Endless resume tweaks but no applications? Read receipts with no reply and instant self-doubt? Six realistic scenarios reveal your default time pattern and a focused 80/20 way forward.",
+    coverTags: ["Targeted apply", "Less rumination", "Sustainable pace", "Peer support"],
     publicShareUrl: "https://shaundataanalytics.github.io/career-pulse-quiz/",
-    // 默认分享邀请文案模板
-    shareTemplate: "我刚刚测出了求职画像【{RESULT}】！扎心了，完全在演我找工作时的状态。快来测测你在求职时属于哪种内耗型格 👉 {URL}"
+    shareTemplate:
+      "I got 【{RESULT}】 on the Time Personality Type quiz—it nailed how I use time when job searching. What's your type? 👉 {URL}",
   },
 
-  // 6 道场景情境题（每题 4 个选项，分别对应 A/B/C/D 四种型格）
   questions: [
     {
       id: 1,
-      title: "刷招聘软件时，看到一个业务方向非常心仪、但要求写着“5年以上经验（你只有 2-3 年）”的岗位，你的第一反应是？",
+      title:
+        'You see a role you love, but the posting asks for "5+ years" and you have 2–3. Your first instinct is to—',
       options: [
-        {
-          id: "A",
-          text: "默默收藏，打算先把相关技能网课刷一遍、补齐短板再去投递",
-          scoreTag: "A"
-        },
-        {
-          id: "B",
-          text: "管他呢！直接一键投递，反正投了不吃亏，全凭概率和运气",
-          scoreTag: "B"
-        },
-        {
-          id: "C",
-          text: "瞬间心虚，觉得自己根本不够格，自卑地退出了页面并开始怀疑人生",
-          scoreTag: "C"
-        },
-        {
-          id: "D",
-          text: "犹豫再三，想找前同事或朋友打听虚实但又怕麻烦别人，最后默默搁置",
-          scoreTag: "D"
-        }
-      ]
+        { id: "A", text: "Save it and plan to finish another course before applying", scoreTag: "A" },
+        { id: "B", text: "Apply anyway—volume and luck beat overthinking", scoreTag: "B" },
+        { id: "C", text: "Close the tab, feel unqualified, and question your path", scoreTag: "C" },
+        { id: "D", text: "Want to ask someone who works there but hesitate, then drop it", scoreTag: "D" },
+      ],
     },
     {
       id: 2,
-      title: "这一周你跟自己说要“全力以赴找工作”，但实际花时间最多的动作往往是？",
+      title: 'This week you said you would "go all in on the search." Where did most of your time actually go?',
       options: [
-        {
-          id: "A",
-          text: "反复调简历字体、排版间距，在小红书/Notion 疯狂收藏面试满分话术",
-          scoreTag: "A"
-        },
-        {
-          id: "B",
-          text: "在求职软件上疯狂批量点击向右滑动，连打招呼语都是系统默认模板",
-          scoreTag: "B"
-        },
-        {
-          id: "C",
-          text: "反复翻看之前面试的录音或被拒邮件，逐字逐句琢磨自己到底哪句话说砸了",
-          scoreTag: "C"
-        },
-        {
-          id: "D",
-          text: "把自己关在房间里疯狂刷题或自学，隔绝与外界一切沟通，不想让任何人知道",
-          scoreTag: "D"
-        }
-      ]
+        { id: "A", text: "Font spacing, resume versions, saving interview scripts on social apps", scoreTag: "A" },
+        { id: "B", text: "Mass swiping apply with default cover letters", scoreTag: "B" },
+        { id: "C", text: "Replaying rejections and parsing every word you said wrong", scoreTag: "C" },
+        { id: "D", text: "Solo grinding skills with zero outreach—you hide the search from everyone", scoreTag: "D" },
+      ],
     },
     {
       id: 3,
-      title: "投递出去的简历显示“HR 已读”，但过了整整两天毫无回音，你心里最先冒出的声音是？",
+      title: 'Your resume shows "Viewed by recruiter"—two days, no reply. The loudest inner voice says—',
       options: [
-        {
-          id: "A",
-          text: "“肯定是我简历里的项目量化指标还不够亮眼，我得再重写一版自我介绍”",
-          scoreTag: "A"
-        },
-        {
-          id: "B",
-          text: "“无所谓，下一个更乖！我再去扫射 20 家公司把基数堆上去”",
-          scoreTag: "B"
-        },
-        {
-          id: "C",
-          text: "“完蛋了，我果然能力不行，连初筛都过不了，我真是个一无是处的求职废物”",
-          scoreTag: "C"
-        },
-        {
-          id: "D",
-          text: "“唉，找工作真是一件让人身心俱疲的事，叹口气继续默默一个人扛着”",
-          scoreTag: "D"
-        }
-      ]
+        { id: "A", text: '"My metrics are not sharp enough—I need another rewrite"', scoreTag: "A" },
+        { id: "B", text: '"Whatever—next! I will blast 20 more companies today"', scoreTag: "B" },
+        { id: "C", text: '"I am worthless; I cannot even pass screening"', scoreTag: "C" },
+        { id: "D", text: "This is exhausting—you sigh and carry it alone", scoreTag: "D" },
+      ],
     },
     {
       id: 4,
-      title: "一场刚结束的面试中，面试官问了一个你没有准备到的冷门问题，你的真实反应是？",
+      title: "In an interview, you get a question you did not prep. Your honest reaction is—",
       options: [
-        {
-          id: "A",
-          text: "极度懊恼自己怎么没有把押题库扩充到 500 道，回家立刻通宵补课整理笔记",
-          scoreTag: "A"
-        },
-        {
-          id: "B",
-          text: "凭嘴瓢临场胡扯了一通，心里想着反正这家不行还有备胎，面完就忘",
-          scoreTag: "B"
-        },
-        {
-          id: "C",
-          text: "走出大楼的那一刻，那几秒钟的尴尬在脑海里疯狂循环播放，几天都缓不过来",
-          scoreTag: "C"
-        },
-        {
-          id: "D",
-          text: "全程保持礼貌微笑，但整个人像被抽空了电量，回家只想拉上窗帘倒头大睡",
-          scoreTag: "D"
-        }
-      ]
+        { id: "A", text: "Regret not having a 500-question bank—plan an all-nighter debrief", scoreTag: "A" },
+        { id: "B", text: "Wing it and forget—plenty of backups", scoreTag: "B" },
+        { id: "C", text: "Loop the awkward seconds for days", scoreTag: "C" },
+        { id: "D", text: "Smile through it, then crash at home with the curtains drawn", scoreTag: "D" },
+      ],
     },
     {
       id: 5,
-      title: "面对未知的空窗期与外界打听时，你最常使用的“心理防御姿势”是？",
+      title: "When people ask about your gap or search, your go-to defense is—",
       options: [
-        {
-          id: "A",
-          text: "“等我考下这个认证 / 做完这个个人项目，我再去大规模开启面试”",
-          scoreTag: "A"
-        },
-        {
-          id: "B",
-          text: "“只要我每天投递数字在往上涨，我今天就没有浪费时间，我有在努力”",
-          scoreTag: "B"
-        },
-        {
-          id: "C",
-          text: "“我可能天生不适合大厂/职场，或许我应该回老家考公或者随便找个班混着”",
-          scoreTag: "C"
-        },
-        {
-          id: "D",
-          text: "“在朋友圈偶尔发一条充实日常，假装自己一切都好，把焦虑深埋在心底”",
-          scoreTag: "D"
-        }
-      ]
+        { id: "A", text: '"After this cert / side project, I will go big on interviews"', scoreTag: "A" },
+        { id: "B", text: '"As long as my apply count rises, today was not wasted"', scoreTag: "B" },
+        { id: "C", text: '"Maybe I am not cut out for this—I should exit or settle"', scoreTag: "C" },
+        { id: "D", text: "Post a curated busy-life update while anxiety stays private", scoreTag: "D" },
+      ],
     },
     {
       id: 6,
-      title: "如果此刻上天给你一个“求职外挂”，你内心深处最渴望得到的是？",
+      title: 'If you could pick one "time hack" right now, you would want—',
       options: [
-        {
-          id: "A",
-          text: "一个能帮我砍掉 80% 冗余准备、逼我立刻带着 MVP 简历开枪的破局教练",
-          scoreTag: "A"
-        },
-        {
-          id: "B",
-          text: "一套不用再当盲目海投分母、能精准对接有效业务负责人的逆向求职路径",
-          scoreTag: "B"
-        },
-        {
-          id: "C",
-          text: "一次彻底的心理脱敏与认知重塑，让我重拾职业底气、不再把面试当审判",
-          scoreTag: "C"
-        },
-        {
-          id: "D",
-          text: "一个温暖同频的互助阵地，能告别单打独斗、共享内推资源并互相打气支撑",
-          scoreTag: "D"
-        }
-      ]
-    }
+        { id: "A", text: "A coach to cut 80% of prep and force a good-enough apply today", scoreTag: "A" },
+        { id: "B", text: "A path to the hiring manager—not blind ATS volume", scoreTag: "B" },
+        { id: "C", text: "A reset so interviews feel like conversations, not trials", scoreTag: "C" },
+        { id: "D", text: "A small crew for referrals, reality checks, and morale", scoreTag: "D" },
+      ],
+    },
   ],
 
-  // 4 种内耗型格画像定义
   results: {
     A: {
       key: "A",
-      name: "全装仓鼠型 (The Fully-Geared Hamster)",
-      badge: "面经收藏大师 · 简历微调强迫症 · 完美主义避难",
-      posterQuote: "只要我还在搜集资料、优化排版，我就不算真正被拒。",
-      summary: "你极其负责、追求卓越，但常常把“过度准备”当成了心理避风港。你总觉得自己还缺一个标杆案例、作品集还能再精修十遍，甚至把考证和屯课当成行动的替代品。你缺的从来不是能力，而是带着 80% 把握直接开枪的魄力。",
+      name: "The Preparation Timekeeper",
+      badge: "Research collector · resume perfection loop · readiness as shelter",
+      posterQuote: "As long as I am still optimizing, I am not truly rejected.",
+      summary:
+        "You care deeply about quality, but preparation can become a time personality: collecting resources beats shipping. One more portfolio pass, one more cert—readiness feels safer than market feedback. You rarely lack ability; you lack a clock that says 'good enough, send.'",
       strengths: [
-        "极强的信息整合与深度学习能力",
-        "交付细节把控严苛，输出品质极高",
-        "有清晰的系统性思维与长线储备"
+        "Strong synthesis and deep learning",
+        "High standards on deliverable quality",
+        "Systems thinking and long-horizon planning",
       ],
-      pitfall: "用“战术上的勤奋准备”掩盖对“真实市场拒绝”的恐惧，容易错失关键时间窗口。",
+      pitfall: "Tactical prep masks fear of rejection and burns the application window.",
       advice: [
-        "践行 15 分钟滑板 MVP：挑出一个核心岗位，不要再改版面，倒计时 15 分钟内必须点击投递。",
-        "完成优于完美：一份 80 分的简历投到合适的人手里，胜过在硬盘里发霉的 100 分完美简历。",
-        "在真实对抗中迭代：市场反馈才是最好的面试教程，把每一次被拒当成免费的压力测试。"
-      ]
+        "15-minute skateboard MVP: pick one role, no layout changes, hit submit before the timer ends.",
+        "An 80% resume in the right inbox beats a 100% file on your disk.",
+        "Treat each outcome as a free stress test—iterate from reality, not imagination.",
+      ],
     },
     B: {
       key: "B",
-      name: "地毯扫射型 (The Carpet Bomber)",
-      badge: "一键海投狂魔 · 动作麻木替代思考 · 运气博弈论",
-      posterQuote: "一天点 50 次批量投递，但每多一次已读不回，心就多冷一分。",
-      summary: "你拥有极高的执行力与行动韧性，但面对不确定性时，本能地用“机械动作的忙碌”来麻痹焦虑。你投了上百家公司，却连对方的业务痛点都没看清。粗放海投带来的极低转化率，反过来在无形中摧毁着你的职业自尊。",
-      strengths: [
-        "超强的心态韧性与抗压能力",
-        "行动极快，绝不犹豫拖泥带水",
-        "敢于尝试不同机会，试错成本低"
-      ],
-      pitfall: "把求职当成纯概率游戏，缺乏深度定制，在招聘系统初筛算法中沦为无声分母。",
+      name: "The Volume Sprinter",
+      badge: "Batch apply · motion over meaning · lottery mindset",
+      posterQuote: "Fifty clicks a day—but each silence makes the next feel colder.",
+      summary:
+        "You move fast when uncertain, using busy motion to numb anxiety. Hundreds of applications without reading the team's problem statement. Low conversion erodes confidence even while the activity meter looks full.",
+      strengths: ["Resilience and high action bias", "Fast execution, low hesitation", "Willing to try many paths"],
+      pitfall: "Search becomes a numbers game with no tailoring—you disappear in ATS noise.",
       advice: [
-        "开启狙击枪法则：立刻暂停盲目批量海投 3 天，聚焦精力选出 3 家心仪标杆团队。",
-        "撰写痛点破局信：研究对方近期发布的业务方向，写一封 200 字“我能解决你什么痛点”的定制自荐信。",
-        "绕过 HR 直连业务线：在职场社交平台直接寻找目标部门 Leader 进行真诚探讨，效率提升 5 倍。"
-      ]
+        "Sniper rule: pause blind batch apply for 3 days; pick 3 target teams only.",
+        "Write a 200-word pain letter: what you can fix for them this quarter.",
+        "Reach the hiring manager or IC lead directly—often 5× the response rate.",
+      ],
     },
     C: {
       key: "C",
-      name: "高敏占卜型 (The Hyper-Sensitive Detective)",
-      badge: "已读不回反刍狂 · 微表情占卜师 · 冒充者综合征",
-      posterQuote: "面试官只是微皱了一下眉，我已经在脑子里办完了我的职场葬礼。",
-      summary: "你拥有极强的人性敏感度与深度同理心，但求职时极易陷入恶性过度归因。HR 晚回复半小时，你就觉得是自己哪句话得罪了人；看招聘 JD 觉得每条都在针对自己的短板。你常常把环境的随机噪音，全部变成了对自我价值的无情审判。",
+      name: "The Signal Interpreter",
+      badge: "Read-receipt rumination · micro-signal detective · impostor loop",
+      posterQuote: "They frowned once—I planned my career funeral in my head.",
+      summary:
+        "You read people and context sharply, but job search turns every delay into self-judgment. Late reply means you offended someone; the JD feels like a personal indictment. Random noise becomes a verdict on your worth.",
       strengths: [
-        "超凡的情绪洞察与换位思考力",
-        "极具责任感，善于体察团队氛围",
-        "擅长在深度信任关系中发挥大价值"
+        "Emotional intelligence and empathy",
+        "Strong ownership and team awareness",
+        "Deep trust relationships unlock your best work",
       ],
-      pitfall: "自我攻击倾向严重，将单次面试结果与个人终生价值死死捆绑，极易耗竭。",
+      pitfall: "You fuse one outcome with lifetime identity and drain your calendar on rumination.",
       advice: [
-        "物理脱敏法则：求职本质是商业采购不是法庭审判。面试官皱眉可能只是他电脑卡了或赶工疲惫。",
-        "转换审视视角：把“他喜不喜欢我”重构为“这家公司的文化与业务，配不配得上我投入未来两年”。",
-        "设立情绪防火墙：面试结束走出大楼的瞬间，立刻奖励自己一杯奶茶，并在物理上强制停止反刍复盘。"
-      ]
+        "Physics reset: hiring is procurement, not a courtroom. A frown may be fatigue or Wi-Fi.",
+        "Reframe: not 'Do they like me?' but 'Does this team deserve my next two years?'",
+        "After each interview, one small reward and a hard stop on replay—protect evening time.",
+      ],
     },
     D: {
       key: "D",
-      name: "深水隐忍型 (The Silent Solo-Diver)",
-      badge: "独自扛下所有 · 人脉求助羞耻 · 报喜不报忧",
-      posterQuote: "不想让家人担心，也不好意思打扰朋友，在深海中独自下潜。",
-      summary: "你的自尊心极强，性格独立又坚韧，但常常陷入“孤岛求生”。你宁可一个人闷头刷题几百个小时，也羞于向朋友打听内推机会或开口求助。长期把焦虑深埋在心底，让你的身心处于超负荷耗竭的危险边缘。",
+      name: "The Solo Deep Diver",
+      badge: "Carry it alone · shame around asking · silent endurance",
+      posterQuote: "I won't worry family or bother friends—I submerge alone.",
+      summary:
+        "You are independent and proud, but search becomes an island. Hours of solo study instead of one warm intro. Hidden stress pushes you toward burnout at the edge of your calendar.",
       strengths: [
-        "超强的独立攻坚与自驱钻研能力",
-        "沉稳靠谱，不给他人添麻烦",
-        "在逆境中具备惊人的耐力和忍耐力"
+        "Self-directed deep work",
+        "Reliable—you don't create drag for others",
+        "Stamina under adversity",
       ],
-      pitfall: "将“求助”等同于“示弱”，拒绝利用人际弱连接，导致求职信息极度闭塞。",
+      pitfall: "Asking feels like weakness, so information and referrals stay locked away.",
       advice: [
-        "打破孤岛壁垒：真正的强者善于借力。80% 的高质量岗位甚至从未公开发布，全靠人脉内推流通。",
-        "脆弱连接实验：今天主动联系一位半年没联系的前同事或师兄，不求工作，只真诚聊聊近况。",
-        "加入同频互助圈：找一个彼此保密、抱团取暖的求职互助社群，让同频伙伴分担你的心理重负。"
-      ]
-    }
+        "Most strong roles never hit the public board—weak ties matter.",
+        "Vulnerability experiment: message one former colleague today—no ask, just reconnect.",
+        "Join a small accountability pod so time spent searching is shared, not secret.",
+      ],
+    },
   },
 
-  // 判定规则函数：根据已记录的用户答案（格式为 { 0: 'A', 1: 'B', ... }），返回对应的结果 key（A/B/C/D）
-  evaluateRule: function(answers) {
+  evaluateRule: function (answers) {
     const counts = { A: 0, B: 0, C: 0, D: 0 };
-    Object.values(answers).forEach(val => {
+    Object.values(answers).forEach((val) => {
       if (counts[val] !== undefined) {
         counts[val]++;
       }
     });
 
-    // 找出得分最高的项
     let highestTag = "A";
     let maxScore = -1;
     for (const tag of ["A", "B", "C", "D"]) {
@@ -283,21 +177,16 @@ const QUIZ_CONFIG = {
       }
     }
 
-    // 处理并列同分平局情况（Tie-breaker）
-    // 规则：若出现平局，优先参照 Q1（面对新岗位本能）、Q6（最渴望的外挂）或 Q3（面对拒信反应）
-    const topTags = Object.keys(counts).filter(tag => counts[tag] === maxScore);
+    const topTags = Object.keys(counts).filter((tag) => counts[tag] === maxScore);
     if (topTags.length > 1) {
-      // 优先看第一题的选择
       const q1Ans = answers[0];
       if (topTags.includes(q1Ans)) {
         return q1Ans;
       }
-      // 其次看第六题的选择
       const q6Ans = answers[5];
       if (topTags.includes(q6Ans)) {
         return q6Ans;
       }
-      // 再次看第三题的选择
       const q3Ans = answers[2];
       if (topTags.includes(q3Ans)) {
         return q3Ans;
@@ -308,20 +197,19 @@ const QUIZ_CONFIG = {
     return highestTag;
   },
 
-  // 商业承接模块：问卷预约链接 + 社群二维码（无缝承接焦虑求职者）
   nextStep: {
-    enabled: true,
-    tag: "🤝 求职减压互助圈 · 限量开放",
-    title: "别再一个人死扛！加入「求职破局与减压互助营」",
-    description: "找工作是一场极其磨人的心理战，单打独斗最容易陷入习得性无助。点击下方预约 1 对 1 免费求职破局诊断，或微信扫码加入同频伙伴互助群，共享真实内推、复盘避坑与能量支持。",
-    buttonText: "👉 填写问卷 · 预约 1 对 1 免费求职破局诊断",
-    buttonUrl: "https://your-domain.com/survey-booking", // 替换为你的问卷星、腾讯文档或飞书问卷链接
-    contactText: "或微信扫码下方群二维码 / 添加助教微信：CareerPartner01（备注：求职破局）",
-    qrCodeImg: "assets/group-qr.svg" // 预置的群二维码，上线前可用真实微信群活码替换此图片
-  }
+    enabled: false,
+    tag: "🤝 Community · limited seats",
+    title: "You do not have to run the clock alone",
+    description:
+      "Job search is a long mental game. Solo mode breeds learned helplessness. Book a free 1:1 breakthrough chat or scan to join a peer support group for referrals and energy.",
+    buttonText: "👉 Book a free 1:1 diagnostic",
+    buttonUrl: "https://your-domain.com/survey-booking",
+    contactText: "Or scan the QR code / WeChat: CareerPartner01 (note: Time Personality)",
+    qrCodeImg: "assets/group-qr.svg",
+  },
 };
 
-// 浏览器与 Node.js 通用环境导出适配
 if (typeof window !== "undefined") {
   window.QUIZ_CONFIG = QUIZ_CONFIG;
 }
