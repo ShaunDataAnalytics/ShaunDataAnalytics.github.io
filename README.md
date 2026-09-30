@@ -39,4 +39,4 @@
 | 🏠 **[Real Estate Valuation Model](https://github.com/ShaunDataAnalytics/real-estate-valuation-ml)** | `Python`, `XGBoost`, `Pandas` | Feature engineering, regression modeling, and property price forecasting pipeline. |
 | 🍿 **[TMDB Movie Analytics & EDA](https://github.com/ShaunDataAnalytics/TMDB-Dataset)** | `Python`, `EDA`, `Matplotlib`, `Seaborn` | Exploratory data analysis, box office revenue trends, and ROI metrics. |
 | 📊 **[Power BI Diagnostic Studio](https://shaundataanalytics.github.io/demos/powerbi-studio/)** | `JavaScript`, `Tailwind`, `DAX` | Interactive 60-question PL-300 simulation studio with Feynman diagnostic sparring. |
-| 🎧 **Bilingual Neural Audio Suite** | `Edge-TTS`, `Web Audio API`, `Python` | Dual-language neural audio reader with chapter Socratic active-recall sparring. |
+| 🎧 **[Speechify Socratic Sparring Studio](https://shaundataanalytics.github.io/demos/speechify-socratic/)** | `Edge-TTS`, `Web Audio API`, `JavaScript` | High-speed teleprompter, continuous practice mode with Auto Grill Me toggle, and Socratic oral recall drills. |
