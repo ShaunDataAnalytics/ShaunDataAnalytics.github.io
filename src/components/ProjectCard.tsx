@@ -11,6 +11,57 @@ type ProjectCardProps = {
 };
 
 export default function ProjectCard({ project, index }: ProjectCardProps) {
+  const isAiDemo = project.projectGroup === "ai";
+
+  const caseStudyLink = (
+    <Link
+      href={`/projects/${project.slug}`}
+      className={
+        isAiDemo
+          ? "inline-flex items-center gap-1.5 rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-3 py-1.5 text-xs font-bold text-cyan-600 transition-colors hover:bg-cyan-500/20 dark:bg-cyan-400/10 dark:text-cyan-400 dark:hover:bg-cyan-400/20"
+          : "inline-flex items-center gap-1.5 rounded-xl bg-cyan-600 px-4 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-cyan-500 dark:bg-cyan-500 dark:hover:bg-cyan-400"
+      }
+    >
+      Explore Case Study
+      {!isAiDemo && (
+        <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+      )}
+    </Link>
+  );
+
+  const liveDemoLink =
+    project.demoUrl != null && project.demoUrl !== "" ? (
+      <a
+        href={project.demoUrl}
+        target={project.demoUrl.startsWith("http") ? "_blank" : undefined}
+        rel="noopener noreferrer"
+        className={
+          isAiDemo
+            ? "inline-flex items-center gap-1.5 rounded-xl bg-cyan-600 px-4 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-cyan-500 dark:bg-cyan-500 dark:hover:bg-cyan-400"
+            : "inline-flex items-center gap-1.5 rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-3 py-1.5 text-xs font-bold text-cyan-600 transition-colors hover:bg-cyan-500/20 dark:bg-cyan-400/10 dark:text-cyan-400 dark:hover:bg-cyan-400/20"
+        }
+        title="Open Live Interactive Demo"
+      >
+        <ExternalLink size={13} />
+        <span>Live Demo</span>
+        {isAiDemo && (
+          <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+        )}
+      </a>
+    ) : null;
+
+  const githubLink = (
+    <a
+      href={project.repoUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="rounded-lg p-2 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+      title="View GitHub Repository"
+    >
+      <Github size={18} />
+    </a>
+  );
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -100,37 +151,23 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
       {/* Action Footer */}
       <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
-        <Link
-          href={`/projects/${project.slug}`}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-cyan-600 px-4 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-cyan-500 dark:bg-cyan-500 dark:hover:bg-cyan-400"
-        >
-          Explore Case Study
-          <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-        </Link>
-
-        <div className="flex items-center gap-2">
-          {project.demoUrl && (
-            <a
-              href={project.demoUrl}
-              target={project.demoUrl.startsWith("http") ? "_blank" : undefined}
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-3 py-1.5 text-xs font-bold text-cyan-600 transition-colors hover:bg-cyan-500/20 dark:bg-cyan-400/10 dark:text-cyan-400 dark:hover:bg-cyan-400/20"
-              title="Open Live Interactive Demo"
-            >
-              <ExternalLink size={13} />
-              <span>Live Demo</span>
-            </a>
-          )}
-          <a
-            href={project.repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg p-2 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
-            title="View GitHub Repository"
-          >
-            <Github size={18} />
-          </a>
-        </div>
+        {isAiDemo ? (
+          <>
+            <div className="flex items-center gap-2">
+              {liveDemoLink}
+              {githubLink}
+            </div>
+            {caseStudyLink}
+          </>
+        ) : (
+          <>
+            {caseStudyLink}
+            <div className="flex items-center gap-2">
+              {liveDemoLink}
+              {githubLink}
+            </div>
+          </>
+        )}
       </div>
     </motion.article>
   );
