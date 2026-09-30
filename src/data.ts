@@ -634,8 +634,8 @@ LIMIT 5;`,
   },
   {
     slug: "career-pulse-quiz",
-    title: "Career Pulse · Career Anxiety & Persona Quiz",
-    subtitle: "Interactive Behavioral Diagnostic Engine & 80/20 Actionable Breakthrough Lab",
+    title: "Career Pulse · Time Personality Type Quiz",
+    subtitle: "How you spend attention under job-search pressure—80/20 breakthrough lab",
     description:
       "A mobile-first behavioral assessment and diagnostic tool helping job seekers identify hidden psychological bottlenecks (imposter syndrome, resume perfectionism paralysis, spray-and-pray burnout). Features real-time state machines, 1080x1440 HD canvas shareable poster export, and zero-cost client-side scoring.",
     tech: ["JavaScript", "HTML5 Canvas", "Pico CSS", "State Machine", "QRCode.js", "Local-First"],
