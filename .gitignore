@@ -42,3 +42,7 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Private demos (deployed to Netlify only, not GitHub Pages)
+/public/demos/speechify-socratic/
+/public/speechify-socratic/
