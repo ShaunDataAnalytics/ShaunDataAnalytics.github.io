@@ -59,6 +59,98 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "sentineldesk",
+    title: "SentinelDesk — AI Incident Triage & Automation Console",
+    subtitle: "Multilingual Incident Triage, Escalation Gates & Precedent-Grounded Reply Drafting",
+    description:
+      "Enterprise-grade intelligent support operations platform combining calibrated hybrid classifiers (DistilBERT + k-NN), hierarchical vector retrieval (Redis Vector), and strict precedent-grounded LLM reply drafting with citation validation. Features real-time SLA telemetry, an interactive Kanban triage board, conversion funnels, and major outage burst detection.",
+    tech: ["React 19", "Go Gateway", "Python", "Vertex AI", "Redis Vector DB", "Tailwind CSS v4", "Vite", "Recharts"],
+    repoUrl: "https://github.com/ShaunDataAnalytics/sentineldesk-showcase",
+    demoUrl: "https://brisk-crystal-2spv4iy.tmp.now",
+    category: "AI Systems",
+    projectGroup: "ai",
+    featured: true,
+    quickHighlights: [
+      "Calibrated Multilingual Classification: Type (89.4% F1), Priority (70.4% F1), and Queue (65.5% F1)",
+      "Safety & Escalation Gates: Auto-routes security incidents, PII masking, and outage bursts",
+      "Hierarchical Precedent Retrieval & Grounded Drafting with Cited Ticket Verification",
+      "Full-Featured Triage Console: Kanban Board, Conversion Funnel, Outage Simulator, and SLA Telemetry",
+    ],
+    metrics: [
+      { label: "Type Macro-F1", value: "0.894", change: "89.1% Acc" },
+      { label: "Incident Recall", value: "87.0%", change: "93.4% Tuned" },
+      { label: "Inference Latency", value: "9.0 ms", change: "p50 Offline" },
+      { label: "Grounding Accuracy", value: "100%", change: "Zero Hallucination" },
+    ],
+    problemStatement:
+      "Enterprise support operations face mounting backlogs of unstructured, multilingual incident tickets. Manual triage introduces critical response delays, inconsistent routing, and missed high-severity outages. Typical LLM solutions suffer from hallucinations—inventing corporate policies or citing non-existent ticket numbers. SentinelDesk guarantees zero-hallucination precedent grounding, automated PII sanitization, and strict escalation gates.",
+    architectureFlow: [
+      { step: "01", title: "Ingestion & PII Masking", tool: "Go Gateway", description: "Sanitizes emails, phones, IPs, and credentials in < 2ms before model exposure." },
+      { step: "02", title: "Hybrid Classification", tool: "DistilBERT + k-NN Vote", description: "Blends neural transformer embeddings with 5 nearest solved precedent votes to lift accuracy." },
+      { step: "03", title: "Policy & Escalation Gate", tool: "Confidence & Safety Rules", description: "Enforces 9 reason codes to escalate severe incidents or prompt injections to human on-call." },
+      { step: "04", title: "Precedent Grounding", tool: "Redis Vector Store", description: "Hierarchically searches routed queues to retrieve exact historical precedent tickets." },
+      { step: "05", title: "Citation Validator & UI", tool: "React 19 / Vite / Recharts", description: "Validates all [TKT-xxxxx] citations in the draft against evidence and displays in Kanban console." },
+    ],
+    phases: [
+      {
+        phaseNumber: 1,
+        phaseName: "Hybrid Classification & Calibration Pipeline",
+        objective: "Train multi-head classifier and calibrate confidence probabilities to eliminate overconfident misclassifications.",
+        tech: ["Python", "PyTorch", "Hugging Face", "Temperature Scaling", "ECE"],
+        deliverables: [
+          "Engineered hybrid classifier blending neural logits with 5 nearest neighbour votes (0.5 weight).",
+          "Reduced Expected Calibration Error (ECE) to 0.008 on Type and 0.015 on Priority via isotonic calibration.",
+          "Attained 87.0% high-priority incident recall on the 20% unseen holdout dataset (8,034 tickets).",
+        ],
+      },
+      {
+        phaseNumber: 2,
+        phaseName: "Hierarchical Vector Retrieval & Grounding Validator",
+        objective: "Index historical knowledge base and enforce strict zero-hallucination citation checks on generated drafts.",
+        tech: ["Redis Vector Search", "Vertex AI / Gemini", "Pydantic", "Python"],
+        deliverables: [
+          "Implemented hierarchical two-stage KNN search in Redis (queue routing first, then intra-queue KNN).",
+          "Built AST citation validator rejecting any draft quoting unretrieved tickets or ungrounded claims.",
+          "Enabled cross-lingual evidence synthesis: multilingual embeddings with automated translation into customer language.",
+        ],
+      },
+      {
+        phaseNumber: 3,
+        phaseName: "Go Gateway & Reactive Incident Console",
+        objective: "Architect low-latency reverse proxy gateway with streaming telemetry and interactive Kanban UI.",
+        tech: ["Go", "React 19", "Tailwind CSS v4", "Recharts", "Vite"],
+        deliverables: [
+          "Engineered Go proxy handling PII tokenization and burst rate-limiting in sub-millisecond execution.",
+          "Constructed responsive React 19 triage dashboard, SLA counters, Kanban board, and outage burst simulator.",
+          "Shipped dual-role portal: self-service ticket status tracking for end-users, and analytical funnel for incident managers.",
+        ],
+      },
+    ],
+    keyResults: [
+      "Achieved 0.894 Macro-F1 across 4 incident types and 87.0% recall on high-priority incidents.",
+      "100% citation verification pass rate: zero hallucinated policies or ungrounded ticket IDs displayed to operators.",
+      "Sub-10ms classification latency enabling real-time triage before ticket reaches human agent queues.",
+    ],
+    codeSnippet: {
+      language: "python",
+      title: "Precedent Grounding Citation & Validation Guardrail",
+      code: `def validate_grounded_draft(draft: str, retrieved_precedents: list[Precedent]) -> ValidationResult:
+    # Extract all cited ticket tokens, e.g. [TKT-10492]
+    cited_ids = set(re.findall(r"\\[(TKT-\\d+)\\]", draft))
+    valid_ids = {p.ticket_id for p in retrieved_precedents}
+
+    # Zero-hallucination check: every citation must exist in retrieved evidence
+    hallucinated = cited_ids - valid_ids
+    if hallucinated:
+        return ValidationResult(
+            is_valid=False,
+            reason=f"Hallucinated precedent citation detected: {hallucinated}",
+            action="FALLBACK_TO_EXTRACTIVE"
+        )
+    return ValidationResult(is_valid=True, action="APPROVE_DRAFT")`,
+    },
+  },
+  {
     slug: "clustering-analytics",
     title: "Customer Segmentation & 3D Clustering Dashboard",
     subtitle: "K-Means & Hierarchical Clustering Analysis with Interactive 3D Visualizations",
