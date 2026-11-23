@@ -1,8 +1,8 @@
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
-import ProjectCard from "@/components/ProjectCard";
 import TechStackGrid from "@/components/TechStackGrid";
 import CareerTimeline from "@/components/CareerTimeline";
+import ProjectSection from "@/components/ProjectSection";
 import { projects } from "@/data";
 
 async function fetchStars(repoUrl: string): Promise<number | null> {
@@ -43,47 +43,30 @@ export default async function Home() {
         <TechStackGrid />
         <CareerTimeline />
 
+        {/* Anchor for Hero button */}
+        <div id="projects" className="scroll-mt-24" />
+
         {/* 1. AI USE CASES & INTERACTIVE DEMOS */}
-        <section id="ai-projects" className="py-16 scroll-mt-24">
-          <div className="mb-12 text-center">
-            <span className="rounded-full bg-cyan-500/10 px-3.5 py-1 text-xs font-bold text-cyan-600 dark:bg-cyan-400/10 dark:text-cyan-400">
-              AI Systems & Interactive Labs
-            </span>
-            <h2 className="mt-3 text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 sm:text-4xl">
-              🤖 AI Use Cases & Interactive Demos
-            </h2>
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">
-              Autonomous workflows, neural speech synthesis pipelines (Edge-TTS), and active Socratic sparring engines solving real retention & productivity friction.
-            </p>
-          </div>
+        <ProjectSection
+          id="ai-projects"
+          badge="AI Systems & Interactive Labs"
+          badgeColor="cyan"
+          title="🤖 AI Use Cases & Interactive Demos"
+          description="Autonomous incident triage with precedent citation guardrails, neural speech pipelines, and active Socratic recall engines."
+          projects={aiProjects}
+          initialCount={2}
+        />
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
-            {aiProjects.map((project, index) => (
-              <ProjectCard key={project.slug} project={project} index={index} />
-            ))}
-          </div>
-        </section>
-
-        {/* 2. DATA ANALYTICS & MACHINE LEARNING CASE STUDIES */}
-        <section id="data-projects" className="py-16 scroll-mt-24 border-t border-zinc-200 dark:border-zinc-800/80">
-          <div className="mb-12 text-center">
-            <span className="rounded-full bg-indigo-500/10 px-3.5 py-1 text-xs font-bold text-indigo-600 dark:bg-indigo-400/10 dark:text-indigo-400">
-              Analytics Engineering & ML
-            </span>
-            <h2 className="mt-3 text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 sm:text-4xl">
-              📊 Data Analytics & Machine Learning Projects
-            </h2>
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">
-              End-to-end data pipelines, unsupervised 3D clustering, regression modeling, and financial box office ROI analytics.
-            </p>
-          </div>
-
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
-            {dataProjects.map((project, index) => (
-              <ProjectCard key={project.slug} project={project} index={index} />
-            ))}
-          </div>
-        </section>
+        {/* 2. DATA ANALYTICS & MACHINE LEARNING PROJECTS */}
+        <ProjectSection
+          id="data-projects"
+          badge="Analytics Engineering & ML"
+          badgeColor="indigo"
+          title="📊 Data Analytics & Machine Learning Projects"
+          description="Production Kimball dimensional modeling, automated ETL integrity reconciliation, and interactive 3D clustering."
+          projects={dataProjects}
+          initialCount={2}
+        />
       </main>
 
       <footer className="border-t border-zinc-200 py-8 text-center text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
