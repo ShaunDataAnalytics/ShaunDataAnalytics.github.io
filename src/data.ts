@@ -66,7 +66,7 @@ export const projects: Project[] = [
       "Enterprise-grade intelligent support operations platform combining calibrated hybrid classifiers (DistilBERT + k-NN), hierarchical vector retrieval (Redis Vector), and strict precedent-grounded LLM reply drafting with citation validation. Features real-time SLA telemetry, an interactive Kanban triage board, conversion funnels, and major outage burst detection.",
     tech: ["React 19", "Go Gateway", "Python", "Vertex AI", "Redis Vector DB", "Tailwind CSS v4", "Vite", "Recharts"],
     repoUrl: "https://github.com/ShaunDataAnalytics/sentineldesk-showcase",
-    demoUrl: "https://youtu.be/UBkSEnIPQRM",
+    demoUrl: "https://sentineldesk-showcase.vercel.app",
     category: "AI Systems",
     projectGroup: "ai",
     featured: true,
