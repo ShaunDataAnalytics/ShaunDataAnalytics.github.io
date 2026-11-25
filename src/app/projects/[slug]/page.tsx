@@ -16,8 +16,6 @@ import {
 } from "lucide-react";
 import { projects } from "@/data";
 import Navbar from "@/components/Navbar";
-import ClusterVisualizer from "@/components/ClusterVisualizer";
-import HousingEstimator from "@/components/HousingEstimator";
 
 export async function generateStaticParams() {
   return projects.map((p) => ({
@@ -131,18 +129,6 @@ export default async function ProjectDetailPage({ params }: Props) {
             </div>
           ))}
         </section>
-
-        {/* Interactive Visualizer Section (3D Clustering / Estimator) */}
-        {project.slug === "clustering-analytics" && (
-          <section className="mb-14">
-            <ClusterVisualizer />
-          </section>
-        )}
-        {project.slug === "housing-valuation" && (
-          <section className="mb-14">
-            <HousingEstimator />
-          </section>
-        )}
 
         {/* 1. Problem Statement & Business Context */}
         <section className="mb-12 rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60">

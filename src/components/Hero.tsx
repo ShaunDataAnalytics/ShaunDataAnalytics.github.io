@@ -28,7 +28,7 @@ export default function Hero() {
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
         </span>
-        Data Engineering & ML Analytics Portfolio
+        Data Analytics Engineering & Applied AI Systems
       </motion.div>
 
       {/* Main Headline */}
@@ -38,7 +38,7 @@ export default function Hero() {
 
       {/* Subtitle */}
       <p className="mb-8 max-w-2xl text-lg text-zinc-600 dark:text-zinc-300 sm:text-xl leading-relaxed">
-        Building high-performance data pipelines, predictive machine learning models, and interactive analytical dashboards.
+        Building high-performance data pipelines, production-grade AI incident triage systems, and modern dimensional analytics warehouses.
       </p>
 
       {/* Primary CTA Buttons */}
@@ -56,11 +56,11 @@ export default function Hero() {
           <ArrowDown size={16} />
         </a>
         <a
-          href="/projects/clustering-analytics"
+          href="/projects/sentineldesk"
           className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 bg-white/80 px-6 py-3 text-sm font-bold text-zinc-800 shadow-sm backdrop-blur-md transition-all hover:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200 dark:hover:border-zinc-600"
         >
           <Sparkles className="text-cyan-500" size={16} />
-          Interactive 3D Demo
+          Explore SentinelDesk AI
         </a>
       </motion.div>
 

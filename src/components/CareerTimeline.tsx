@@ -71,18 +71,6 @@ const milestones: Milestone[] = [
     skills: ["Python", "SQL", "Data Quality", "ERD Modeling", "Git"]
   },
   {
-    id: "springboard",
-    period: "Aug 2020",
-    role: "Data Science Bootcamp Certification",
-    company: "Springboard",
-    category: "edu",
-    type: "edu",
-    bullets: [
-      "Intensive data science, Python, pandas, machine learning algorithms, and hands-on capstone projects."
-    ],
-    skills: ["Python", "Pandas", "Machine Learning", "Data Science"]
-  },
-  {
     id: "biogen",
     period: "Dec 2017 – Dec 2019",
     role: "Data Analyst",

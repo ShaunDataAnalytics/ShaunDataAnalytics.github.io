@@ -63,7 +63,7 @@ export default async function Home() {
           badge="Analytics Engineering & ML"
           badgeColor="indigo"
           title="📊 Data Analytics & Machine Learning Projects"
-          description="Production Kimball dimensional modeling, automated ETL integrity reconciliation, and interactive 3D clustering."
+          description="Production Kimball dimensional modeling, automated ETL integrity reconciliation, and interactive analytical studios."
           projects={dataProjects}
           initialCount={2}
         />

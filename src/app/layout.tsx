@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Shaun Lin | Data Engineer & Analytics Specialist",
-  description: "Portfolio of Shaun Lin — Data Engineering, Analytics, and Data Science projects.",
+  title: "Shaun Lin | Data Analytics Engineer & Applied AI Systems",
+  description: "Portfolio of Shaun Lin — Data Analytics Engineering, Applied AI Systems, and Modern Data Pipelines.",
 };
 
 export default function RootLayout({
